@@ -1,0 +1,9 @@
+# Put your own initialization code here!
+# This code will run once on engine init
+# Example:
+#
+# include "engine" as engine
+# var window = engine.GetWindow()
+# window.SetName("MyGameName")
+# var my_game_resolution = Vector2(1280, 720)
+# window.SetSize(my_game_resolution)

@@ -1,0 +1,60 @@
+include "engine" as engine
+include "io" as io
+
+io.PrintError(io.Print)
+
+var window = engine.GetWindow()
+window.SetName("YEEEEEEAAAAAAAAAAAAAHHHHHHHHH")
+io.Print(window.GetName())
+engine.GetWindow().SetName("Chained")
+
+io.Print(window.GetSize())
+
+engine.GetWindow().SetSize(Vector2(200, 200))
+
+var x = 0
+x = 2
+x = x + 20
+
+func add_y(y) {
+	x += y
+	return x
+}
+
+add_y(10)
+
+if (x > 25) {
+	x = 0
+}
+else {
+	x = 205
+}
+
+var z = add_y(15)
+
+# this is ignored
+
+var p = (z if x > 1 else 20)
+
+io.Print(x, z, p)
+io.PrintWarning("oh god oh fuck")
+io.PrintWarning("uhh i mean")
+io.Print("Hello World!")
+
+
+var arr = [x, z, p]
+io.Print(arr)
+
+io.PrintError("I shit my pants")
+
+| x += arr[1]
+var h = [1, 2, 3]
+io.Print(h)
+io.Print(x)
+var test = true
+if (test == true) {
+	io.Print("Dont worry eric you arent THAT stupid")
+}
+else {
+	io.Print("uh oh...")
+}
