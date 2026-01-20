@@ -7,12 +7,6 @@
 
 #define STR(type) #type
 
-#define iiop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetInt() _op rhs.GetInt());}
-#define ifop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetInt() _op rhs.GetFloat());}
-#define ffop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetFloat() _op rhs.GetInt());}
-#define fiop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetFloat() _op rhs.GetFloat());}
-#define bop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetBool() _op rhs.GetBool());}
-
 ee_decl(ExprNode* node) {
 	ee(VariableNode*)
 	ee(OpNode*)
@@ -28,6 +22,8 @@ ee_decl(ExprNode* node) {
 	ee(Vector3LiteralNode*)
 	ee(Vector4LiteralNode*)
 	ee(ArrayAccessNode*)
+	ee(AssignmentNode*)
+	ee(CompoundOp*)
 	PushError("Unrecognized Expression " + node->Print() + " (this expression has returned null)");
 	return Value();
 }
@@ -41,6 +37,130 @@ ee_decl(VariableNode* node) {
 		return Value();
 	}
 }
+
+ee_decl(AssignmentNode* node) {
+	Value* lhs = EvaluateExpressionPtr(node->left);
+	if (!lhs || lhs->IsFunction()) {
+		PushError("Left side is not a modifiable value " + node->Print());
+		return Value();
+	}
+
+	Value rhs = EvaluateExpression(node->right);
+
+	try {
+		if (lhs->IsInt()) {
+			int& v = lhs->GetInt();
+			if (rhs.IsInt()) v = rhs.GetInt();
+			else if (rhs.IsFloat()) v = int(rhs.GetFloat());
+			else PushError("Cannot convert to int");
+		}
+
+		if (lhs->IsFloat()) {
+			float& v = lhs->GetFloat();
+			if (rhs.IsInt()) v = float(rhs.GetInt());
+			else if (rhs.IsFloat()) v = rhs.GetFloat();
+			else PushError("Cannot convert to float");
+		}
+
+		if (lhs->IsBool()) {
+			lhs->GetBool() = rhs.GetBool();
+		}
+
+		if (lhs->IsString()) {
+			lhs->GetString() = rhs.GetString();
+		}
+		return *lhs;
+	}
+	catch (const std::exception& e) {
+		PushError(
+			std::string(e.what()) + "\n" +
+			lhs->ToString() + "\n" +
+			rhs.ToString()
+		);
+	}
+}
+
+#define iiop(_op) if (node->op == STR(_op)) {val _op rhs.GetInt();}
+#define ifop(_op) if (node->op == STR(_op)) {val _op rhs.GetFloat();}
+#define ffop(_op) if (node->op == STR(_op)) {val _op rhs.GetInt();}
+#define fiop(_op) if (node->op == STR(_op)) {val _op rhs.GetFloat();}
+#define bop(_op) if (node->op == STR(_op)) {val _op rhs.GetBool();}
+
+ee_decl(CompoundOp* node) {
+	// Set a value
+	Value* lhs = EvaluateExpressionPtr(node->lhs);
+	if (!lhs) {
+		PushError("Left side is not a modifyable value " + node->Print());
+		return Value();
+	}
+	Value rhs = EvaluateExpression(node->rhs);
+
+	try {
+		if (lhs) {
+			if (lhs->IsInt()) {
+				int& val = lhs->GetInt();
+				if (rhs.IsInt()) {
+					iiop(+= );
+					iiop(-= );
+					iiop(*= );
+					iiop(/= );
+					return *lhs;
+				}
+				else if (rhs.IsFloat()) {
+					ifop(+= );
+					ifop(-= );
+					ifop(*= );
+					ifop(/= );
+					return *lhs;
+				}
+				return *lhs;
+			}
+			if (lhs->IsFloat()) {
+				float& val = lhs->GetFloat();
+				if (rhs.IsInt()) {
+					fiop(+= );
+					fiop(-= );
+					fiop(*= );
+					fiop(/= );
+					return *lhs;
+				}
+				else if (rhs.IsFloat()) {
+					ffop(+= );
+					ffop(-= );
+					ffop(*= );
+					ffop(/= );
+					return *lhs;
+				}
+				return *lhs;
+			}
+			if (lhs->IsString()) {
+				std::string& val = lhs->GetString();
+				if (node->op == "+=") {
+					val += rhs.GetString();
+				}
+				else {
+					PushError("Cannot perform " + node->op + " on a string");
+				}
+
+				return *lhs;
+			}
+
+			throw std::exception((std::string("Cannot perform a compound op on a variable of type ") + lhs->Type()).c_str());
+		}
+		else {
+			PushError("Cannot assign to an expression of this type" + node->Print());
+		}
+	}
+	catch (std::exception e) {
+		PushError(e.what() + '\n' + lhs->ToString() + '\n' + rhs.ToString());
+	}
+}
+
+#define iiop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetInt() _op rhs.GetInt());}
+#define ifop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetInt() _op rhs.GetFloat());}
+#define ffop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetFloat() _op rhs.GetInt());}
+#define fiop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetFloat() _op rhs.GetFloat());}
+#define bop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetBool() _op rhs.GetBool());}
 
 ee_decl(OpNode* node) {
 	Value lhs = EvaluateExpression(node->left);

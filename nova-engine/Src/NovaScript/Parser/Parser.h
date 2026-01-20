@@ -20,6 +20,7 @@ private:
 
 	ExprNode* ParseTernary();
 	ExprNode* ParseAccesor();
+	ExprNode* ParseAssignment();
 	ExprNode* ParseBoolean();
 	ExprNode* ParseEquality();
 	ExprNode* ParseComparison();

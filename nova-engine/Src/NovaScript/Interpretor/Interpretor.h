@@ -114,9 +114,7 @@ private:
 	#pragma region Evaluate Statement Overloads
 	
 	void EvaluateStatement(VarDeclNode*);
-	void EvaluateStatement(AssignmentNode*);
 	void EvaluateStatement(FuncDeclNode*);
-	void EvaluateStatement(CompoundOp*);
 	void EvaluateStatement(IfStmtNode*);
 	void EvaluateStatement(TypeDeclNode*);
 	void EvaluateStatement(IncludeNode*);
@@ -140,6 +138,8 @@ private:
 	Value EvaluateExpression(Vector3LiteralNode*);
 	Value EvaluateExpression(Vector4LiteralNode*);
 	Value EvaluateExpression(ArrayAccessNode*);
+	Value EvaluateExpression(CompoundOp*);
+	Value EvaluateExpression(AssignmentNode*);
 
 	Value* EvaluateExpressionPtr(ExprNode*);
 	Value* EvaluateExpressionPtr(VariableNode*);

@@ -30,7 +30,7 @@ void Engine::Shutdown() {
 int Engine::TestEnv() {
 	//place for testing code
 
-	Lexer lexer("Bootmessage.ns");
+	Lexer lexer("test.ns");
 	auto tokens = lexer.Parse();
 	Parser parser(tokens);
 	ProgramNode* program = parser.Parse();

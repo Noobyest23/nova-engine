@@ -1,6 +1,10 @@
 #include "Parser.h"
 #include "../../Core/Engine.h"
 
+// TODO:
+// Eric stupid he realise you can use switch on TokenType
+
+
 ProgramNode* Parser::Parse() {
 	std::vector<StmtNode*> statements;
 	while (t_index < tokens.size() - 1 and not force_stop and Current().type != TokenType::Eof) {
@@ -183,34 +187,6 @@ StmtNode* Parser::ParseStatement() {
 			PushError("Expected an expression");
 		}
 	}
-	// Assignment
-	if (AcceptNext(TokenType::Assignment)) {
-		std::string id_name = Current().content;
-		Advance();
-		Advance();
-		ExprNode* expr = ParseExpression();
-		if (expr) {
-			return new AssignmentNode(new VariableNode(id_name), expr);
-		}
-		else {
-			PushError("Expected an expression");
-		}
-	}
-	// Compound Op
-	if (AcceptNext(TokenType::CPlusOp) or AcceptNext(TokenType::CMinusOp) or AcceptNext(TokenType::CMultOp) or AcceptNext(TokenType::CDivOp)) {
-		std::string id_name = Current().content;
-		Advance();
-		std::string op = Current().content;
-		Advance();
-
-		ExprNode* rhs = ParseExpression();
-		if (rhs) {
-			return new CompoundOp(op, new VariableNode(id_name), rhs);
-		}
-		else {
-			PushError("Expected an expression");
-		}
-	}
 	if (Accept(TokenType::BreakPoint)) {
 		Advance();
 		StmtNode* stmt = ParseStatement();
@@ -259,7 +235,7 @@ ExprNode* Parser::ParseTernary() {
 }
 
 ExprNode* Parser::ParseAccesor() {
-	ExprNode* expression = ParseBoolean();
+	ExprNode* expression = ParseAssignment();
 	if (Accept(TokenType::Dot)) {
 		Advance();
 		ExprNode* right = ParseExpression();
@@ -273,6 +249,16 @@ ExprNode* Parser::ParseAccesor() {
 		}
 		Advance();
 		return new ArrayAccessNode(expression, index);
+	}
+	return expression;
+}
+
+ExprNode* Parser::ParseAssignment() {
+	ExprNode* expression = ParseBoolean();
+	if (Accept(TokenType::Assignment)) {
+		Advance();
+		ExprNode* right = ParseExpression();
+		return new AssignmentNode(expression, right);
 	}
 	return expression;
 }
@@ -326,7 +312,18 @@ ExprNode* Parser::ParseArithmetic() {
 		ExprNode* rhs = ParseTerm();
 		lhs = new OpNode(lhs, rhs, op);
 	}
+	while (Accept(TokenType::CPlusOp) or Accept(TokenType::CMinusOp) or Accept(TokenType::CMultOp) or Accept(TokenType::CDivOp)) {
+		std::string op = Current().content;
+		Advance();
 
+		ExprNode* rhs = ParseExpression();
+		if (rhs) {
+			return new CompoundOp(op, lhs, rhs);
+		}
+		else {
+			PushError("Expected an expression");
+		}
+	}
 	return lhs;
 }
 

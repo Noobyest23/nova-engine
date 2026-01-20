@@ -64,6 +64,43 @@ struct FuncCallNode : public ExprNode {
 
 };
 
+struct AssignmentNode : public ExprNode {
+	AssignmentNode(ExprNode* left, ExprNode* right) : left(left), right(right) {};
+
+	ExprNode* left;
+	ExprNode* right;
+
+	std::string Print() const override {
+		return left->Print() + " = " + right->Print();
+	}
+
+	void Delete() override {
+		left->Delete();
+		right->Delete();
+		delete this;
+	}
+
+};
+
+struct CompoundOp : public ExprNode {
+	CompoundOp(const std::string& op, ExprNode* lhs, ExprNode* rhs) : op(op), lhs(lhs), rhs(rhs) {};
+
+	std::string op;
+	ExprNode* lhs;
+	ExprNode* rhs;
+
+	std::string Print() const override {
+		return lhs->Print() + " " + op + " " + rhs->Print();
+	}
+
+	void Delete() override {
+		lhs->Delete();
+		rhs->Delete();
+		delete this;
+	}
+
+};
+
 struct TernaryNode : public ExprNode {
 	TernaryNode(ExprNode* expression, ExprNode* truthy_value, ExprNode* falsey_value) : expression(expression), truthy_value(truthy_value), falsey_value(falsey_value) {};
 

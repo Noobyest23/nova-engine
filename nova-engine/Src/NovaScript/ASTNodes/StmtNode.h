@@ -32,24 +32,6 @@ struct VarDeclNode : public StmtNode {
 
 };
 
-struct AssignmentNode : public StmtNode {
-	AssignmentNode(ExprNode* left, ExprNode* right) : left(left), right(right) {};
-
-	ExprNode* left;
-	ExprNode* right;
-
-	std::string Print() const override {
-		return left->Print() + " = " + right->Print();
-	}
-
-	void Delete() override {
-		left->Delete();
-		right->Delete();
-		delete this;
-	}
-
-};
-
 struct FuncDeclNode : public StmtNode {
 	FuncDeclNode(const std::string& func_id, const std::vector<std::string>& args, std::vector<StmtNode*> body) : func_id(func_id), args(args), body(body) {};
 
@@ -80,25 +62,6 @@ struct FuncDeclNode : public StmtNode {
 		}
 		delete this;
 	}
-};
-
-struct CompoundOp : public StmtNode {
-	CompoundOp(const std::string& op, ExprNode* lhs, ExprNode* rhs) : op(op), lhs(lhs), rhs(rhs) {};
-
-	std::string op;
-	ExprNode* lhs;
-	ExprNode* rhs;
-
-	std::string Print() const override {
-		return lhs->Print() + " " + op + " " + rhs->Print();
-	}
-
-	void Delete() override {
-		lhs->Delete();
-		rhs->Delete();
-		delete this;
-	}
-
 };
 
 struct IfStmtNode : public StmtNode {
