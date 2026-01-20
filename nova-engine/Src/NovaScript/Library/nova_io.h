@@ -16,12 +16,7 @@ INT_PTR CALLBACK InputDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 		InputDlgData* data = reinterpret_cast<InputDlgData*>(lParam);
 		SetWindowLongPtr(hwndDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(data));
 
-		// Set prompt label
 		SetDlgItemTextA(hwndDlg, 1100, data->prompt.c_str());
-
-		// Optionally, set the edit box empty
-		SetDlgItemTextA(hwndDlg, 1001, "");
-
 		return TRUE;
 	}
 
@@ -32,13 +27,13 @@ INT_PTR CALLBACK InputDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 		if (LOWORD(wParam) == IDOK) {
 			char buf[256] = {};
 			GetDlgItemTextA(hwndDlg, 1001, buf, sizeof(buf));
-			*data->userInput = buf; // store the entered text
+			*data->userInput = buf;
 			EndDialog(hwndDlg, IDOK);
 			return TRUE;
 		}
 
 		if (LOWORD(wParam) == IDCANCEL) {
-			data->userInput->clear(); // return empty string
+			data->userInput->clear();
 			EndDialog(hwndDlg, IDCANCEL);
 			return TRUE;
 		}
@@ -154,8 +149,8 @@ namespace nova_std_io {
 		strget(string, 0);
 		std::string in;
 		#ifdef _DEBUG
-		std::cout << string;
-		std::cin >> in;
+		std::cout << string << " >: ";
+		std::getline(std::cin, in);
 		return Value(in);
 		#else
 		#ifdef _WIN32
@@ -164,11 +159,10 @@ namespace nova_std_io {
 		dlgData.userInput = &in;
 		dlgData.prompt = string;
 
-		// Show modal dialog
 		DialogBoxParamA(
 			GetModuleHandle(nullptr),
-			MAKEINTRESOURCEA(101), // your dialog ID
-			nullptr,               // no parent
+			MAKEINTRESOURCEA(101),
+			nullptr,
 			InputDlgProc,
 			reinterpret_cast<LPARAM>(&dlgData)
 		);
