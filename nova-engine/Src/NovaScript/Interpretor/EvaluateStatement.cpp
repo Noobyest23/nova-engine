@@ -80,6 +80,9 @@ es_decl(IncludeNode* node) {
 		if (filepath == "engine") {
 			val = nova_std_engine::get_module();
 		}
+		if (filepath == "string") {
+			val = nova_std_string::GetModule();
+		}
 		if (val.data.index() == 0) {
 			PushError("Cannot include standard lib " + node->file_path->Print() + " because it can't be found");
 			return;

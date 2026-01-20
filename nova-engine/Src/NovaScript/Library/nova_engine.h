@@ -10,23 +10,32 @@
 
 namespace nova_std_engine {
 	// functions begining with window expect the window as their first argument
+	static void PushError(const std::string& message) {
+		Engine* engine = Engine::GetInstance();
+		engine->PushError("[NovaScript Engine Library] " + message);
+	}
+
 	static nova_std_decl(window_get_size) {
+		req_args(1);
 		objget(obj, window, Window);
 		Value size = (window->GetSize());
 		return size;
 	}
 	static nova_std_decl(window_get_name) {
+		req_args(1);
 		objget(obj, window, Window);
 		Value name = Value(window->GetName());
 		return name;
 	}
 	static nova_std_decl(window_set_size) {
+		req_args(2);
 		objget(obj, window, Window);
 		glm::vec2 size = std::get<glm::vec2>(args[1]->data);
 		window->SetSize(size);
 		return null_value;
 	}
 	static nova_std_decl(window_set_name) {
+		req_args(2)
 		objget(obj, window, Window);
 		std::string name = args[1]->GetString();
 		window->SetName(name);

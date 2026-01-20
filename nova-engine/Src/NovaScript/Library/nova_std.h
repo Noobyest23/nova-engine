@@ -3,5 +3,6 @@
 
 #include "nova_io.h"
 #include "nova_engine.h"
+#include "nova_string.h"
 
 #endif

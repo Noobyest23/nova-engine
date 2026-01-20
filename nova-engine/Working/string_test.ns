@@ -1,0 +1,29 @@
+include "string" as str
+include "io"
+
+var value = 13
+var string = str.ToString(value)
+
+Print(str.Length(string))
+Print(str.IsEmpty(string))
+Print(str.IsEmpty(""))
+Print(str.Contains(string, "13"))
+if (str.StartsWith(string, "1")) {
+	Print("Yes")
+}
+else {
+	PrintError("Uh Oh...")
+}
+if (str.EndsWith(string, "3")) {
+	Print("Yes")
+}
+else {
+	PrintError("Uh Oh...")
+}
+
+var lower = "tHis iS aLl LowEr caSe"
+lower = str.ToLower(lower)
+Print(lower)
+var upper = str.Replace(lower, "lower", "upper")
+upper = str.ToUpper(upper)
+Print(upper)

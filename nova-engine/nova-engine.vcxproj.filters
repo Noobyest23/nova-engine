@@ -152,6 +152,9 @@
     <ClInclude Include="Src\NovaScript\Library\nova_engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\NovaScript\Library\nova_string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Working\NovaData\BootMessage.txt" />
@@ -161,5 +164,6 @@
     <None Include="Working\NovaData\CustomInit.ns" />
     <None Include="Working\Bootmessage.ns" />
     <None Include="Working\test.ns" />
+    <None Include="Working\string_test.ns" />
   </ItemGroup>
 </Project>

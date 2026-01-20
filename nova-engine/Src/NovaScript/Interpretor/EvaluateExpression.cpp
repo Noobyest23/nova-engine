@@ -353,7 +353,7 @@ ee_decl(DotAccessNode* node) {
 	if (FuncCallNode* func = dynamic_cast<FuncCallNode*>(node->right)) {
 		left = n_scope->Get(func->func_id);
 		if (!left) {
-			PushError(func->func_id + " is not in the scope");
+			PushError("Could not find function " + func->func_id + " in " + node->left->Print() + "'s scope");
 			return Value();
 		}
 		if (left->IsFunction()) {
@@ -604,6 +604,10 @@ eep_decl(DotAccessNode* node) {
 
 	if (FuncCallNode* func = dynamic_cast<FuncCallNode*>(node->right)) {
 		left = n_scope->Get(func->func_id);
+		if (!left) {
+			PushError("Could not find function " + func->func_id + " in " + node->left->Print() + "'s scope");
+			return nullptr;
+		}
 		if (left->IsFunction()) {
 			std::vector<Value*> args;
 			for (ExprNode* arg : func->args) {

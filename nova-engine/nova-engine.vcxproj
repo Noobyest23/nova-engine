@@ -184,6 +184,7 @@
     <ClInclude Include="Src\NovaScript\Library\nova_io.h" />
     <ClInclude Include="Src\NovaScript\Library\nova_std.h" />
     <ClInclude Include="Src\NovaScript\Library\nova_std_macro.h" />
+    <ClInclude Include="Src\NovaScript\Library\nova_string.h" />
     <ClInclude Include="Src\NovaScript\Parser\Lexer.h" />
     <ClInclude Include="Src\NovaScript\Parser\Parser.h" />
     <ClInclude Include="Src\NovaScript\Parser\Tokens.h" />
@@ -198,6 +199,7 @@
     <None Include="Working\Bootmessage.ns" />
     <None Include="Working\NovaData\CustomInit.ns" />
     <None Include="Working\print_speedrun.ns" />
+    <None Include="Working\string_test.ns" />
     <None Include="Working\test.ns" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
