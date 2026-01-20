@@ -75,10 +75,10 @@ namespace nova_std_string {
 
 	// thanks stack overflow very cool
 	static std::string TrimImpl(const std::string& s) {
-		size_t start = s.find_first_not_of("\t\n\r");
+		size_t start = s.find_first_not_of(" \t\n\r");
 		if (start == std::string::npos) return "";
 
-		size_t end = s.find_last_not_of("\t\n\r");
+		size_t end = s.find_last_not_of(" \t\n\r");
 		return s.substr(start, end - start + 1);
 	}
 
