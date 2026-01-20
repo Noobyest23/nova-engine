@@ -185,6 +185,7 @@
     <ClInclude Include="Src\NovaScript\Library\nova_std.h" />
     <ClInclude Include="Src\NovaScript\Library\nova_std_macro.h" />
     <ClInclude Include="Src\NovaScript\Library\nova_string.h" />
+    <ClInclude Include="Src\NovaScript\Library\WinInputDialog\resource.h" />
     <ClInclude Include="Src\NovaScript\Parser\Lexer.h" />
     <ClInclude Include="Src\NovaScript\Parser\Parser.h" />
     <ClInclude Include="Src\NovaScript\Parser\Tokens.h" />
@@ -201,6 +202,9 @@
     <None Include="Working\print_speedrun.ns" />
     <None Include="Working\string_test.ns" />
     <None Include="Working\test.ns" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Src\NovaScript\Library\WinInputDialog\dialog.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

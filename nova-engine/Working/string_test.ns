@@ -30,3 +30,6 @@ Print(upper)
 var trim = str.Trim(upper + " ")
 Print(trim + "this doesnt have a space in the right spot")
 Print(str.Find(trim, "UPPER"))
+
+var in = Input("GRRR I HATE WINDOWS, F!@$ WINDOWS")
+PrintWarning(in)

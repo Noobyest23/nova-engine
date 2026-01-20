@@ -1,11 +1,61 @@
 #ifndef NOVASCRIPT_IO_H
 #define NOVASCRIPT_IO_H
 
+#ifdef _WIN32
+#include <Windows.h>
+#include <string>
+
+struct InputDlgData {
+	std::string* userInput;
+	std::string prompt;
+};
+
+INT_PTR CALLBACK InputDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
+	switch (msg) {
+	case WM_INITDIALOG: {
+		InputDlgData* data = reinterpret_cast<InputDlgData*>(lParam);
+		SetWindowLongPtr(hwndDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(data));
+
+		// Set prompt label
+		SetDlgItemTextA(hwndDlg, 1100, data->prompt.c_str());
+
+		// Optionally, set the edit box empty
+		SetDlgItemTextA(hwndDlg, 1001, "");
+
+		return TRUE;
+	}
+
+	case WM_COMMAND: {
+		InputDlgData* data = reinterpret_cast<InputDlgData*>(GetWindowLongPtr(hwndDlg, GWLP_USERDATA));
+		if (!data) return FALSE;
+
+		if (LOWORD(wParam) == IDOK) {
+			char buf[256] = {};
+			GetDlgItemTextA(hwndDlg, 1001, buf, sizeof(buf));
+			*data->userInput = buf; // store the entered text
+			EndDialog(hwndDlg, IDOK);
+			return TRUE;
+		}
+
+		if (LOWORD(wParam) == IDCANCEL) {
+			data->userInput->clear(); // return empty string
+			EndDialog(hwndDlg, IDCANCEL);
+			return TRUE;
+		}
+		break;
+	}
+	}
+	return FALSE;
+}
+#endif
 #include "nova_std_macro.h"
 #include "../../Core/Engine.h"
 #include "../Interpretor/Scope.h"
 
 #include <fstream>
+#include <iostream>
+
+
 
 namespace nova_std_io {
 	static void PushError(const std::string& message) {
@@ -99,10 +149,40 @@ namespace nova_std_io {
 		return Value(true);
 	}
 
+	nova_std_decl(Input) {
+		req_args(1);
+		strget(string, 0);
+		std::string in;
+		#ifdef _DEBUG
+		std::cout << string;
+		std::cin >> in;
+		return Value(in);
+		#else
+		#ifdef _WIN32
+		
+		InputDlgData dlgData;
+		dlgData.userInput = &in;
+		dlgData.prompt = string;
+
+		// Show modal dialog
+		DialogBoxParamA(
+			GetModuleHandle(nullptr),
+			MAKEINTRESOURCEA(101), // your dialog ID
+			nullptr,               // no parent
+			InputDlgProc,
+			reinterpret_cast<LPARAM>(&dlgData)
+		);
+
+		return Value(in);
+		#endif
+		#endif
+	}
+
 	static Value GetModule() {
 		Scope scope;
 		// I
 		scope.Set("LoadText", LoadText);
+		scope.Set("Input", Input);
 		// O
 		scope.Set("Print", Print);
 		scope.Set("PrintWarning", PrintWarning);
