@@ -66,7 +66,7 @@ void Engine::ShowBootMessage() {
 	std::cout << file.rdbuf() << "\n";
 }
 
-#ifdef _DEBUG
+#ifdef USE_CONSOLE
 void Engine::PushMessage(const std::string& message, bool important) {
 	if (important) {
 		std::cout << "\033[36m" << message << "\033[0m\n";

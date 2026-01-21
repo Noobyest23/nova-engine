@@ -17,6 +17,9 @@ INT_PTR CALLBACK InputDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 		SetWindowLongPtr(hwndDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(data));
 
 		SetDlgItemTextA(hwndDlg, 1100, data->prompt.c_str());
+
+		SetDlgItemTextA(hwndDlg, 1001, "");
+
 		return TRUE;
 	}
 
@@ -148,7 +151,7 @@ namespace nova_std_io {
 		req_args(1);
 		strget(string, 0);
 		std::string in;
-		#ifdef _DEBUG
+		#ifdef USE_CONSOLE
 		std::cout << string << " >: ";
 		std::getline(std::cin, in);
 		return Value(in);

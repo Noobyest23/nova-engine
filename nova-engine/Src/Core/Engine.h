@@ -4,6 +4,17 @@
 #include "Scene.h"
 #include "../Platform/Agnostic/Window.h"
 
+//#define USE_CONSOLE
+#ifdef _MSC_VER
+
+#ifdef USE_CONSOLE
+#pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+#else
+#pragma comment(linker, "/SUBSYSTEM:WINDOWS")
+#pragma comment(linker, "/ENTRY:WinMainCRTStartup")
+#endif
+#endif
+
 class Engine {
 public:
 
