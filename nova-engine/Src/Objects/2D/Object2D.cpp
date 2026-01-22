@@ -111,30 +111,6 @@ namespace nova_object2D {
 		return Value(obj->GetGlobalScale());
 	}
 
-	nova_std_decl(SetPosition) {
-		req_args(2);
-		objget(obj, Object2D, 0);
-		vec2get(vec2, 1);
-		obj->SetPosition(vec2);
-		return null_value;
-	}
-
-	nova_std_decl(SetRotation) {
-		req_args(2);
-		objget(obj, Object2D, 0);
-		floatget(rot, 1);
-		obj->SetRotation(rot);
-		return null_value;
-	}
-
-	nova_std_decl(SetScale) {
-		req_args(2);
-		objget(obj, Object2D, 0);
-		vec2get(vec2, 1);
-		obj->SetScale(vec2);
-		return null_value;
-	}
-
 	nova_std_decl(SetGlobalPosition) {
 		req_args(2);
 		objget(obj, Object2D, 0);
@@ -164,9 +140,6 @@ namespace nova_object2D {
 		scope.Set("GetGlobalPosition", GetGlobalPosition);
 		scope.Set("GetGlobalRotation", GetGlobalRotation);
 		scope.Set("GetGlobalScale", GetGlobalScale);
-		scope.Set("SetScale", SetScale);
-		scope.Set("SetPosition", SetPosition);
-		scope.Set("SetRotation", SetRotation);
 		scope.Set("SetGlobalPosition", SetGlobalPosition);
 		scope.Set("SetGlobalRotation", SetGlobalRotation);
 		scope.Set("SetGlobalScale", SetGlobalScale);

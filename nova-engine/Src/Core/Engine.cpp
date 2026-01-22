@@ -1,6 +1,8 @@
 #include "Engine.h"
 
 #include <iostream>
+#include "AssetDB.h"
+
 #include "../NovaScript/Parser/Lexer.h"
 #include "../NovaScript/Parser/Parser.h"
 #include "../NovaScript/Interpretor/Interpretor.h"
@@ -12,21 +14,25 @@ Engine* Engine::engine_inst = nullptr;
 void Engine::Init() {
 	Engine::engine_inst = this;
 	ShowBootMessage();
+
 	PushMessage("[Engine Init] Initializing window...");
 	Window::Init();
 	window = new Window("Nova Engine", 800, 600);
+
 	PushMessage("[Engine Init] Running NovaScript Init...");
 	Interpretor init("NovaData/CustomInit.ns");
+
 	PushMessage("[Engine Init] Finished Engine init");
-	PushMessage("[Engine] Warning Nova Engine and all parts of Nova Engine (Especially NovaScript) are still heavily in development", true);
-	PushMessage("[Engine] Things will most likely change, and crashes / memory leaks should be expected", true);
 	if (project_path == "") {
 		PushMessage("[Engine] No project path has been set, you can set one with the custom init script");
 	}
+	PushMessage("[Engine] Warning Nova Engine and all parts of Nova Engine (Especially NovaScript) are still heavily in development", true);
+	PushMessage("[Engine] Things will most likely change, and crashes / memory leaks should be expected", true);
 }
 
 void Engine::Shutdown() {
 	delete window;
+	AssetDB::Shutdown();
 	Window::Cleanup();
 }
 

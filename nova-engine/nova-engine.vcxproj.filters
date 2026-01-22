@@ -24,7 +24,7 @@
     <ClCompile Include="Src\Assets\Material\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Assets\Mesh\Mesh.cpp">
+    <ClCompile Include="Src\Assets\Mesh2D\Mesh2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Assets\Asset.cpp">
@@ -78,6 +78,18 @@
     <ClCompile Include="Src\Objects\2D\Object2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Objects\2D\VisualInstance2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Objects\2D\Sprite2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Assets\Mesh2D\BoxMesh2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Core\AssetDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Assets\Asset.h">
@@ -92,7 +104,7 @@
     <ClInclude Include="Src\Assets\Material\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Assets\Mesh\Mesh.h">
+    <ClInclude Include="Src\Assets\Mesh2D\Mesh2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\Engine.h">
@@ -162,6 +174,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Objects\2D\Object2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Objects\2D\Sprite2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Objects\2D\VisualInstance2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Assets\Mesh2D\BoxMesh2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Core\AssetDB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\NovaScript\Library\nova_asset_db.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

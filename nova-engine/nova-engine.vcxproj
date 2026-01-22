@@ -143,8 +143,10 @@
     <ClCompile Include="Src\Assets\Image\FileImage.cpp" />
     <ClCompile Include="Src\Assets\Image\Image.cpp" />
     <ClCompile Include="Src\Assets\Material\Material.cpp" />
-    <ClCompile Include="Src\Assets\Mesh\Mesh.cpp" />
+    <ClCompile Include="Src\Assets\Mesh2D\BoxMesh2D.cpp" />
+    <ClCompile Include="Src\Assets\Mesh2D\Mesh2D.cpp" />
     <ClCompile Include="Src\Core\Engine.cpp" />
+    <ClCompile Include="Src\Core\AssetDB.cpp" />
     <ClCompile Include="Src\Core\Scene.cpp" />
     <ClCompile Include="Src\Core\Signal.cpp" />
     <ClCompile Include="Src\glad.c" />
@@ -156,6 +158,8 @@
     <ClCompile Include="Src\NovaScript\Parser\Lexer.cpp" />
     <ClCompile Include="Src\NovaScript\Parser\Parser.cpp" />
     <ClCompile Include="Src\Objects\2D\Object2D.cpp" />
+    <ClCompile Include="Src\Objects\2D\Sprite2D.cpp" />
+    <ClCompile Include="Src\Objects\2D\VisualInstance2D.cpp" />
     <ClCompile Include="Src\Objects\Object.cpp" />
     <ClCompile Include="Src\Platform\Agnostic\main.cpp" />
     <ClCompile Include="Src\Platform\Agnostic\Window.cpp" />
@@ -166,8 +170,10 @@
     <ClInclude Include="Src\Assets\Image\FileImage.h" />
     <ClInclude Include="Src\Assets\Image\Image.h" />
     <ClInclude Include="Src\Assets\Material\Material.h" />
-    <ClInclude Include="Src\Assets\Mesh\Mesh.h" />
+    <ClInclude Include="Src\Assets\Mesh2D\BoxMesh2D.h" />
+    <ClInclude Include="Src\Assets\Mesh2D\Mesh2D.h" />
     <ClInclude Include="Src\Core\Engine.h" />
+    <ClInclude Include="Src\Core\AssetDB.h" />
     <ClInclude Include="Src\Core\Scene.h" />
     <ClInclude Include="Src\Core\Signal.h" />
     <ClInclude Include="Src\NovaScript\ASTNodes\ASTNode.h" />
@@ -177,6 +183,7 @@
     <ClInclude Include="Src\NovaScript\Interpretor\Interpretor.h" />
     <ClInclude Include="Src\NovaScript\Interpretor\Scope.h" />
     <ClInclude Include="Src\NovaScript\Interpretor\Value.h" />
+    <ClInclude Include="Src\NovaScript\Library\nova_asset_db.h" />
     <ClInclude Include="Src\NovaScript\Library\nova_engine.h" />
     <ClInclude Include="Src\NovaScript\Library\nova_io.h" />
     <ClInclude Include="Src\NovaScript\Library\nova_std.h" />
@@ -187,6 +194,8 @@
     <ClInclude Include="Src\NovaScript\Parser\Parser.h" />
     <ClInclude Include="Src\NovaScript\Parser\Tokens.h" />
     <ClInclude Include="Src\Objects\2D\Object2D.h" />
+    <ClInclude Include="Src\Objects\2D\Sprite2D.h" />
+    <ClInclude Include="Src\Objects\2D\VisualInstance2D.h" />
     <ClInclude Include="Src\Objects\Object.h" />
     <ClInclude Include="Src\Platform\Agnostic\main.h" />
     <ClInclude Include="Src\Platform\Agnostic\Window.h" />
