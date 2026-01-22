@@ -1,0 +1,11 @@
+include "Object"
+include "engine" as engine
+
+type Startup : Object {
+	var window = engine.GetWindow()
+
+	func Ready() override {
+		window.SetName("Erics Epic Test Project")
+		window.SetSize(Vector2(1280, 720))
+	}
+}

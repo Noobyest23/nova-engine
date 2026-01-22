@@ -3,8 +3,7 @@
 
 #include "Scope.h"
 #include "../ASTNodes/ProgramNode.h"
-#include "../../Core/Engine.h"
-
+#include "Value.h"
 #include "../Parser/Parser.h"
 #include "../Parser/Lexer.h"
 
@@ -164,10 +163,7 @@ private:
 		}
 	}
 
-	void PushError(const std::string& message) {
-		Engine* engine = Engine::GetInstance();
-		engine->PushError("[Interpretor] " + message);
-	};
+	void PushError(const std::string& message);
 
 	bool return_flag = false;
 	Value return_val = Value();
@@ -177,6 +173,9 @@ private:
 };
 
 // Todo
+// Type Declare
+// Scene Tree
+// Extendable Objects
 // signal support
 // std lib stuff
 // vector

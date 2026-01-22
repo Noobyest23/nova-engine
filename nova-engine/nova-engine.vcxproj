@@ -155,6 +155,7 @@
     <ClCompile Include="Src\NovaScript\Interpretor\Value.cpp" />
     <ClCompile Include="Src\NovaScript\Parser\Lexer.cpp" />
     <ClCompile Include="Src\NovaScript\Parser\Parser.cpp" />
+    <ClCompile Include="Src\Objects\2D\Object2D.cpp" />
     <ClCompile Include="Src\Objects\Object.cpp" />
     <ClCompile Include="Src\Platform\Agnostic\main.cpp" />
     <ClCompile Include="Src\Platform\Agnostic\Window.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Src\NovaScript\Parser\Lexer.h" />
     <ClInclude Include="Src\NovaScript\Parser\Parser.h" />
     <ClInclude Include="Src\NovaScript\Parser\Tokens.h" />
+    <ClInclude Include="Src\Objects\2D\Object2D.h" />
     <ClInclude Include="Src\Objects\Object.h" />
     <ClInclude Include="Src\Platform\Agnostic\main.h" />
     <ClInclude Include="Src\Platform\Agnostic\Window.h" />
@@ -193,11 +195,13 @@
     <Text Include="Working\NovaData\BootMessage.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Working\Bootmessage.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\Bootmessage.ns" />
     <None Include="Working\NovaData\CustomInit.ns" />
-    <None Include="Working\print_speedrun.ns" />
-    <None Include="Working\string_test.ns" />
-    <None Include="Working\test.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\print_speedrun.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\Objects\StartupScript.nso" />
+    <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\test.ns" />
+    <None Include="Working\Projects\Test_Project\TestScene.json" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Src\NovaScript\Library\WinInputDialog\dialog.rc" />

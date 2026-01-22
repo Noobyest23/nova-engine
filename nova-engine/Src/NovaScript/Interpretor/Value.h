@@ -19,8 +19,12 @@ using CPPVariable = std::variant <
 	std::reference_wrapper<int>,
 	std::reference_wrapper<float>,
 	std::reference_wrapper<bool>,
-	std::reference_wrapper<std::string>
+	std::reference_wrapper<std::string>,
+	std::reference_wrapper<glm::vec2>,
+	std::reference_wrapper<glm::vec3>,
+	std::reference_wrapper<glm::vec4>
 >;
+using ReferenceValue = std::reference_wrapper<Value>;
 using NovaTypeDecl = TypeDeclNode*;
 struct CPPObject {
 	void* ptr;
@@ -38,30 +42,32 @@ struct Value {
 	Value(std::vector<Value>& data) : data(data) {};
 	Value(NovaType& data) : data(data) {};
 	Value(NovaTypeDecl& data) : data(data) {};
-	Value(CPPObject& data) : data(data) {};
+	Value(CPPObject data) : data(data) {};
 	Value(glm::vec2 data) : data(data) {};
 	Value(glm::vec3 data) : data(data) {};
 	Value(glm::vec4 data) : data(data) {};
 	explicit Value(CPPVariable data) : data(data) {};
+	explicit Value(ReferenceValue data) : data(data) {};
 
 	~Value();
 
-	std::variant<
-		std::monostate,
+	std::variant <
+		std::monostate, // 0
 		int,
 		float,
 		bool,
 		std::string,
-		std::vector<Value>,
+		std::vector<Value>, // 5
 		NovaType,
 		NovaFunction,
 		CPPFunction,
 		CPPVariable,
-		NovaTypeDecl,
+		NovaTypeDecl, // 10
 		CPPObject,
 		glm::vec2,
 		glm::vec3,
-		glm::vec4
+		glm::vec4,
+		ReferenceValue // 15
 	> data;
 
 	std::string Type() const;
@@ -84,10 +90,14 @@ struct Value {
 	bool IsString() const;
 	bool IsBool() const;
 	bool IsFunction() const;
+	bool IsVec() const;
+	bool IsVec2() const;
+	bool IsVec3() const;
+	bool IsVec4() const;
 	bool IsCPP() const;
 	bool IsObj() const;
-	bool IsVec() const;
 	bool IsArray() const;
+	bool IsReference() const;
 	//bool IsCallback() const;
 
 	bool is_manually_created = false;

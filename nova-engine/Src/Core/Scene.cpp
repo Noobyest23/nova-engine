@@ -13,7 +13,7 @@ void Scene::Ready() {
 }
 
 void Scene::Update() {
-	root.Update();
+	root.Update(16.0f);
 }
 
 void Scene::Draw() {

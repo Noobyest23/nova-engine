@@ -1,0 +1,9 @@
+{
+	"Objects": {
+		"Startup": {
+			"Type": "Object",
+			"Script": "Scripts/Objects/StartupScript.nso"
+			
+		}
+	}
+}

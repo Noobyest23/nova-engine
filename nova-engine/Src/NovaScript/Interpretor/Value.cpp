@@ -194,6 +194,9 @@ std::string& Value::GetString() {
 		if (IsCPP()) {
 			return std::get<std::reference_wrapper<std::string>>(std::get<CPPVariable>(data));
 		}
+		if (IsReference()) {
+			return std::get<ReferenceValue>(data).get().GetString();
+		}
 		return std::get<std::string>(data);
 	}
 	throw std::exception("Type is not string");
@@ -204,6 +207,9 @@ int& Value::GetInt() {
 		if (IsCPP()) {
 			return std::get<std::reference_wrapper<int>>(std::get<CPPVariable>(data));
 		}
+		if (IsReference()) {
+			return std::get<ReferenceValue>(data).get().GetInt();
+		}
 		return std::get<int>(data);
 	}
 	throw std::exception("Type is not int");
@@ -213,6 +219,9 @@ float& Value::GetFloat() {
 	if (IsFloat()) {
 		if (IsCPP()) {
 			return std::get<std::reference_wrapper<float>>(std::get<CPPVariable>(data));
+		}
+		if (IsReference()) {
+			return std::get<ReferenceValue>(data).get().GetFloat();
 		}
 		return std::get<float>(data);
 	}
@@ -236,27 +245,48 @@ bool& Value::GetBool() {
 		if (IsCPP()) {
 			return std::get<std::reference_wrapper<bool>>(std::get<CPPVariable>(data));
 		}
+		if (IsReference()) {
+			return std::get<ReferenceValue>(data).get().GetBool();
+		}
 		return std::get<bool>(data);
 	}
 	throw std::exception("Type is not bool");
 }
 
 glm::vec2& Value::GetVec2() {
-	if (data.index() == 12) {
+	if (IsVec3()) {
+		if (IsCPP()) {
+			return std::get<std::reference_wrapper<glm::vec2>>(std::get<CPPVariable>(data));
+		}
+		if (IsReference()) {
+			return std::get<ReferenceValue>(data).get().GetVec2();
+		}
 		return std::get<glm::vec2>(data);
 	}
 	throw std::exception("Type is not vec2");
 }
 
 glm::vec3& Value::GetVec3() {
-	if (data.index() == 13) {
+	if (IsVec3()) {
+		if (IsCPP()) {
+			return std::get<std::reference_wrapper<glm::vec3>>(std::get<CPPVariable>(data));
+		}
+		if (IsReference()) {
+			return std::get<ReferenceValue>(data).get().GetVec3();
+		}
 		return std::get<glm::vec3>(data);
 	}
 	throw std::exception("Type is not vec3");
 }
 
 glm::vec4& Value::GetVec4() {
-	if (data.index() == 14) {
+	if (IsVec4()) {
+		if (IsCPP()) {
+			return std::get<std::reference_wrapper<glm::vec4>>(std::get<CPPVariable>(data));
+		}
+		if (IsReference()) {
+			return std::get<ReferenceValue>(data).get().GetVec4();
+		}
 		return std::get<glm::vec4>(data);
 	}
 	throw std::exception("Type is not vec4");
@@ -266,11 +296,15 @@ std::vector<Value>& Value::GetArray() {
 	if (IsArray()) {
 		return std::get<std::vector<Value>>(data);
 	}
+	if (IsReference()) {
+		return std::get<ReferenceValue>(data).get().GetArray();
+	}
 	throw std::exception("Type is not array");
 }
 
 bool Value::IsInt() const {
 	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsInt();
 	if (IsCPP()) {
 		int cpp_v_index = std::get<CPPVariable>(data).index();
 		return cpp_v_index == 0;
@@ -280,6 +314,7 @@ bool Value::IsInt() const {
 
 bool Value::IsFloat() const {
 	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsFloat();
 	if (IsCPP()) {
 		int cpp_v_index = std::get<CPPVariable>(data).index();
 		return cpp_v_index == 1;
@@ -293,6 +328,7 @@ bool Value::IsNum() const {
 
 bool Value::IsString() const {
 	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsString();
 	if (IsCPP()) {
 		int cpp_v_index = std::get<CPPVariable>(data).index();
 		return cpp_v_index == 3;
@@ -302,6 +338,7 @@ bool Value::IsString() const {
 
 bool Value::IsBool() const {
 	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsBool();
 	if (IsCPP()) {
 		int cpp_v_index = std::get<CPPVariable>(data).index();
 		return cpp_v_index == 3;
@@ -311,24 +348,67 @@ bool Value::IsBool() const {
 
 bool Value::IsFunction() const {
 	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsFunction();
 	return v_index == 7 or v_index == 8;
 }
 
 bool Value::IsCPP() const {
 	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsCPP();
 	return v_index == 8 or v_index == 9 or v_index == 11;
 }
 
 bool Value::IsObj() const {
-	return data.index() == 6 or 11;
+	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsObj();
+	return v_index == 6 or v_index == 11;
 }
 
 bool Value::IsVec() const {
-	return data.index() == 12 or 13 or 14;
+	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsVec();
+	if (IsCPP()) {
+		int v_v_index = std::get<CPPVariable>(data).index();
+		return v_v_index == 5 or v_v_index == 6 or v_v_index == 7;
+	}
+	return v_index == 12 or v_index == 13 or v_index == 14;
+}
+
+bool Value::IsVec2() const {
+	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsVec2();
+	if (IsCPP()) {
+		return std::get<CPPVariable>(data).index() == 5;
+	}
+	return data.index() == 12;
+}
+
+bool Value::IsVec3() const {
+	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsVec3();
+	if (IsCPP()) {
+		return std::get<CPPVariable>(data).index() == 6;
+	}
+	return data.index() == 13;
+}
+
+bool Value::IsVec4() const {
+	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsVec4();
+	if (IsCPP()) {
+		return std::get<CPPVariable>(data).index() == 7;
+	}
+	return data.index() == 14;
 }
 
 bool Value::IsArray() const {
-	return data.index() == 5;
+	int v_index = data.index();
+	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsArray();
+	return v_index == 5;
+}
+
+bool Value::IsReference() const {
+	return data.index() == 15;
 }
 
 Value::~Value() {

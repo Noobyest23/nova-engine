@@ -336,7 +336,7 @@ ee_decl(DotAccessNode* node) {
 	Value* obj = EvaluateExpressionPtr(node->left);
 	Value* left = nullptr;
 
-	if (!obj) {
+	if (!obj or obj->data.index() == 0) {
 		PushError("Could not resolve this obj " + node->Print());
 		return Value();
 	}

@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include "../Platform/Agnostic/Window.h"
 
-//#define USE_CONSOLE
+#define USE_CONSOLE
 #ifdef _MSC_VER
 
 #ifdef USE_CONSOLE
@@ -36,7 +36,12 @@ public:
 	bool suppress_warning_popup = false;
 	bool suppress_error_popup = false;
 
+	void InitProjectPath(const std::string& path);
+	std::string GetProjectPath() { return project_path; };
+
 private:
+
+	std::string project_path;
 
 	void ShowBootMessage();
 

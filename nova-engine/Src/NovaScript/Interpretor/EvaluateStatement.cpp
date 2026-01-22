@@ -71,7 +71,7 @@ es_decl(IncludeNode* node) {
 		PushError("Filepath must evaluate to string " + node->Print());
 		return;
 	}
-	std::string& filepath = val.GetString();
+	std::string filepath = val.GetString();
 	if (!filepath.ends_with(".ns")) {
 		Value val;
 		if (filepath == "io") {
@@ -98,6 +98,7 @@ es_decl(IncludeNode* node) {
 		}
 	}
 	else {
+		filepath = Engine::GetInstance()->GetProjectPath() + filepath;
 		Lexer lexer(filepath.c_str());
 		ProgramNode* program = nullptr;
 		{
@@ -118,7 +119,7 @@ es_decl(IncludeNode* node) {
 			scope->Set(var->identifier, val);
 		}
 		else {
-			for (std::pair<std::string, Value> pair : scope->variables) {
+			for (std::pair<std::string, Value> pair : s->variables) {
 				scope->Set(pair.first, pair.second);
 			}
 		}

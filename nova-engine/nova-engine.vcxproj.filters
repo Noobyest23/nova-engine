@@ -75,6 +75,9 @@
     <ClCompile Include="Src\NovaScript\Interpretor\Interpretor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Objects\2D\Object2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Assets\Asset.h">
@@ -158,16 +161,21 @@
     <ClInclude Include="Src\NovaScript\Library\WinInputDialog\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Objects\2D\Object2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Working\NovaData\BootMessage.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Working\print_speedrun.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\print_speedrun.ns" />
     <None Include="Working\NovaData\CustomInit.ns" />
-    <None Include="Working\Bootmessage.ns" />
-    <None Include="Working\test.ns" />
-    <None Include="Working\string_test.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\Bootmessage.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\test.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\Objects\StartupScript.nso" />
+    <None Include="Working\Projects\Test_Project\TestScene.json" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Src\NovaScript\Library\WinInputDialog\dialog.rc">

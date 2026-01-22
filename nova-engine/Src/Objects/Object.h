@@ -3,34 +3,42 @@
 
 #include <string>
 #include <vector>
+#include "../NovaScript/Interpretor/Value.h"
+#include "../NovaScript/Interpretor/Interpretor.h"
 
 class Object {
 public:
 
 	void Ready();
-	void Update();
+	void Update(float deltaTime);
 	//void Input();
 	void Draw();
 
-	void AddChild(Object* object);
+	void AddChild(const Object& object);
 	Object* FindChild(const std::string& name);
-	std::vector<Object*>& GetChildren();
+	Object* GetChild(int index);
+	std::vector<Object>& GetChildren();
 	Object* GetParent();
+	CPPObject GetNovaObject();
 
 	bool paused = false;
 	bool visible = true;
 
 	std::string name = "";
 
+	virtual std::string GetClassName();
+	
+	Interpretor* script = nullptr;
+
 protected:
 
-	std::vector<Object*> children = {};
-	Object* parent;
+	std::vector<Object> children = {};
+	Object* parent = nullptr;
 
 	virtual void OnReady() {};
-	virtual void OnUpdate() {};
+	virtual void OnUpdate(float deltaTime) {};
 	virtual void OnDraw() {};
-	virtual std::string GetClassName();
+	virtual void OnNovaObject(Scope& inherited) {};
 
 };
 

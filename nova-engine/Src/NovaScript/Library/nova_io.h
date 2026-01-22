@@ -100,7 +100,7 @@ namespace nova_std_io {
 			PushError("Argument 0 is not string");
 			return Value();
 		}
-
+		filepath = Engine::GetInstance()->GetProjectPath() + filepath;
 		std::ifstream file(filepath, std::ios::binary);
 		std::string text;
 		std::string line;
@@ -132,7 +132,7 @@ namespace nova_std_io {
 		else {
 			PushError("Argument 1 is not string");
 		}
-
+		filepath = Engine::GetInstance()->GetProjectPath();
 		std::ofstream file(filepath, std::ios::binary);
 		std::string text;
 		std::string line;

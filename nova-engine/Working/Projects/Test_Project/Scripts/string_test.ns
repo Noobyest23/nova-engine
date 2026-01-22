@@ -1,5 +1,8 @@
 include "string" as str
 include "io"
+include "Bootmessage.ns"
+include "test.ns"
+include "print_speedrun.ns"
 
 var value = 13
 var string = str.ToString(value)
@@ -33,3 +36,5 @@ Print(str.Find(trim, "UPPER"))
 
 var in = Input("GRRR I HATE WINDOWS, F!@$ WINDOWS")
 PrintWarning(in)
+
+| Print(x)

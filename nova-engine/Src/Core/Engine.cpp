@@ -20,6 +20,9 @@ void Engine::Init() {
 	PushMessage("[Engine Init] Finished Engine init");
 	PushMessage("[Engine] Warning Nova Engine and all parts of Nova Engine (Especially NovaScript) are still heavily in development", true);
 	PushMessage("[Engine] Things will most likely change, and crashes / memory leaks should be expected", true);
+	if (project_path == "") {
+		PushMessage("[Engine] No project path has been set, you can set one with the custom init script");
+	}
 }
 
 void Engine::Shutdown() {
@@ -30,7 +33,7 @@ void Engine::Shutdown() {
 int Engine::TestEnv() {
 	//place for testing code
 
-	Lexer lexer("string_test.ns");
+	Lexer lexer(std::string(project_path + "Scripts/string_test.ns").c_str());
 	auto tokens = lexer.Parse();
 	Parser parser(tokens);
 	ProgramNode* program = parser.Parse();
@@ -64,6 +67,15 @@ void Engine::ShowBootMessage() {
 	}
 
 	std::cout << file.rdbuf() << "\n";
+}
+
+void Engine::InitProjectPath(const std::string& path) {
+	if (project_path == "") {
+		project_path = path;
+	}
+	else {
+		PushError("Project path has already been initialized");
+	}
 }
 
 #ifdef USE_CONSOLE
