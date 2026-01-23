@@ -2,11 +2,10 @@
 #define NOVA_IMAGE_H
 
 #include "../Asset.h"
+#include "glad/glad.h"
 
 class Image : public Asset {
 public:
-
-	Image() {};
 
 	int GetHeight() const;
 	int GetWidth() const;
@@ -14,6 +13,12 @@ public:
 	unsigned char* GetData() const;
 
 	void Free();
+
+	void Upload();
+	void Bind(uint32_t slot);
+	GLuint GetTexture() const;
+	
+	bool IsUploaded();
 
 protected:
 
@@ -26,6 +31,7 @@ protected:
 	unsigned char* data = nullptr;
 
 	void OnDestroy() override;
+	GLuint texture = 0;
 };
 
 #endif

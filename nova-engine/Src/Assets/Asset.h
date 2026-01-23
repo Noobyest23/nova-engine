@@ -8,7 +8,7 @@
 class Asset {
 public:
 
-	explicit Asset() {}
+	Asset() {};
 	virtual ~Asset() = default;
 
 	void AddRef();
@@ -18,7 +18,7 @@ public:
 
 protected:
 
-	virtual void OnDestroy() {}
+	virtual void OnDestroy() {};
 
 private:
 

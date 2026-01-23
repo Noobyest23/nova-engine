@@ -10,7 +10,6 @@
 struct Vertex2D {
 	glm::vec2 position;
 	glm::vec2 texcoord;
-	glm::vec4 tint;
 };
 
 class Mesh2D : public Asset {
@@ -28,7 +27,7 @@ public:
 
 protected:
 
-	void Mesh2D::OnDestroy();
+	void OnDestroy() override;
 
 	std::vector<Vertex2D> verticies = {};
 	std::vector<unsigned int> indicies = {};

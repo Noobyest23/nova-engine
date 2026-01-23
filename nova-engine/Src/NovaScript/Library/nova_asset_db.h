@@ -5,12 +5,16 @@
 
 namespace nova_asset_db_init {
 
-	bool basic_2D_shapes = false;
+	static bool basic_2D = false;
+	static bool basic_2D_shapes = false;
+	static bool basic_2D_shaders = false;
 
-	Scope GetModule() {
+	static Scope GetModule() {
 		Scope scope;
+		scope.Set("add_basic_2D", Value(CPPVariable(basic_2D)));
 		scope.Set("add_basic_2D_shapes", Value(CPPVariable(basic_2D_shapes)));
-		
+		scope.Set("add_basic_2D_shaders", Value(CPPVariable(basic_2D_shaders)));
+		return scope;
 	}
 
 }

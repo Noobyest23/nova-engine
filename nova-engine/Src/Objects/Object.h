@@ -14,25 +14,27 @@ public:
 	//void Input();
 	void Draw();
 
-	void AddChild(const Object& object);
+	void AddChild(Object* object);
 	Object* FindChild(const std::string& name);
 	Object* GetChild(int index);
-	std::vector<Object>& GetChildren();
+	std::vector<Object*>& GetChildren();
 	Object* GetParent();
 	CPPObject GetNovaObject();
 
 	bool paused = false;
 	bool visible = true;
 
-	std::string name = "";
+	std::string name = GetClassName();
 
-	virtual std::string GetClassName();
+	virtual std::string GetClassName() const { return "Object"; };
 	
 	Interpretor* script = nullptr;
 
+	virtual ~Object() = default;
+
 protected:
 
-	std::vector<Object> children = {};
+	std::vector<Object*> children = {};
 	Object* parent = nullptr;
 
 	virtual void OnReady() {};

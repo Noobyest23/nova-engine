@@ -78,16 +78,19 @@
     <ClCompile Include="Src\Objects\2D\Object2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Objects\2D\VisualInstance2D.cpp">
+    <ClCompile Include="Src\Objects\2D\VisualInstance2D\VisualInstance2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Objects\2D\Sprite2D.cpp">
+    <ClCompile Include="Src\Objects\2D\VisualInstance2D\Sprite2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Assets\Mesh2D\BoxMesh2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Core\AssetDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Objects\2D\Camera2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,10 +179,10 @@
     <ClInclude Include="Src\Objects\2D\Object2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Objects\2D\Sprite2D.h">
+    <ClInclude Include="Src\Objects\2D\VisualInstance2D\Sprite2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Objects\2D\VisualInstance2D.h">
+    <ClInclude Include="Src\Objects\2D\VisualInstance2D\VisualInstance2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Assets\Mesh2D\BoxMesh2D.h">
@@ -189,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\NovaScript\Library\nova_asset_db.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Objects\2D\Camera2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -203,6 +209,8 @@
     <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\Objects\StartupScript.nso" />
     <None Include="Working\Projects\Test_Project\TestScene.json" />
+    <None Include="Working\NovaData\Shaders\sprite2d_vertex.glsl" />
+    <None Include="Working\NovaData\Shaders\sprite2d_fragment.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Src\NovaScript\Library\WinInputDialog\dialog.rc">

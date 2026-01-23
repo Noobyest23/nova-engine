@@ -7,14 +7,18 @@ Window* Window::current = nullptr;
 
 void Window::Init() {
 	if (!glfwInit()) {
-		throw std::exception("Failed to initialize GLFW\n");
+		throw std::exception("Failed to initialize GLFW");
 	}
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 	
+	
+
 }
 
 void Window::Cleanup() {
@@ -25,9 +29,17 @@ Window::Window(const std::string& name, const int& width, const int& height) {
 	window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
 
 	if (!window) {
-		throw std::exception("Failed to create window\n");
+		glfwTerminate();
+		throw std::exception("Failed to create window");
 	}
-	
+	glfwMakeContextCurrent(window);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		throw std::exception("Failed to load OpenGL");
+	}
+
+	glViewport(0, 0, width, height);
+
 	glfwSetFramebufferSizeCallback(window, SizeCallback);
 	current = this;
 }
@@ -37,10 +49,6 @@ Window::~Window() {
 }
 
 bool Window::Update() {
-	//glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	//glClear(GL_COLOR_BUFFER_BI);
-
-	glfwSwapBuffers(window);
 	glfwPollEvents();
 
 	return !glfwWindowShouldClose(window);
@@ -66,5 +74,8 @@ void Window::SetName(const std::string& name) {
 }
 
 void Window::SizeCallback(GLFWwindow* window, int width, int height) {
-	current->resized.Emit(glm::vec2(width, height));
+	glViewport(0, 0, width, height);
+	if (current) {
+		current->resized.Emit(glm::vec2(width, height));
+	}
 }

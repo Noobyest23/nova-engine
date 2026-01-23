@@ -6,16 +6,16 @@
 
 void Object::Ready() {
 	if (paused) return;
-	for (Object& child : GetChildren()) {
-		child.Ready();
+	for (Object* child : GetChildren()) {
+		child->Ready();
 	}
 	OnReady();
 }
 
 void Object::Update(float deltaTime) {
 	if (paused) return;
-	for (Object& child : GetChildren()) {
-		child.Update(deltaTime);
+	for (Object* child : GetChildren()) {
+		child->Update(deltaTime);
 	}
 	OnUpdate(deltaTime);
 }
@@ -23,20 +23,20 @@ void Object::Update(float deltaTime) {
 void Object::Draw() {
 	if (!visible) return;
 	for (auto& child : GetChildren()) {
-		child.Draw();
+		child->Draw();
 	}
 	OnDraw();
 }
 
-void Object::AddChild(const Object& object) {
+void Object::AddChild(Object* object) {
 	if (paused) return;
 	children.push_back(object);
 }
 
 Object* Object::FindChild(const std::string& object) {
 	for (auto& child : GetChildren()) {
-		if (child.name == object) {
-			return &child;
+		if (child->name == object) {
+			return child;
 		}
 	}
 
@@ -44,22 +44,18 @@ Object* Object::FindChild(const std::string& object) {
 }
 
 Object* Object::GetChild(int index) {
-	if (index >= children.size()) {
-		return &children[index];
+	if (index < children.size()) {
+		return children[index];
 	}
 	return nullptr;
 }
 
-std::vector<Object>& Object::GetChildren() {
+std::vector<Object*>& Object::GetChildren() {
 	return children;
 }
 
 Object* Object::GetParent() {
 	return parent;
-}
-
-std::string Object::GetClassName() {
-	return "Object";
 }
 
 namespace nova_object {
@@ -86,7 +82,7 @@ namespace nova_object {
 		req_args(2);
 		objget(obj, Object, 0);
 		objget(child, Object, 1);
-		obj->AddChild(*child);
+		obj->AddChild(child);
 		return null_value;
 	}
 
@@ -111,10 +107,10 @@ namespace nova_object {
 		req_args(1);
 		objget(obj, Object, 0);
 
-		std::vector<Object>& children = obj->GetChildren();
+		std::vector<Object*>& children = obj->GetChildren();
 		std::vector<Value> ret_val;
-		for (Object& child : children) {
-			ret_val.push_back(child.GetNovaObject());
+		for (Object* child : children) {
+			ret_val.push_back(child->GetNovaObject());
 		}
 		return ret_val;
 	}

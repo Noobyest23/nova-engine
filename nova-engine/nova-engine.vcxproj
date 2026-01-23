@@ -157,9 +157,10 @@
     <ClCompile Include="Src\NovaScript\Interpretor\Value.cpp" />
     <ClCompile Include="Src\NovaScript\Parser\Lexer.cpp" />
     <ClCompile Include="Src\NovaScript\Parser\Parser.cpp" />
+    <ClCompile Include="Src\Objects\2D\Camera2D.cpp" />
     <ClCompile Include="Src\Objects\2D\Object2D.cpp" />
-    <ClCompile Include="Src\Objects\2D\Sprite2D.cpp" />
-    <ClCompile Include="Src\Objects\2D\VisualInstance2D.cpp" />
+    <ClCompile Include="Src\Objects\2D\VisualInstance2D\Sprite2D.cpp" />
+    <ClCompile Include="Src\Objects\2D\VisualInstance2D\VisualInstance2D.cpp" />
     <ClCompile Include="Src\Objects\Object.cpp" />
     <ClCompile Include="Src\Platform\Agnostic\main.cpp" />
     <ClCompile Include="Src\Platform\Agnostic\Window.cpp" />
@@ -193,9 +194,10 @@
     <ClInclude Include="Src\NovaScript\Parser\Lexer.h" />
     <ClInclude Include="Src\NovaScript\Parser\Parser.h" />
     <ClInclude Include="Src\NovaScript\Parser\Tokens.h" />
+    <ClInclude Include="Src\Objects\2D\Camera2D.h" />
     <ClInclude Include="Src\Objects\2D\Object2D.h" />
-    <ClInclude Include="Src\Objects\2D\Sprite2D.h" />
-    <ClInclude Include="Src\Objects\2D\VisualInstance2D.h" />
+    <ClInclude Include="Src\Objects\2D\VisualInstance2D\Sprite2D.h" />
+    <ClInclude Include="Src\Objects\2D\VisualInstance2D\VisualInstance2D.h" />
     <ClInclude Include="Src\Objects\Object.h" />
     <ClInclude Include="Src\Platform\Agnostic\main.h" />
     <ClInclude Include="Src\Platform\Agnostic\Window.h" />
@@ -204,6 +206,8 @@
     <Text Include="Working\NovaData\BootMessage.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Working\NovaData\Shaders\sprite2d_fragment.glsl" />
+    <None Include="Working\NovaData\Shaders\sprite2d_vertex.glsl" />
     <None Include="Working\Projects\Test_Project\Scripts\Bootmessage.ns" />
     <None Include="Working\NovaData\CustomInit.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\print_speedrun.ns" />

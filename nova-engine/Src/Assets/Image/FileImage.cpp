@@ -13,6 +13,6 @@ FileImage::FileImage(const std::string filepath) {
 }
 
 void FileImage::LoadFromFile(const std::string& filepath) {
-	stbi_set_flip_vertically_on_load(false);
+	stbi_set_flip_vertically_on_load(true);
 	data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
 }

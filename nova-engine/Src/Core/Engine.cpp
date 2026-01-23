@@ -1,15 +1,21 @@
 #include "Engine.h"
 
+Engine* Engine::engine_inst = nullptr;
+
 #include <iostream>
 #include "AssetDB.h"
 
 #include "../NovaScript/Parser/Lexer.h"
 #include "../NovaScript/Parser/Parser.h"
 #include "../NovaScript/Interpretor/Interpretor.h"
-
 #include <fstream>
+// TEMP
+#include "../Objects/2D/VisualInstance2D/Sprite2D.h"
+#include "../Assets/Image/FileImage.h"
+#include "../NovaScript/Library/nova_asset_db.h"
+#include "../Objects/2D/Camera2D.h"
 
-Engine* Engine::engine_inst = nullptr;
+
 
 void Engine::Init() {
 	Engine::engine_inst = this;
@@ -21,6 +27,11 @@ void Engine::Init() {
 
 	PushMessage("[Engine Init] Running NovaScript Init...");
 	Interpretor init("NovaData/CustomInit.ns");
+
+	nova_asset_db_init::basic_2D = true;
+
+	PushMessage("[Engine Init] Initializing AssetDB...");
+	AssetDB::Init();
 
 	PushMessage("[Engine Init] Finished Engine init");
 	if (project_path == "") {
@@ -39,20 +50,33 @@ void Engine::Shutdown() {
 int Engine::TestEnv() {
 	//place for testing code
 
-	Lexer lexer(std::string(project_path + "Scripts/string_test.ns").c_str());
-	auto tokens = lexer.Parse();
-	Parser parser(tokens);
-	ProgramNode* program = parser.Parse();
-	Interpretor interpretor(program);
+	scene = new Scene("this do nothing rn");
+	scene->root = Object();
+	FileImage* image = new FileImage(GetProjectPath() + "big guy.png");
+	Sprite2D* sprite = new Sprite2D;
+	sprite->SetImage(image);
+	image->Release();
+	Camera2D* cam = new Camera2D;
+	scene->root.AddChild(sprite);
+	scene->root.AddChild(cam);
 	return 0;
 }
 
 int Engine::Run() {
+	scene->Ready();
 	while (window->Update()) {
-		if (should_stop) {
-			break;
-		}
+		if (should_stop) break;
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		scene->Update();
+		scene->Draw();
+
+		glfwSwapBuffers(window->GetWindowHandle());
+	}
+
+	for (Object* child : scene->root.GetChildren()) {
+		delete child;
 	}
 	return 0;
 }

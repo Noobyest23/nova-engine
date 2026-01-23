@@ -2,8 +2,8 @@
 
 BoxMesh2D::BoxMesh2D() {
 
-	const float hw = 0.5f;
-	const float hh = 0.5f;
+	const float hw = 5.0f;
+	const float hh = 5.0f;
 
 	const std::vector<Vertex2D> box_verticies = {
 		{{-hw, -hh}, {0.0f, 0.0f}},
