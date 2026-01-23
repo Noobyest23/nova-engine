@@ -63,12 +63,7 @@ namespace nova_object {
 		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
 	}
 
-	nova_std_decl(Ready) {
-		req_args(1);
-		objget(obj, Object, 0);
-		obj->Ready();
-		return null_value;
-	}
+	NOVA_VOID_RETURN(Ready);
 
 	nova_std_decl(Update) {
 		req_args(2);
@@ -122,21 +117,17 @@ namespace nova_object {
 		return ret;
 	}
 
-	nova_std_decl(GetClassName) {
-		req_args(1);
-		objget(obj, Object, 0);
-		return Value(obj->GetClassName());
-	}
+	NOVA_GETTER(Object, GetClassName);
 
 	Scope GetModule() {
 		Scope scope;
-		scope.Set("Ready", Ready);
-		scope.Set("Update", Update);
-		scope.Set("AddChild", AddChild);
-		scope.Set("FindChild", FindChild);
-		scope.Set("GetChild", GetChild);
-		scope.Set("GetChildren", GetChildren);
-		scope.Set("GetClassName", GetClassName);
+		NOVA_BIND_METHOD(Ready);
+		NOVA_BIND_METHOD(Update);
+		NOVA_BIND_METHOD(AddChild);
+		NOVA_BIND_METHOD(FindChild);
+		NOVA_BIND_METHOD(GetChild);
+		NOVA_BIND_METHOD(GetChildren);
+		NOVA_BIND_METHOD(GetClassName);
 		return scope;
 	}
 
@@ -145,9 +136,9 @@ namespace nova_object {
 CPPObject Object::GetNovaObject() {
 	CPPObject self;
 	Scope scope = nova_object::GetModule();
-	scope.Set("name", Value(CPPVariable(std::reference_wrapper<std::string>(name))));
-	scope.Set("paused", Value(CPPVariable(std::reference_wrapper<bool>(paused))));
-	scope.Set("visible", Value(CPPVariable(std::reference_wrapper<bool>(visible))));
+	NOVA_BIND_PROPERTY(name);
+	NOVA_BIND_PROPERTY(visible);
+	NOVA_BIND_PROPERTY(paused);
 	self.scope = scope;
 	OnNovaObject(scope);
 

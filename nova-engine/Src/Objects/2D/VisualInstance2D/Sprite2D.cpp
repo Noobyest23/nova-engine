@@ -1,4 +1,6 @@
 #include "Sprite2D.h"
+#include "../../../Core/Engine.h"
+#include "../../../NovaScript/Library/nova_std_macro.h"
 
 Sprite2D::Sprite2D() {
 	material = static_cast<Material*>(AssetDB::Get("sprite_2D_shader"));
@@ -49,4 +51,33 @@ void Sprite2D::OnDraw() {
 	glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 	mesh->Unbind();
 	material->Unbind();
+}
+
+namespace nova_sprite2D {
+	NOVA_ERR_PUSHER(Sprite2D);
+
+	nova_std_decl(GetImage) {
+		req_args(1);
+		objget(obj, Sprite2D, 0);
+		Image* image = obj->GetImage();
+		image->Release();
+		CPPObject nova_i = { image, Scope() };
+		return Value(nova_i);
+	}
+
+	NOVA_ASSET_OBJ_SETTER(Sprite2D, SetImage, Image);
+	
+	Scope GetModule() {
+		Scope scope;
+		NOVA_BIND_METHOD(SetImage);
+		NOVA_BIND_METHOD(GetImage);
+	}
+}
+
+void Sprite2D::OnNovaObject(Scope& scope) {
+	VisualInstance2D::OnNovaObject(scope);
+	NOVA_BIND_PROPERTY(offset);
+	NOVA_BIND_PROPERTY(flip_h);
+	NOVA_BIND_PROPERTY(flip_v);
+	NOVA_BIND_WHOLE_NAMESPACE(nova_sprite2D);
 }

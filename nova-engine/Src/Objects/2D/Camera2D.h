@@ -16,7 +16,7 @@ public:
 	const glm::mat4& GetView() const { return view; };
 	const glm::mat4& GetProjectionView() const { return GetProjection() * GetView(); }
 
-	bool enabled = true;
+	bool active = true;
 
 	std::string GetClassName() const override { return "Camera2D"; }
 
@@ -34,6 +34,8 @@ protected:
 	void UpdateView();
 
 	void OnUpdate(float deltaTime) override;
+
+	void OnNovaObject(Scope& scope) override;
 
 };
 

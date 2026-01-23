@@ -72,6 +72,11 @@ int Engine::Run() {
 		scene->Update();
 		scene->Draw();
 
+		if (Sprite2D* sprite = dynamic_cast<Sprite2D*>(scene->root.GetChild(0))) {
+			sprite->rotation += 0.01f;
+			sprite->scale = glm::vec2(30);
+		}
+
 		glfwSwapBuffers(window->GetWindowHandle());
 	}
 

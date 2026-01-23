@@ -25,6 +25,8 @@ public:
 
 protected:
 
+	void OnNovaObject(Scope& scope) override;
+
 	Image* image = nullptr;
 
 	virtual void OnDraw() override;

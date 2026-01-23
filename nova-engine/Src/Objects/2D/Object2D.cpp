@@ -93,65 +93,35 @@ namespace nova_object2D {
 		Engine::GetInstance()->PushError("[NovaScript Object2D] " + message);
 	}
 
-	nova_std_decl(GetGlobalPosition) {
-		req_args(1);
-		objget(obj, Object2D, 0);
-		return Value(obj->GetGlobalPosition());
-	}
+	NOVA_GETTER(Object2D, GetGlobalPosition);
 
-	nova_std_decl(GetGlobalRotation) {
-		req_args(1);
-		objget(obj, Object2D, 0);
-		return Value(obj->GetGlobalRotation());
-	}
+	NOVA_GETTER(Object2D, GetGlobalRotation);
 
-	nova_std_decl(GetGlobalScale) {
-		req_args(1);
-		objget(obj, Object2D, 0);
-		return Value(obj->GetGlobalScale());
-	}
+	NOVA_GETTER(Object2D, GetGlobalScale);
 
-	nova_std_decl(SetGlobalPosition) {
-		req_args(2);
-		objget(obj, Object2D, 0);
-		vec2get(vec2, 1);
-		obj->SetGlobalPosition(vec2);
-		return null_value;
-	}
+	NOVA_SETTER(Object2D, SetGlobalPosition, vec2);
 
-	nova_std_decl(SetGlobalRotation) {
-		req_args(2);
-		objget(obj, Object2D, 0);
-		floatget(rot, 1);
-		obj->SetGlobalRotation(rot);
-		return null_value;
-	}
+	NOVA_SETTER(Object2D, SetGlobalRotation, float);
 
-	nova_std_decl(SetGlobalScale) {
-		req_args(2);
-		objget(obj, Object2D, 0);
-		vec2get(vec2, 1);
-		obj->SetGlobalScale(vec2);
-		return null_value;
-	}
+	NOVA_SETTER(Object2D, SetGlobalScale, vec2);
 
 	Scope GetModule() {
 		Scope scope;
-		scope.Set("GetGlobalPosition", GetGlobalPosition);
-		scope.Set("GetGlobalRotation", GetGlobalRotation);
-		scope.Set("GetGlobalScale", GetGlobalScale);
-		scope.Set("SetGlobalPosition", SetGlobalPosition);
-		scope.Set("SetGlobalRotation", SetGlobalRotation);
-		scope.Set("SetGlobalScale", SetGlobalScale);
+		NOVA_BIND_METHOD(GetGlobalPosition);
+		NOVA_BIND_METHOD(GetGlobalScale);
+		NOVA_BIND_METHOD(GetGlobalRotation);
+		NOVA_BIND_METHOD(SetGlobalPosition);
+		NOVA_BIND_METHOD(SetGlobalScale);
+		NOVA_BIND_METHOD(SetGlobalRotation);
 		return scope;
 	}
 
 }
 
 void Object2D::OnNovaObject(Scope& scope) {
-	scope.Set("position", Value(CPPVariable(position)));
-	scope.Set("scale", Value(CPPVariable(scale)));
-	scope.Set("rotation", Value(CPPVariable(rotation)));
+	NOVA_BIND_PROPERTY(position);
+	NOVA_BIND_PROPERTY(rotation);
+	NOVA_BIND_PROPERTY(scale);
 	Scope s = nova_object2D::GetModule();
 
 	for (std::pair<std::string, Value> pair : s.GetAll()) {

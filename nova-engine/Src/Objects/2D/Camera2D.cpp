@@ -1,5 +1,6 @@
 #include "Camera2D.h"
 #include "../../Core/Engine.h"
+#include "../../NovaScript/Library/nova_std_macro.h"
 
 Camera2D::Camera2D() {
 	glm::vec2 win_size = Engine::GetInstance()->window->GetSize();
@@ -21,7 +22,7 @@ void Camera2D::SetViewportSize(glm::vec2 size) {
 }
 
 void Camera2D::SetZoom(float z) {
-	zoom = z;
+	zoom = std::max(0.001f, z);
 	UpdateProjection();
 }
 
@@ -40,4 +41,24 @@ void Camera2D::UpdateView() {
 
 void Camera2D::OnUpdate(float deltaTime) {
 	UpdateView();
+}
+
+namespace nova_camera2D {
+
+	NOVA_ERR_PUSHER(Camera2D);
+
+	NOVA_SETTER(Camera2D, SetZoom, float);
+
+	Scope GetModule() {
+		Scope scope;
+		NOVA_BIND_METHOD(SetZoom);
+		return scope;
+	}
+
+}
+
+void Camera2D::OnNovaObject(Scope& scope) {
+	Object2D::OnNovaObject(scope);
+	NOVA_BIND_PROPERTY(active);
+	NOVA_BIND_WHOLE_NAMESPACE(nova_camera2D);
 }

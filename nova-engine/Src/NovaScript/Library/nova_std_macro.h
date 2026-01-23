@@ -23,4 +23,66 @@ T* ObjGet(std::vector<Value*>&args, int i) {
 
 #define objget(obj, type, arg_i) type* obj = ObjGet<type>(args, arg_i);
 
+#define NOVA_VOID_RETURN(cls, method) \
+nova_std_decl(method) { \
+	req_args(1); \
+	objget(obj, cls, 0); \
+	obj->method(); \
+return null_value; \
+}
+
+#define NOVA_GETTER(cls, method) \
+nova_std_decl(method) { \
+	req_args(1); \
+	objget(obj, cls, 0); \
+	return Value(obj->method()); \
+}
+
+#define NOVA_SETTER(cls, method, a_1_get_prefix) \
+nova_std_decl(method) { \
+	req_args(2); \
+	objget(obj, cls, 0); \
+	a_1_get_prefix##get(arg1, 1); \
+	obj->method(arg1); \
+	return null_value; \
+}
+
+#define NOVA_GETTER_TYPE_WRAP(cls, method, type) \
+nova_std_decl(method) { \
+	req_args(1); \
+	objget(obj, cls, 0); \
+	return Value(type(obj->method())); \
+}
+
+
+
+#define NOVA_BIND_PROPERTY(prop) scope.Set(#prop, Value(CPPVariable(std::reference_wrapper<decltype(prop)>(prop))))
+#define NOVA_BIND_METHOD(method) scope.Set(#method, method);
+#define NOVA_BIND_WHOLE_NAMESPACE(space) Scope s = space##::GetModule(); \
+for (std::pair<std::string, Value> pair : s.GetAll()) { \
+	scope.Set(pair.first, pair.second); \
+}
+
+#define NOVA_RETURN_FUNC_ARG1(cls, method, a_1_get_prefix) \
+nova_std_decl(method) { \
+	req_args(2); \
+	objget(obj, cls, 0); \
+	a_1_get_prefix##get(arg1, 1); \
+	return Value(obj->method(arg1)); \
+}
+
+#define NOVA_ERR_PUSHER(cls) static void PushError(const std::string& msg) { \
+		Engine::GetInstance()->PushError(std::string("[") + #cls + std::string("]") + msg); \
+}
+
+#define NOVA_ASSET_OBJ_SETTER(cls, method, ocls) \
+nova_std_decl(method) { \
+req_args(2); \
+objget(obj, cls, 0); \
+objget(arg1, ocls, 1); \
+obj->method(arg1); \
+return null_value; \
+}
+
+
 #endif
