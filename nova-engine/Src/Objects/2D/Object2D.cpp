@@ -86,6 +86,14 @@ glm::mat3 Object2D::GetGlobalTransform() const {
 	return GetLocalTransform();
 }
 
+void Object2D::SetRotation(float new_rotation) {
+	rotation = new_rotation;
+	constexpr float TAU = 6.283185307179586f;
+
+	rotation = std::fmod(new_rotation, TAU);
+	if (rotation < 0.0f) rotation += TAU;
+}
+
 #include "../../NovaScript/Library/nova_std_macro.h"
 namespace nova_object2D {
 	
