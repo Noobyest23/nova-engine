@@ -41,6 +41,7 @@ Window::Window(const std::string& name, const int& width, const int& height) {
 	glViewport(0, 0, width, height);
 
 	glfwSetFramebufferSizeCallback(window, SizeCallback);
+	glfwSetKeyCallback(window, KeyCallback);
 	current = this;
 }
 
@@ -77,5 +78,25 @@ void Window::SizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 	if (current) {
 		current->resized.Emit(glm::vec2(width, height));
+	}
+}
+
+#include "../../Core/Input/InputEventKey.h"
+#include <deque>
+InputEvent* Window::EventGetNext() {
+	InputEvent* e = queue.front();
+	queue.pop_front();
+	return e;
+}
+
+void Window::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_UNKNOWN) return;
+	InputEventKey* e = new InputEventKey();
+	
+	e->key_code = key;
+	e->is_pressed = (action == GLFW_PRESS);
+	e->is_released = (action == GLFW_RELEASE);
+	if (current) {
+		current->queue.push_back(e);
 	}
 }

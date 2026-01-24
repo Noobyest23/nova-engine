@@ -11,8 +11,9 @@ public:
 	void ChangeScene(const std::string& scene_file);
 
 	void Ready();
-	void Update();
+	void Update(float deltaTime);
 	void Draw();
+	void Input(InputEvent* e);
 
 	Camera2D* GetActiveCamera2D();
 

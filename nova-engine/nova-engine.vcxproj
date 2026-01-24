@@ -170,6 +170,9 @@
     <ClInclude Include="Src\Assets\Asset.h" />
     <ClInclude Include="Src\Assets\Image\FileImage.h" />
     <ClInclude Include="Src\Assets\Image\Image.h" />
+    <ClInclude Include="Src\Core\Input\InputEvent.h" />
+    <ClInclude Include="Src\Core\Input\InputEventKey.h" />
+    <ClInclude Include="Src\Core\Input\InputEventMouseButton.h" />
     <ClInclude Include="Src\Assets\Material\Material.h" />
     <ClInclude Include="Src\Assets\Mesh2D\BoxMesh2D.h" />
     <ClInclude Include="Src\Assets\Mesh2D\Mesh2D.h" />

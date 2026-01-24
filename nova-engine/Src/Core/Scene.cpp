@@ -12,8 +12,12 @@ void Scene::Ready() {
 	root.Ready();
 }
 
-void Scene::Update() {
-	root.Update(0.16f);
+void Scene::Update(float deltaTime) {
+	root.Update(deltaTime);
+}
+
+void Scene::Input(InputEvent* e) {
+	root.Input(e);
 }
 
 void Scene::Draw() {

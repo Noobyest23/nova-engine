@@ -20,6 +20,14 @@ void Object::Update(float deltaTime) {
 	OnUpdate(deltaTime);
 }
 
+void Object::Input(InputEvent* e) {
+	if (paused) return;
+	for (Object* child : GetChildren()) {
+		child->Input(e);
+	}
+	OnInput(e);
+}
+
 void Object::Draw() {
 	if (!visible) return;
 	for (auto& child : GetChildren()) {

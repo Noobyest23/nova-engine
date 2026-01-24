@@ -6,12 +6,14 @@
 #include "../NovaScript/Interpretor/Value.h"
 #include "../NovaScript/Interpretor/Interpretor.h"
 
+#include "../Core/Input/InputEvent.h"
+
 class Object {
 public:
 
 	void Ready();
 	void Update(float deltaTime);
-	//void Input();
+	void Input(InputEvent* e);
 	void Draw();
 
 	void AddChild(Object* object);
@@ -39,6 +41,7 @@ protected:
 
 	virtual void OnReady() {};
 	virtual void OnUpdate(float deltaTime) {};
+	virtual void OnInput(InputEvent* e) {};
 	virtual void OnDraw() {};
 	virtual void OnNovaObject(Scope& inherited) {};
 

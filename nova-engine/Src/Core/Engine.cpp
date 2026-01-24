@@ -4,9 +4,6 @@ Engine* Engine::engine_inst = nullptr;
 
 #include <iostream>
 #include "AssetDB.h"
-
-#include "../NovaScript/Parser/Lexer.h"
-#include "../NovaScript/Parser/Parser.h"
 #include "../NovaScript/Interpretor/Interpretor.h"
 #include <fstream>
 // TEMP
@@ -69,7 +66,13 @@ int Engine::Run() {
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		scene->Update();
+		while (window->IsEventsQueued()) {
+			InputEvent* e = window->EventGetNext();
+			scene->Input(e);
+			delete e;
+		}
+
+		scene->Update(0.16f);
 		scene->Draw();
 
 		if (Sprite2D* sprite = dynamic_cast<Sprite2D*>(scene->root.GetChild(0))) {
