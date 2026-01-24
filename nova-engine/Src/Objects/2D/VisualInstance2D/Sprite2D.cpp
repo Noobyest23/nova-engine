@@ -71,6 +71,7 @@ namespace nova_sprite2D {
 		Scope scope;
 		NOVA_BIND_METHOD(SetImage);
 		NOVA_BIND_METHOD(GetImage);
+		return scope;
 	}
 }
 

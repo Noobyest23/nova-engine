@@ -63,7 +63,7 @@ namespace nova_object {
 		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
 	}
 
-	NOVA_VOID_RETURN(Ready);
+	NOVA_VOID_RETURN(Object, Ready);
 
 	nova_std_decl(Update) {
 		req_args(2);

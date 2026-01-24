@@ -42,6 +42,7 @@ namespace nova_visualinstance2D {
 	Scope GetModule() {
 		Scope scope;
 		NOVA_BIND_METHOD(GetTint);
+		return scope;
 	}
 
 }

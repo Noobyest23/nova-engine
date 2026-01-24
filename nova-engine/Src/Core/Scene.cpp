@@ -40,7 +40,7 @@ Camera2D* Scene::RecursiveGetCam2D(Object* obj) {
 	if (!obj) return nullptr;
 
 	if (Camera2D* cam = dynamic_cast<Camera2D*>(obj)) {
-		if (cam->enabled) return cam;
+		if (cam->active) return cam;
 	}
 
 	for (Object* child : obj->GetChildren()) {
