@@ -19,7 +19,6 @@ public:
 	void Unbind() const;
 	
 	void SetUniform(const std::string& name, const Uniform&);
-	bool HasUniform(const std::string& name) const;
 
 protected:
 
@@ -27,7 +26,7 @@ protected:
 	std::string fragment_filepath;
 
 	std::unordered_map<std::string, Uniform> uniforms;
-
+	std::unordered_map<std::string, GLint> uniform_locations;
 	GLuint program = 0;
 
 	void Load();

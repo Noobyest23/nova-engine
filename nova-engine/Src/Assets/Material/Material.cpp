@@ -100,6 +100,8 @@ void Material::ReflectUniforms() {
 		GLint loc = glGetUniformLocation(program, name);
 		if (loc == -1) continue;
 
+		uniform_locations[name] = loc;
+
 		switch (type) {
 		case GL_FLOAT: uniforms[name] = 0.0f; break;
 		case GL_INT: uniforms[name] = 0; break;
@@ -118,7 +120,7 @@ void Material::SetUniform(const std::string& name, const Uniform& value) {
 	if (uniforms.find(name) != uniforms.end()) {
 		uniforms[name] = value;
 		glUseProgram(program);
-		GLint loc = glGetUniformLocation(program, name.c_str());
+		GLint loc = uniform_locations[name];
 
 		std::visit([loc](auto&& v) {
 			using T = std::decay_t<decltype(v)>;
@@ -132,7 +134,7 @@ void Material::SetUniform(const std::string& name, const Uniform& value) {
 		}, value);
 	}
 	else {
-		Engine::GetInstance()->PushError("Uniform: " + name + "N not found on shader");
+		Engine::GetInstance()->PushError("Uniform: " + name + " not found on shader");
 	}
 }
 
