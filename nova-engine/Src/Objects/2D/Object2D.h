@@ -15,20 +15,31 @@ public:
 	void SetGlobalScale(const glm::vec2& new_global_scale);
 	void SetGlobalRotation(float new_global_rotation);
 
+	void SetPosition(const glm::vec2& position);
+	glm::vec2 GetPosition() const { return position; };
 	void SetRotation(float new_rotation);
-	float GetRotation() { return rotation; };
-
-	glm::vec2 position = glm::vec2(0.0f);
-	glm::vec2 scale = glm::vec2(1.0f);
+	float GetRotation() const { return rotation; };
+	void SetScale(const glm::vec2& scale);
+	glm::vec2 GetScale() const { return scale; };
+	
 
 	std::string GetClassName() const override { return "Object2D"; };
 
 protected:
 
+	void MarkCacheDirty();
+
+	bool _dirty_cache = true;
+
+	glm::mat3 global_transform;
+	glm::mat3 local_transform;
+
+	glm::vec2 position = glm::vec2(0.0f);
+	glm::vec2 scale = glm::vec2(1.0f);
 	float rotation = 0.0f;
 
-	glm::mat3 GetLocalTransform() const;
-	glm::mat3 GetGlobalTransform() const;
+	glm::mat3 GetLocalTransform();
+	glm::mat3 GetGlobalTransform();
 
 	void OnNovaObject(Scope& inherited) override;
 

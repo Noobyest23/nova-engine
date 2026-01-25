@@ -31,6 +31,7 @@ void Object2D::SetGlobalPosition(const glm::vec2& new_global_pos) {
 		return;
 	}
 	position = new_global_pos;
+	MarkCacheDirty();
 }
 
 void Object2D::SetGlobalScale(const glm::vec2& new_global_scale) {
@@ -38,52 +39,73 @@ void Object2D::SetGlobalScale(const glm::vec2& new_global_scale) {
 	if (Object2D* p_toodee = dynamic_cast<Object2D*>(parent)) {
 		glm::vec2 p_scale = p_toodee->GetGlobalScale();
 		scale = new_global_scale / p_scale;
+		MarkCacheDirty();
 		return;
 	}
+	scale = new_global_scale;
+	MarkCacheDirty();
 }
 
 void Object2D::SetGlobalRotation(float new_global_rotation) {
 	if (!parent) { rotation = new_global_rotation; return; }
 	if (Object2D* p_toodee = dynamic_cast<Object2D*>(parent)) {
 		rotation = new_global_rotation - p_toodee->GetGlobalRotation();
+		MarkCacheDirty();
 		return;
 	}
 	rotation = new_global_rotation;
+	MarkCacheDirty();
 }
 
-glm::mat3 Object2D::GetLocalTransform() const {
-	float c = cos(rotation);
-	float s = sin(rotation);
+glm::mat3 Object2D::GetLocalTransform() {
+	if (_dirty_cache) {
+		float c = cos(rotation);
+		float s = sin(rotation);
 
-	glm::mat3 S = {
-		scale.x, 0.0f, 0.0f,
-		0.0f, scale.y, 0.0f,
-		0.0f, 0.0f, 1.0f,
-	};
+		glm::mat3 S = {
+			scale.x, 0.0f, 0.0f,
+			0.0f, scale.y, 0.0f,
+			0.0f, 0.0f, 1.0f,
+		};
 
-	glm::mat3 R = {
-		c, s, 0.0f,
-		-s, c, 0.0f,
-		0.0f, 0.0f, 1.0f
-	};
+		glm::mat3 R = {
+			c, s, 0.0f,
+			-s, c, 0.0f,
+			0.0f, 0.0f, 1.0f
+		};
 
-	glm::mat3 T = {
-		1.0f, 0.0f, position.x,
-		0.0f, 1.0f, position.y,
-		0.0f, 0.0f, 1.0f
-	};
-
-	return T * R * S;
-
-
-}
-
-glm::mat3 Object2D::GetGlobalTransform() const {
-	if (!parent) return GetLocalTransform();
-	if (Object2D* p = dynamic_cast<Object2D*>(parent)) {
-		return p->GetGlobalTransform() * GetLocalTransform();
+		glm::mat3 T = {
+			1.0f, 0.0f, position.x,
+			0.0f, 1.0f, position.y,
+			0.0f, 0.0f, 1.0f
+		};
+		local_transform = T * R * S;
+		_dirty_cache = false;
+		return local_transform;
 	}
-	return GetLocalTransform();
+	else {
+		return local_transform;
+	}
+
+}
+
+glm::mat3 Object2D::GetGlobalTransform() {
+	if (_dirty_cache) {
+		if (!parent) return GetLocalTransform();
+		if (Object2D* p = dynamic_cast<Object2D*>(parent)) {
+			global_transform = p->GetGlobalTransform() * GetLocalTransform();
+			return global_transform;
+		}
+		return GetLocalTransform();
+	}
+	else {
+		return global_transform;
+	}
+}
+
+void Object2D::SetPosition(const glm::vec2& pos) {
+	position = pos;
+	MarkCacheDirty();
 }
 
 void Object2D::SetRotation(float new_rotation) {
@@ -92,6 +114,21 @@ void Object2D::SetRotation(float new_rotation) {
 
 	rotation = std::fmod(new_rotation, TAU);
 	if (rotation < 0.0f) rotation += TAU;
+	MarkCacheDirty();
+}
+
+void Object2D::SetScale(const glm::vec2& s) {
+	scale = s;
+	MarkCacheDirty();
+}
+
+void Object2D::MarkCacheDirty() {
+	_dirty_cache = true;
+	for (Object* child : children) {
+		if (Object2D* c_toodee = dynamic_cast<Object2D*>(child)) {
+			c_toodee->MarkCacheDirty();
+		}
+	}
 }
 
 #include "../../NovaScript/Library/nova_std_macro.h"
@@ -113,6 +150,18 @@ namespace nova_object2D {
 
 	NOVA_SETTER(Object2D, SetGlobalScale, vec2);
 
+	NOVA_GETTER(Object2D, GetPosition);
+
+	NOVA_GETTER(Object2D, GetRotation);
+
+	NOVA_GETTER(Object2D, GetScale);
+
+	NOVA_SETTER(Object2D, SetPosition, vec2);
+
+	NOVA_SETTER(Object2D, SetRotation, float);
+
+	NOVA_SETTER(Object2D, SetScale, vec2);
+
 	Scope GetModule() {
 		Scope scope;
 		NOVA_BIND_METHOD(GetGlobalPosition);
@@ -121,6 +170,12 @@ namespace nova_object2D {
 		NOVA_BIND_METHOD(SetGlobalPosition);
 		NOVA_BIND_METHOD(SetGlobalScale);
 		NOVA_BIND_METHOD(SetGlobalRotation);
+		NOVA_BIND_METHOD(GetPosition);
+		NOVA_BIND_METHOD(GetRotation);
+		NOVA_BIND_METHOD(GetScale);
+		NOVA_BIND_METHOD(SetPosition);
+		NOVA_BIND_METHOD(SetRotation);
+		NOVA_BIND_METHOD(SetScale);
 		return scope;
 	}
 
