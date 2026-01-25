@@ -11,6 +11,7 @@ Engine* Engine::engine_inst = nullptr;
 #include "../Assets/Image/FileImage.h"
 #include "../NovaScript/Library/nova_asset_db.h"
 #include "../Objects/2D/Camera2D.h"
+#include "../Objects/2D/_Internal/DevCamera2D.h"
 
 
 
@@ -52,10 +53,17 @@ int Engine::TestEnv() {
 	FileImage* image = new FileImage(GetProjectPath() + "big guy.png");
 	Sprite2D* sprite = new Sprite2D;
 	sprite->SetImage(image);
+	sprite->SetScale(glm::vec2(30));
 	image->Release();
 	Camera2D* cam = new Camera2D;
+#ifdef _DEBUG
+	DevCamera2D* dev_cam = new DevCamera2D;
+	scene->root.AddChild(dev_cam);
+	dev_cam->active = false;
+#endif
 	scene->root.AddChild(sprite);
 	scene->root.AddChild(cam);
+
 	return 0;
 }
 
@@ -75,9 +83,8 @@ int Engine::Run() {
 		scene->Update(0.16f);
 		scene->Draw();
 
-		if (Sprite2D* sprite = dynamic_cast<Sprite2D*>(scene->root.GetChild(0))) {
+		if (Sprite2D* sprite = static_cast<Sprite2D*>(scene->root.GetChild(1))) {
 			sprite->SetRotation(sprite->GetRotation() + 0.1);
-			sprite->SetScale(glm::vec2(30));
 			sprite->tint = glm::vec4(sprite->GetRotation(), sprite->GetRotation() / 2, sprite->GetRotation() / 3, 0.5);
 		}
 

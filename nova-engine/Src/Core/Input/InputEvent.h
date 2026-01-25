@@ -4,7 +4,7 @@
 class InputEvent {
 public:
 
-	
+	virtual ~InputEvent() = default;
 	
 
 protected:

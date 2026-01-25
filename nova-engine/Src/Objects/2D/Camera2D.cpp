@@ -49,9 +49,12 @@ namespace nova_camera2D {
 
 	NOVA_SETTER(Camera2D, SetZoom, float);
 
+	NOVA_GETTER(Camera2D, GetZoom);
+
 	Scope GetModule() {
 		Scope scope;
 		NOVA_BIND_METHOD(SetZoom);
+		NOVA_BIND_METHOD(GetZoom);
 		return scope;
 	}
 

@@ -93,6 +93,9 @@
     <ClCompile Include="Src\Objects\2D\Camera2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Objects\2D\_Internal\DevCamera2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Assets\Asset.h">
@@ -204,6 +207,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\Input\InputEventMouseButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Objects\2D\_Internal\DevCamera2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

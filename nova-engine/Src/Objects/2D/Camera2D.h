@@ -11,6 +11,7 @@ public:
 
 	void SetViewportSize(glm::vec2 size);
 	void SetZoom(float z);
+	float GetZoom() const { return zoom; };
 
 	const glm::mat4& GetProjection() const { return proj; };
 	const glm::mat4& GetView() const { return view; };

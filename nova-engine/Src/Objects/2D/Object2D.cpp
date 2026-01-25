@@ -91,16 +91,18 @@ glm::mat3 Object2D::GetLocalTransform() {
 
 glm::mat3 Object2D::GetGlobalTransform() {
 	if (_dirty_cache) {
-		if (!parent) return GetLocalTransform();
-		if (Object2D* p = dynamic_cast<Object2D*>(parent)) {
-			global_transform = p->GetGlobalTransform() * GetLocalTransform();
-			return global_transform;
+		if (!parent) {
+			global_transform = GetLocalTransform();
 		}
-		return GetLocalTransform();
+		else if (Object2D* p = dynamic_cast<Object2D*>(parent)) {
+			global_transform = p->GetGlobalTransform() * GetLocalTransform();
+		}
+		else {
+			global_transform = GetLocalTransform();
+		}
+		_dirty_cache = false;
 	}
-	else {
-		return global_transform;
-	}
+	return global_transform;
 }
 
 void Object2D::SetPosition(const glm::vec2& pos) {
