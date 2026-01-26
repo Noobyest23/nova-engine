@@ -1,6 +1,9 @@
 #include "Sprite2D.h"
 #include "../../../Core/Engine.h"
 #include "../../../NovaScript/Library/nova_std_macro.h"
+#include "../../../Assets/Image/Image.h"
+#include "../../../Assets/Mesh2D/BoxMesh2D.h"
+#include "../../../Core/AssetDB.h"
 
 Sprite2D::Sprite2D() {
 	material = static_cast<Material*>(AssetDB::Get("sprite_2D_shader"));

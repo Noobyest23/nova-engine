@@ -1,7 +1,8 @@
 #include "Engine.h"
 
 Engine* Engine::engine_inst = nullptr;
-
+#include "Scene.h"
+#include "../Platform/Agnostic/Window.h"
 #include <iostream>
 #include "AssetDB.h"
 #include "../NovaScript/Interpretor/Interpretor.h"
@@ -12,7 +13,6 @@ Engine* Engine::engine_inst = nullptr;
 #include "../NovaScript/Library/nova_asset_db.h"
 #include "../Objects/2D/Camera2D.h"
 #include "../Objects/2D/_Internal/DevCamera2D.h"
-
 
 
 void Engine::Init() {
@@ -84,7 +84,7 @@ int Engine::Run() {
 		scene->Draw();
 
 		if (Sprite2D* sprite = static_cast<Sprite2D*>(scene->root.GetChild(1))) {
-			sprite->SetRotation(sprite->GetRotation() + 0.1);
+			sprite->SetRotation(sprite->GetRotation() + 0.1f);
 			sprite->tint = glm::vec4(sprite->GetRotation(), sprite->GetRotation() / 2, sprite->GetRotation() / 3, 0.5);
 		}
 

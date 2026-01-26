@@ -8,6 +8,10 @@
 #define STR(type) #type
 
 ee_decl(ExprNode* node) {
+	if (!node) {
+		PushError("Null Expression");
+		return nullval;
+	}
 	ee(VariableNode*)
 	ee(OpNode*)
 	ee(FuncCallNode*)
@@ -77,13 +81,14 @@ ee_decl(AssignmentNode* node) {
 			lhs->ToString() + "\n" +
 			rhs.ToString()
 		);
+		return nullval;
 	}
 }
 
 #define iiop(_op) if (node->op == STR(_op)) {val _op rhs.GetInt();}
-#define ifop(_op) if (node->op == STR(_op)) {val _op rhs.GetFloat();}
-#define ffop(_op) if (node->op == STR(_op)) {val _op rhs.GetInt();}
-#define fiop(_op) if (node->op == STR(_op)) {val _op rhs.GetFloat();}
+#define ifop(_op) if (node->op == STR(_op)) {val _op static_cast<int>(rhs.GetFloat());}
+#define fiop(_op) if (node->op == STR(_op)) {val _op rhs.GetInt();}
+#define ffop(_op) if (node->op == STR(_op)) {val _op rhs.GetFloat();}
 #define bop(_op) if (node->op == STR(_op)) {val _op rhs.GetBool();}
 
 ee_decl(CompoundOp* node) {
@@ -149,12 +154,20 @@ ee_decl(CompoundOp* node) {
 		}
 		else {
 			PushError("Cannot assign to an expression of this type" + node->Print());
+			return nullval;
 		}
 	}
 	catch (std::exception e) {
 		PushError(e.what() + '\n' + lhs->ToString() + '\n' + rhs.ToString());
+		return nullval;
 	}
 }
+
+#undef iiop
+#undef ifop
+#undef ffop
+#undef fiop
+#undef bop
 
 #define iiop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetInt() _op rhs.GetInt());}
 #define ifop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetInt() _op rhs.GetFloat());}
@@ -284,10 +297,12 @@ ee_decl(FuncCallNode* node) {
 		}
 		else {
 			PushError(node->func_id + " is not a function");
+			return nullval;
 		}
 	}
 	else {
 		PushError("Function (" + node->func_id + ") not found in scope");
+		return nullval;
 	}
 }
 
@@ -304,6 +319,7 @@ ee_decl(TernaryNode* node) {
 	}
 	else {
 		PushError("Ternary expression does not evaluate to boolean type " + node->Print());
+		return nullval;
 	}
 }
 
@@ -411,6 +427,11 @@ ee_decl(DotAccessNode* node) {
 
 			}
 		}
+		else {
+			PushError(func->func_id + "is not a callable");
+			obj->Release();
+			return nullval;
+		}
 	}
 	else if (VariableNode* var = dynamic_cast<VariableNode*>(node->right)) {
 		obj->Release();
@@ -424,6 +445,10 @@ ee_decl(DotAccessNode* node) {
 		scope = p_scope;
 		return val;
 	}
+
+	PushError("Invalid dot access " + node->Print());
+	obj->Release();
+	return nullval;
 }
 
 ee_decl(Vector2LiteralNode* node) {
@@ -435,6 +460,7 @@ ee_decl(Vector2LiteralNode* node) {
 		}
 		else {
 			PushError("Cannot assign " + val.Type() + " to a Vector");
+			return nullval;
 		}
 	}
 
@@ -447,6 +473,7 @@ ee_decl(Vector2LiteralNode* node) {
 			return glm::vec2(values[0].GetNum());
 		}
 		PushError("Attempt to assign " + values[0].Type() + " as only argument to Vector2");
+		return nullval;
 		break;
 	}
 	case 2: {
@@ -454,9 +481,12 @@ ee_decl(Vector2LiteralNode* node) {
 			return glm::vec2(values[0].GetNum(), values[1].GetNum());
 		}
 		PushError("Attempt to assign " + values[0].Type() + " as only argument to Vector2");
+		return nullval;
+		break;
 	}
 	}
 	PushError("Invalid vector construction size" + node->Print());
+	return nullval;
 }
 
 ee_decl(Vector3LiteralNode* node) {
@@ -468,6 +498,7 @@ ee_decl(Vector3LiteralNode* node) {
 		}
 		else {
 			PushError("Cannot assign " + val.Type() + " to a Vector");
+			return nullval;
 		}
 	}
 
@@ -480,6 +511,7 @@ ee_decl(Vector3LiteralNode* node) {
 			return glm::vec3(values[0].GetNum());
 		}
 		PushError("Attempt to assign " + values[0].Type() + " as only argument to Vector3");
+		return nullval;
 		break;
 	}
 	case 3: {
@@ -487,9 +519,12 @@ ee_decl(Vector3LiteralNode* node) {
 			return glm::vec3(values[0].GetNum(), values[1].GetNum(), values[2].GetNum());
 		}
 		PushError("Attempt to assign " + values[0].Type() + " as only argument to Vector3");
+		return nullval;
+		break;
 	}
 	}
 	PushError("Invalid vector construction size" + node->Print());
+	return nullval;
 }
 
 ee_decl(Vector4LiteralNode* node) {
@@ -501,6 +536,7 @@ ee_decl(Vector4LiteralNode* node) {
 		}
 		else {
 			PushError("Cannot assign " + val.Type() + " to a Vector");
+			return nullval;
 		}
 	}
 
@@ -513,6 +549,7 @@ ee_decl(Vector4LiteralNode* node) {
 			return glm::vec4(values[0].GetNum());
 		}
 		PushError("Attempt to assign " + values[0].Type() + " as only argument to Vector4");
+		return nullval;
 		break;
 	}
 	case 3: {
@@ -520,9 +557,12 @@ ee_decl(Vector4LiteralNode* node) {
 			return glm::vec4(values[0].GetNum(), values[1].GetNum(), values[2].GetNum(), values[3].GetNum());
 		}
 		PushError("Attempt to assign " + values[0].Type() + " as only argument to Vector4");
+		return nullval;
+		break;
 	}
 	}
 	PushError("Invalid vector construction size" + node->Print());
+	return nullval;
 }
 
 ee_decl(ArrayAccessNode* node) {
@@ -536,12 +576,13 @@ ee_decl(ArrayAccessNode* node) {
 		}
 		else {
 			PushError("Index is not an int" + node->Print());
+			return nullval;
 		}
 	}
 	else {
 		PushError("Cannot use array access on a non array" + node->Print());
+		return nullval;
 	}
-
 }
 
 
@@ -586,6 +627,7 @@ eep_decl(TernaryNode* node) {
 	}
 	else {
 		PushError("Ternary expression does not evaluate to boolean type " + node->Print());
+		return &nullval;
 	}
 }
 
@@ -610,12 +652,11 @@ eep_decl(DotAccessNode* node) {
 		}
 		if (left->IsFunction()) {
 			std::vector<Value*> args;
-			for (ExprNode* arg : func->args) {
-				args.push_back(EvaluateExpressionPtr(arg));
-			}
-
 			if (n_scope->Has("SELF")) {
 				args.push_back(n_scope->Get("SELF"));
+			}
+			for (ExprNode* arg : func->args) {
+				args.push_back(EvaluateExpressionPtr(arg));
 			}
 
 			if (left->IsCPP()) {
@@ -676,6 +717,8 @@ eep_decl(DotAccessNode* node) {
 			return val;
 		}
 	}
+	PushError("Invalid dot access");
+	return &nullval;
 }
 
 eep_decl(ArrayAccessNode* node) {
@@ -689,10 +732,12 @@ eep_decl(ArrayAccessNode* node) {
 		}
 		else {
 			PushError("Index is not an int" + node->Print());
+			return &nullval;
 		}
 	}
 	else {
 		PushError("Cannot use array access on a non array" + node->Print());
+		return &nullval;
 	}
 
 }

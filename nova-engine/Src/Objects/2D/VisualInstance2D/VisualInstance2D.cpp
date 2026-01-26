@@ -1,5 +1,6 @@
 #include "VisualInstance2D.h"
 #include "../../../Core/Engine.h"
+#include "../../../Core/Scene.h"
 #include "../../../NovaScript/Library/nova_std_macro.h"
 
 glm::vec4 VisualInstance2D::GetTint() {

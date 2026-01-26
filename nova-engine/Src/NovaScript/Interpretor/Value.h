@@ -5,11 +5,12 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "../ASTNodes/StmtNode.h"
 #include <glm/glm.hpp>
-#include "Scope.h";
+#include "Scope.h"
 struct Value;
 class Interpretor;
+struct FuncDeclNode;
+struct TypeDeclNode;
 
 using CPPFunction = Value (*)(std::vector<Value*>&);
 using NovaFunction = FuncDeclNode*;
@@ -27,7 +28,7 @@ using CPPVariable = std::variant <
 using ReferenceValue = std::reference_wrapper<Value>;
 using NovaTypeDecl = TypeDeclNode*;
 struct CPPObject {
-	void* ptr;
+	void* ptr = nullptr;
 	Scope scope;
 };
 

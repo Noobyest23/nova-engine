@@ -9,7 +9,7 @@ public:
 
 	int Connect(Callback cb) {
 		cpp_listeners.push_back(cb);
-		return cpp_listeners.size() - 1;
+		return static_cast<int>(cpp_listeners.size()) - 1;
 	}
 
 	void Emit(Args... args) {

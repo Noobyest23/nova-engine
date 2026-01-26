@@ -1,9 +1,10 @@
 #include "Value.h"
 #include <iostream>
 #include "Scope.h"
+#include "../ASTNodes/StmtNode.h"
 
 std::string Value::Type() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 
 	switch (v_index) {
 	case 0: // null
@@ -38,7 +39,7 @@ std::string Value::Type() const {
 
 	case 9: {// C++ Variable
 		CPPVariable var = std::get<CPPVariable>(data);
-		int cpp_v_index = var.index();
+		int cpp_v_index = static_cast<int>(var.index());
 		switch (cpp_v_index) {
 		case 0:
 			return "C++ null";
@@ -73,7 +74,10 @@ std::string Value::Type() const {
 	case 14: // Vec4
 		return "Vec4";
 		break;
+	default:
+		return "Unknown type in Value.Type";
 	}
+	return "";
 }
  /*
  std::variant<
@@ -92,7 +96,7 @@ std::string Value::Type() const {
 	> data;
  */
 std::string Value::ToString() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 
 	switch (v_index) {
 	case 0: // null
@@ -140,7 +144,7 @@ std::string Value::ToString() const {
 
 	case 9: {// C++ Variable 
 			CPPVariable var = std::get<CPPVariable>(data);
-			int cpp_v_index = var.index();
+			int cpp_v_index = static_cast<int>(var.index());
 			switch (cpp_v_index) {
 			case 0: // null 
 				return "null";
@@ -184,9 +188,10 @@ std::string Value::ToString() const {
 		return output;
 		break;
 	}
-
+	default:
+		return "Unknown type in Value.ToString";
 	}
-	
+	return "";
 }
 
 std::string& Value::GetString() {
@@ -200,6 +205,7 @@ std::string& Value::GetString() {
 		return std::get<std::string>(data);
 	}
 	throw std::exception("Type is not string");
+	
 }
 
 int& Value::GetInt() {
@@ -303,20 +309,20 @@ std::vector<Value>& Value::GetArray() {
 }
 
 bool Value::IsInt() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsInt();
 	if (IsCPP()) {
-		int cpp_v_index = std::get<CPPVariable>(data).index();
+		int cpp_v_index = static_cast<int>(std::get<CPPVariable>(data).index());
 		return cpp_v_index == 0;
 	}
 	return v_index == 1;
 }
 
 bool Value::IsFloat() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsFloat();
 	if (IsCPP()) {
-		int cpp_v_index = std::get<CPPVariable>(data).index();
+		int cpp_v_index = static_cast<int>(std::get<CPPVariable>(data).index());
 		return cpp_v_index == 1;
 	}
 	return v_index == 2;
@@ -327,55 +333,55 @@ bool Value::IsNum() const {
 }
 
 bool Value::IsString() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsString();
 	if (IsCPP()) {
-		int cpp_v_index = std::get<CPPVariable>(data).index();
+		int cpp_v_index = static_cast<int>(std::get<CPPVariable>(data).index());
 		return cpp_v_index == 3;
 	}
 	return v_index == 4;
 }
 
 bool Value::IsBool() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsBool();
 	if (IsCPP()) {
-		int cpp_v_index = std::get<CPPVariable>(data).index();
+		int cpp_v_index = static_cast<int>(std::get<CPPVariable>(data).index());
 		return cpp_v_index == 3;
 	}
 	return v_index == 3;
 }
 
 bool Value::IsFunction() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsFunction();
 	return v_index == 7 or v_index == 8;
 }
 
 bool Value::IsCPP() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsCPP();
 	return v_index == 8 or v_index == 9 or v_index == 11;
 }
 
 bool Value::IsObj() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsObj();
 	return v_index == 6 or v_index == 11;
 }
 
 bool Value::IsVec() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsVec();
 	if (IsCPP()) {
-		int v_v_index = std::get<CPPVariable>(data).index();
+		int v_v_index = static_cast<int>(std::get<CPPVariable>(data).index());
 		return v_v_index == 5 or v_v_index == 6 or v_v_index == 7;
 	}
 	return v_index == 12 or v_index == 13 or v_index == 14;
 }
 
 bool Value::IsVec2() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsVec2();
 	if (IsCPP()) {
 		return std::get<CPPVariable>(data).index() == 5;
@@ -384,7 +390,7 @@ bool Value::IsVec2() const {
 }
 
 bool Value::IsVec3() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsVec3();
 	if (IsCPP()) {
 		return std::get<CPPVariable>(data).index() == 6;
@@ -393,7 +399,7 @@ bool Value::IsVec3() const {
 }
 
 bool Value::IsVec4() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsVec4();
 	if (IsCPP()) {
 		return std::get<CPPVariable>(data).index() == 7;
@@ -402,7 +408,7 @@ bool Value::IsVec4() const {
 }
 
 bool Value::IsArray() const {
-	int v_index = data.index();
+	int v_index = static_cast<int>(data.index());
 	if (v_index == 15) return std::get<ReferenceValue>(data).get().IsArray();
 	return v_index == 5;
 }

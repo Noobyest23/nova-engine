@@ -1,8 +1,8 @@
 #include "Interpretor.h"
 #include "../parser/Lexer.h"
 #include "../parser/parser.h"
-
 #include "../Library/nova_std.h"
+#include "../ASTNodes/StmtNode.h"
 
 #define es_decl(type) void Interpretor::EvaluateStatement(type)
 #define es(type) if (type n = dynamic_cast<type>(node)) { EvaluateStatement(n); return; }

@@ -67,7 +67,7 @@ std::string Window::GetName() {
 }
 
 void Window::SetSize(const glm::vec2& size) {
-	glfwSetWindowSize(window, size.x, size.y);
+	glfwSetWindowSize(window, static_cast<int>(size.x), static_cast<int>(size.y));
 }
 
 void Window::SetName(const std::string& name) {

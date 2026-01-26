@@ -1,6 +1,7 @@
 #include "Camera2D.h"
 #include "../../Core/Engine.h"
 #include "../../NovaScript/Library/nova_std_macro.h"
+#include "../../Platform/Agnostic/Window.h"
 
 Camera2D::Camera2D() {
 	glm::vec2 win_size = Engine::GetInstance()->window->GetSize();

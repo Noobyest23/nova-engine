@@ -1,6 +1,5 @@
 #include "Object.h"
-#include "../NovaScript/Interpretor/Scope.h"
-#include "../NovaScript/Interpretor/Value.h"
+#include "../NovaScript/Interpretor/Interpretor.h"
 #include "../NovaScript/Library/nova_std_macro.h"
 #include "../Core/Engine.h"
 

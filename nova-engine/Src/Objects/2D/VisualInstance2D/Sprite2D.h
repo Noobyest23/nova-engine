@@ -2,9 +2,8 @@
 #define NOVA_SPRITE_2D_H
 
 #include "VisualInstance2D.h"
-#include "../../../Assets/Image/Image.h"
-#include "../../../Assets/Mesh2D/BoxMesh2D.h"
-#include "../../../Core/AssetDB.h"
+
+class Image;
 
 class Sprite2D : public VisualInstance2D {
 public:

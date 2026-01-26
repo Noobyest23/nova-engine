@@ -3,10 +3,11 @@
 
 #include <string>
 #include <vector>
-#include "../NovaScript/Interpretor/Value.h"
-#include "../NovaScript/Interpretor/Interpretor.h"
 
-#include "../Core/Input/InputEvent.h"
+class Interpretor;
+class InputEvent;
+struct CPPObject;
+struct Scope;
 
 class Object {
 public:

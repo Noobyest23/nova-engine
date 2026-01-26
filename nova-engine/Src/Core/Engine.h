@@ -1,9 +1,6 @@
 #ifndef NOVA_ENGINE_H
 #define NOVA_ENGINE_H
 
-#include "Scene.h"
-#include "../Platform/Agnostic/Window.h"
-
 #define USE_CONSOLE
 #ifdef _MSC_VER
 
@@ -14,6 +11,11 @@
 #pragma comment(linker, "/ENTRY:WinMainCRTStartup")
 #endif
 #endif
+
+class Window;
+class Scene;
+
+#include <string>
 
 class Engine {
 public:

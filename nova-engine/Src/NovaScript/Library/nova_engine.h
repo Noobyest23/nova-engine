@@ -3,10 +3,8 @@
 
 #include "nova_std_macro.h"
 #include "../../Core/Engine.h"
-
+#include "../../Platform/Agnostic/Window.h"
 #include "../Interpretor/Scope.h"
-
-
 
 namespace nova_std_engine {
 	// functions begining with window expect the window as their first argument
