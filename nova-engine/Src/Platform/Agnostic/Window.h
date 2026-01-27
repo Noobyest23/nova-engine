@@ -7,7 +7,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "../../NovaScript/Interpretor/Value.h"
 #include "../../Core/Input/InputEvent.h"
 #include <deque>
 class Window {

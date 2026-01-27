@@ -54,27 +54,6 @@
     <ClCompile Include="Src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\NovaScript\Parser\Lexer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\NovaScript\Parser\Parser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\NovaScript\Interpretor\Value.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\NovaScript\Interpretor\Scope.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\NovaScript\Interpretor\EvaluateStatement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\NovaScript\Interpretor\EvaluateExpression.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\NovaScript\Interpretor\Interpretor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Objects\2D\Object2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -94,6 +73,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Objects\2D\_Internal\DevCamera2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Assets\Script\Script.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,54 +113,6 @@
     <ClInclude Include="Src\Platform\Agnostic\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\NovaScript\Parser\Tokens.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Parser\Lexer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\ASTNodes\ASTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\ASTNodes\StmtNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\ASTNodes\ExprNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Parser\Parser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\ASTNodes\ProgramNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Interpretor\Value.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Interpretor\Scope.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Interpretor\Interpretor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Library\nova_io.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Library\nova_std.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Library\nova_std_macro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Library\nova_engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Library\nova_string.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Library\WinInputDialog\resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Objects\2D\Object2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -192,9 +126,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Core\AssetDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\NovaScript\Library\nova_asset_db.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Objects\2D\Camera2D.h">
@@ -212,6 +143,9 @@
     <ClInclude Include="Src\Objects\2D\_Internal\DevCamera2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Assets\Script\Script.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Working\NovaData\BootMessage.txt" />
@@ -226,10 +160,5 @@
     <None Include="Working\Projects\Test_Project\TestScene.json" />
     <None Include="Working\NovaData\Shaders\sprite2d_vertex.glsl" />
     <None Include="Working\NovaData\Shaders\sprite2d_fragment.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Src\NovaScript\Library\WinInputDialog\dialog.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

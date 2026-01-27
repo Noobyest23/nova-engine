@@ -1,8 +1,6 @@
 #include "Window.h"
 #include <iostream>
 
-#include "../../NovaScript/Interpretor/Scope.h"
-
 Window* Window::current = nullptr;
 
 void Window::Init() {

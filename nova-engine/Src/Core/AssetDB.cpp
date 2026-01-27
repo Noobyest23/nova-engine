@@ -1,6 +1,6 @@
 #include "AssetDB.h"
 #include "Engine.h"
-#include "../NovaScript/Library/nova_asset_db.h"
+//#include "../NovaScript/Library/nova_asset_db.h"
 #include "../Assets/Mesh2D/BoxMesh2D.h"
 #include "../Assets/Material/Material.h"
 std::unordered_map<std::string, Asset*> AssetDB::assets;

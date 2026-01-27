@@ -1,6 +1,4 @@
 #include "Object.h"
-#include "../NovaScript/Interpretor/Interpretor.h"
-#include "../NovaScript/Library/nova_std_macro.h"
 #include "../Core/Engine.h"
 
 void Object::Ready() {
@@ -65,6 +63,7 @@ Object* Object::GetParent() {
 	return parent;
 }
 
+/*
 namespace nova_object {
 	static void PushError(const std::string& message) {
 		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
@@ -159,3 +158,4 @@ CPPObject Object::GetNovaObject() {
 	self.ptr = this;
 	return self;
 }
+*/

@@ -83,7 +83,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(ProjectDir)Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nova-script.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -102,7 +102,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(ProjectDir)Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nova-script.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -118,7 +118,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(ProjectDir)Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nova-script.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -137,7 +137,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(ProjectDir)Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nova-script.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -147,18 +147,12 @@
     <ClCompile Include="Src\Assets\Material\Material.cpp" />
     <ClCompile Include="Src\Assets\Mesh2D\BoxMesh2D.cpp" />
     <ClCompile Include="Src\Assets\Mesh2D\Mesh2D.cpp" />
+    <ClCompile Include="Src\Assets\Script\Script.cpp" />
     <ClCompile Include="Src\Core\Engine.cpp" />
     <ClCompile Include="Src\Core\AssetDB.cpp" />
     <ClCompile Include="Src\Core\Scene.cpp" />
     <ClCompile Include="Src\Core\Signal.cpp" />
     <ClCompile Include="Src\glad.c" />
-    <ClCompile Include="Src\NovaScript\Interpretor\EvaluateExpression.cpp" />
-    <ClCompile Include="Src\NovaScript\Interpretor\EvaluateStatement.cpp" />
-    <ClCompile Include="Src\NovaScript\Interpretor\Interpretor.cpp" />
-    <ClCompile Include="Src\NovaScript\Interpretor\Scope.cpp" />
-    <ClCompile Include="Src\NovaScript\Interpretor\Value.cpp" />
-    <ClCompile Include="Src\NovaScript\Parser\Lexer.cpp" />
-    <ClCompile Include="Src\NovaScript\Parser\Parser.cpp" />
     <ClCompile Include="Src\Objects\2D\Camera2D.cpp" />
     <ClCompile Include="Src\Objects\2D\Object2D.cpp" />
     <ClCompile Include="Src\Objects\2D\VisualInstance2D\Sprite2D.cpp" />
@@ -173,6 +167,7 @@
     <ClInclude Include="Src\Assets\Asset.h" />
     <ClInclude Include="Src\Assets\Image\FileImage.h" />
     <ClInclude Include="Src\Assets\Image\Image.h" />
+    <ClInclude Include="Src\Assets\Script\Script.h" />
     <ClInclude Include="Src\Core\Input\InputEvent.h" />
     <ClInclude Include="Src\Core\Input\InputEventKey.h" />
     <ClInclude Include="Src\Core\Input\InputEventMouseButton.h" />
@@ -183,23 +178,6 @@
     <ClInclude Include="Src\Core\AssetDB.h" />
     <ClInclude Include="Src\Core\Scene.h" />
     <ClInclude Include="Src\Core\Signal.h" />
-    <ClInclude Include="Src\NovaScript\ASTNodes\ASTNode.h" />
-    <ClInclude Include="Src\NovaScript\ASTNodes\ExprNode.h" />
-    <ClInclude Include="Src\NovaScript\ASTNodes\ProgramNode.h" />
-    <ClInclude Include="Src\NovaScript\ASTNodes\StmtNode.h" />
-    <ClInclude Include="Src\NovaScript\Interpretor\Interpretor.h" />
-    <ClInclude Include="Src\NovaScript\Interpretor\Scope.h" />
-    <ClInclude Include="Src\NovaScript\Interpretor\Value.h" />
-    <ClInclude Include="Src\NovaScript\Library\nova_asset_db.h" />
-    <ClInclude Include="Src\NovaScript\Library\nova_engine.h" />
-    <ClInclude Include="Src\NovaScript\Library\nova_io.h" />
-    <ClInclude Include="Src\NovaScript\Library\nova_std.h" />
-    <ClInclude Include="Src\NovaScript\Library\nova_std_macro.h" />
-    <ClInclude Include="Src\NovaScript\Library\nova_string.h" />
-    <ClInclude Include="Src\NovaScript\Library\WinInputDialog\resource.h" />
-    <ClInclude Include="Src\NovaScript\Parser\Lexer.h" />
-    <ClInclude Include="Src\NovaScript\Parser\Parser.h" />
-    <ClInclude Include="Src\NovaScript\Parser\Tokens.h" />
     <ClInclude Include="Src\Objects\2D\Camera2D.h" />
     <ClInclude Include="Src\Objects\2D\Object2D.h" />
     <ClInclude Include="Src\Objects\2D\VisualInstance2D\Sprite2D.h" />
@@ -222,9 +200,6 @@
     <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\test.ns" />
     <None Include="Working\Projects\Test_Project\TestScene.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Src\NovaScript\Library\WinInputDialog\dialog.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

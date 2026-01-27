@@ -1,7 +1,6 @@
 #include "VisualInstance2D.h"
 #include "../../../Core/Engine.h"
 #include "../../../Core/Scene.h"
-#include "../../../NovaScript/Library/nova_std_macro.h"
 
 glm::vec4 VisualInstance2D::GetTint() {
 	return GetTotalTint()* self_tint;
@@ -33,23 +32,4 @@ void VisualInstance2D::OnDraw() {
 			material->SetUniform("u_projection", cam->GetProjection());
 		}
 	}
-}
-
-namespace nova_visualinstance2D {
-	NOVA_ERR_PUSHER(VisualInstance2D);
-
-	NOVA_GETTER(VisualInstance2D, GetTint);
-
-	Scope GetModule() {
-		Scope scope;
-		NOVA_BIND_METHOD(GetTint);
-		return scope;
-	}
-
-}
-
-void VisualInstance2D::OnNovaObject(Scope& scope) {
-	Object2D::OnNovaObject(scope);
-	NOVA_BIND_PROPERTY(self_tint);
-	NOVA_BIND_WHOLE_NAMESPACE(nova_visualinstance2D);
 }

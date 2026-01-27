@@ -1,6 +1,5 @@
 #include "Camera2D.h"
 #include "../../Core/Engine.h"
-#include "../../NovaScript/Library/nova_std_macro.h"
 #include "../../Platform/Agnostic/Window.h"
 
 Camera2D::Camera2D() {
@@ -42,27 +41,4 @@ void Camera2D::UpdateView() {
 
 void Camera2D::OnUpdate(float deltaTime) {
 	UpdateView();
-}
-
-namespace nova_camera2D {
-
-	NOVA_ERR_PUSHER(Camera2D);
-
-	NOVA_SETTER(Camera2D, SetZoom, float);
-
-	NOVA_GETTER(Camera2D, GetZoom);
-
-	Scope GetModule() {
-		Scope scope;
-		NOVA_BIND_METHOD(SetZoom);
-		NOVA_BIND_METHOD(GetZoom);
-		return scope;
-	}
-
-}
-
-void Camera2D::OnNovaObject(Scope& scope) {
-	Object2D::OnNovaObject(scope);
-	NOVA_BIND_PROPERTY(active);
-	NOVA_BIND_WHOLE_NAMESPACE(nova_camera2D);
 }

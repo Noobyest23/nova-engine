@@ -44,7 +44,7 @@ protected:
 	virtual void OnUpdate(float deltaTime) {};
 	virtual void OnInput(InputEvent* e) {};
 	virtual void OnDraw() {};
-	virtual void OnNovaObject(Scope& inherited) {};
+	//virtual void OnNovaObject(Scope& inherited) {};
 
 };
 

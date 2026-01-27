@@ -24,7 +24,7 @@ public:
 
 protected:
 
-	void OnNovaObject(Scope& scope) override;
+	//void OnNovaObject(Scope& scope) override;
 
 	Image* image = nullptr;
 

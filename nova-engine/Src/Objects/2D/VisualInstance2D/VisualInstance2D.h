@@ -24,7 +24,7 @@ protected:
 
 	virtual void OnDraw() override;
 
-	void OnNovaObject(Scope& scope) override;
+	//void OnNovaObject(Scope& scope) override;
 
 };
 

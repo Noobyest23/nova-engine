@@ -41,7 +41,7 @@ protected:
 	glm::mat3 GetLocalTransform();
 	glm::mat3 GetGlobalTransform();
 
-	void OnNovaObject(Scope& inherited) override;
+	//void OnNovaObject(Scope& inherited) override;
 
 };
 

@@ -36,7 +36,7 @@ protected:
 
 	void OnUpdate(float deltaTime) override;
 
-	void OnNovaObject(Scope& scope) override;
+	//void OnNovaObject(Scope& scope) override;
 
 };
 

@@ -5,14 +5,43 @@ Engine* Engine::engine_inst = nullptr;
 #include "../Platform/Agnostic/Window.h"
 #include <iostream>
 #include "AssetDB.h"
-#include "../NovaScript/Interpretor/Interpretor.h"
 #include <fstream>
+#include "../../nova-script/NovaScript.h"
+#include "../Assets/Script/Script.h"
 // TEMP
 #include "../Objects/2D/VisualInstance2D/Sprite2D.h"
 #include "../Assets/Image/FileImage.h"
-#include "../NovaScript/Library/nova_asset_db.h"
 #include "../Objects/2D/Camera2D.h"
 #include "../Objects/2D/_Internal/DevCamera2D.h"
+
+static void ScriptPushError(const char* message, int sevarity) {
+	Engine* engine = Engine::GetInstance();
+	switch (sevarity) {
+	case 0:
+		engine->PushMessage(message);
+		break;
+	case 1:
+		engine->PushMessage(message, true);
+		break;
+	case 2:
+		engine->PushError(message);
+		break;
+	default:
+		engine->PushError("[Error Sevarity Unknown]" + std::string(message));
+		return;
+	}
+}
+
+static void ScriptExit(const char* message) {
+	Engine* engine = Engine::GetInstance();
+	engine->PushError(message, true);
+}
+
+static void ScriptSetProjectPath(const char* path) {
+	Engine* engine = Engine::GetInstance();
+	engine->InitProjectPath(path);
+}
+
 
 
 void Engine::Init() {
@@ -23,10 +52,16 @@ void Engine::Init() {
 	Window::Init();
 	window = new Window("Nova Engine", 800, 600);
 
-	PushMessage("[Engine Init] Running NovaScript Init...");
-	Interpretor init("NovaData/CustomInit.ns");
+	PushMessage("[Engine Init] Linking NovaScript.dll");
+	SetErrorCallback(ScriptPushError);
+	SetExitCallback(ScriptExit);
+	SetProjectPath(ScriptSetProjectPath);
 
-	nova_asset_db_init::basic_2D = true;
+	PushMessage("[Engine Init] Running NovaScript Init...");
+	Script* init_script = new Script("NovaData/CustomInit.ns");
+	InitProjectPath("Projects/Test_Project/");
+	init_script->Release();
+	//nova_asset_db_init::basic_2D = true;
 
 	PushMessage("[Engine Init] Initializing AssetDB...");
 	AssetDB::Init();
