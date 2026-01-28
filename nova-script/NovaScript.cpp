@@ -67,4 +67,9 @@ extern "C" {
 		interpretor->PushModule(mod);
 	}
 
+	void FlagUseConsole() {
+		_use_console = true;
+	}
+	
+
 }

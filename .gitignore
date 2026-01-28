@@ -362,3 +362,9 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /nova-engine/NovaScript.txt
+/nova-engine/Lib/nova-script-Debug.lib
+/nova-engine/Working/nova-engine-Debug.exe
+/nova-engine/Working/nova-script-Debug.dll
+/nova-engine/Lib/nova-script-Release.lib
+/nova-engine/Working/nova-engine-Release.exe
+/nova-engine/Working/nova-script-Release.dll

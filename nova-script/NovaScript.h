@@ -40,6 +40,8 @@ extern "C" {
 
 	NOVASCRIPT_API void PushModule(InterpretorHandle interpretor, ModuleHandle mod);
 
+	NOVASCRIPT_API void FlagUseConsole();
+
 }
 
 #endif

@@ -3,6 +3,8 @@
 
 #include <string>
 
+static bool _use_console = false;
+
 class Callbacker {
 public:
 
@@ -14,7 +16,7 @@ public:
 	static void(*_ExitCallback)(const char* message);
 	static std::string _proj_path;
 	static void(*_ProjectPathSetCallback)(const char* path);
-
+	
 };
 
 #endif

@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <string>
 #include "../../NovaErrorPush.h"
+#include "../../NovaScript.h"
 
 struct InputDlgData {
 	std::string* userInput = nullptr;
@@ -147,28 +148,29 @@ public:
 		req_args(1);
 		strget(string, 0);
 		std::string in;
-#ifdef USE_CONSOLE
-		std::cout << string << " >: ";
-		std::getline(std::cin, in);
-		return Value(in);
-#else
+		if (_use_console) {
+			std::cout << string << " >: ";
+			std::getline(std::cin, in);
+			return Value(in);
+		}
+		else {
 #ifdef _WIN32
 
-		InputDlgData dlgData;
-		dlgData.userInput = &in;
-		dlgData.prompt = string;
+			InputDlgData dlgData;
+			dlgData.userInput = &in;
+			dlgData.prompt = string;
 
-		DialogBoxParamA(
-			GetModuleHandle(nullptr),
-			MAKEINTRESOURCEA(101),
-			nullptr,
-			InputDlgProc,
-			reinterpret_cast<LPARAM>(&dlgData)
-		);
+			DialogBoxParamA(
+				GetModuleHandle(nullptr),
+				MAKEINTRESOURCEA(101),
+				nullptr,
+				InputDlgProc,
+				reinterpret_cast<LPARAM>(&dlgData)
+			);
 
-		return Value(in);
+			return Value(in);
 #endif
-#endif
+		}
 	}
 
 	Scope GetModule() {

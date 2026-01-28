@@ -7,6 +7,7 @@ Engine* Engine::engine_inst = nullptr;
 #include "AssetDB.h"
 #include <fstream>
 #include "../../nova-script/NovaScript.h"
+#include "../../nova-script/NovaErrorPush.h"
 #include "../Assets/Script/Script.h"
 // TEMP
 #include "../Objects/2D/VisualInstance2D/Sprite2D.h"
@@ -54,6 +55,9 @@ void Engine::Init() {
 	SetErrorCallback(ScriptPushError);
 	SetExitCallback(ScriptExit);
 	SetProjectPath(ScriptSetProjectPath);
+#ifdef USE_CONSOLE
+	_use_console = true;
+#endif
 
 	PushMessage("[Engine Init] Running Custom Init Script...");
 	Script* init_script = new Script("NovaData/CustomInit.ns");
@@ -115,7 +119,13 @@ int Engine::Run() {
 		scene->Update(0.16f);
 		scene->Draw();
 
-		if (Sprite2D* sprite = static_cast<Sprite2D*>(scene->root.GetChild(1))) {
+#ifdef _DEBUG 
+		int c_index = 1;
+#else
+		int c_index = 0;
+#endif
+
+		if (Sprite2D* sprite = static_cast<Sprite2D*>(scene->root.GetChild(c_index))) {
 			sprite->SetRotation(sprite->GetRotation() + 0.1f);
 			sprite->tint = glm::vec4(sprite->GetRotation(), sprite->GetRotation() / 2, sprite->GetRotation() / 3, 0.5);
 		}
