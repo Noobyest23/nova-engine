@@ -50,12 +50,12 @@ void Engine::Init() {
 	Window::Init();
 	window = new Window("Nova Engine", 800, 600);
 
-	PushMessage("[Engine Init] Linking NovaScript.dll");
+	PushMessage("[Engine Init] Linking NovaScript.dll...");
 	SetErrorCallback(ScriptPushError);
 	SetExitCallback(ScriptExit);
 	SetProjectPath(ScriptSetProjectPath);
 
-	PushMessage("[Engine Init] Running NovaScript Init...");
+	PushMessage("[Engine Init] Running Custom Init Script...");
 	Script* init_script = new Script("NovaData/CustomInit.ns");
 	init_script->Release();
 	//nova_asset_db_init::basic_2D = true;
