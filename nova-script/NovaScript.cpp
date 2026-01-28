@@ -5,8 +5,6 @@
 #include "../../pch.h"
 extern "C" {
 
-	
-
 	void SetErrorCallback(void(*function)(const char*, int)) {
 		Callbacker::_PushErrorCallback = function;
 	}
@@ -21,6 +19,11 @@ extern "C" {
 
 	InterpretorHandle BuildScript(const char* file_path) {
 		return new Interpretor(file_path);
+	}
+
+	void ExecuteScript(InterpretorHandle i) {
+		Interpretor* interpretor = static_cast<Interpretor*>(i);
+		interpretor->Exec();
 	}
 
 	void DestroyScript(InterpretorHandle interpretor) {
@@ -56,6 +59,12 @@ extern "C" {
 
 	void DeleteArgs(ArgsHandle args) {
 		delete args;
+	}
+
+	void PushModule(InterpretorHandle i, ModuleHandle m) {
+		Interpretor* interpretor = static_cast<Interpretor*>(i);
+		NovaModule* mod = static_cast<NovaModule*>(m);
+		interpretor->PushModule(mod);
 	}
 
 }

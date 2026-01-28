@@ -4,19 +4,24 @@
 #include "Value.h"
 #include "../ASTNodes/ProgramNode.h"
 
+class NovaModule;
 struct Value;
 struct Scope;
 
 #include <string>
+#include <unordered_map>
 
 class Interpretor {
 public:
 	Interpretor(ProgramNode* program) : program(program) { Init(); };
 	Interpretor(const std::string& filepath);
-	~Interpretor() { program->Delete(); while (scope) { PopScope(); } };
+	~Interpretor();
 
-	// Executes the body of the script. Initializes the global scope
+	// Initializes the global scope
 	void Init();
+
+	// Executes the body of the script
+	void Exec();
 
 	// Calls a Function from nova script
 	Value Call(const std::string& func_name, std::vector<Value*>& args);
@@ -31,6 +36,9 @@ public:
 
 	void EvaluateStatement(StmtNode*);
 	Value EvaluateExpression(ExprNode*);
+
+	void PushModule(NovaModule* mod);
+
 private:
 
 	#pragma region Evaluate Statement Overloads
@@ -83,6 +91,9 @@ private:
 	Value* return_val_ptr = nullptr;
 
 	Value nullval = Value();
+
+	std::unordered_map<std::string, NovaModule*> modules;
+
 };
 
 // Todo

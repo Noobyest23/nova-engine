@@ -42,8 +42,6 @@ static void ScriptSetProjectPath(const char* path) {
 	engine->InitProjectPath(path);
 }
 
-
-
 void Engine::Init() {
 	Engine::engine_inst = this;
 	ShowBootMessage();
@@ -59,7 +57,6 @@ void Engine::Init() {
 
 	PushMessage("[Engine Init] Running NovaScript Init...");
 	Script* init_script = new Script("NovaData/CustomInit.ns");
-	InitProjectPath("Projects/Test_Project/");
 	init_script->Release();
 	//nova_asset_db_init::basic_2D = true;
 

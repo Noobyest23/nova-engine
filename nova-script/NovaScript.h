@@ -1,11 +1,7 @@
 #ifndef NOVA_SCRIPT_DLL_API
 #define NOVA_SCRIPT_DLL_API
 
-#ifdef NOVASCRIPT_EXPORTS
-#define NOVASCRIPT_API __declspec(dllexport)
-#else
-#define NOVASCRIPT_API __declspec(dllimport)
-#endif
+#include "NovaScript_API.h"
 
 #include <string>
 
@@ -15,6 +11,7 @@ extern "C" {
 	using InterpretorHandle = void*;
 	using ValueHandle = void*;
 	using ArgsHandle = void*;
+	using ModuleHandle = void*;
 
 	NOVASCRIPT_API void SetErrorCallback(void(*)(const char*, int));
 
@@ -23,6 +20,8 @@ extern "C" {
 	NOVASCRIPT_API void SetProjectPath(void(*)(const char*));
 
 	NOVASCRIPT_API InterpretorHandle BuildScript(const char* filepath);
+
+	NOVASCRIPT_API void ExecuteScript(InterpretorHandle interpretor);
 
 	NOVASCRIPT_API void DestroyScript(InterpretorHandle interpretor);
 
@@ -39,6 +38,7 @@ extern "C" {
 
 	NOVASCRIPT_API void DestroyArgs(ArgsHandle);
 
+	NOVASCRIPT_API void PushModule(InterpretorHandle interpretor, ModuleHandle mod);
 
 }
 

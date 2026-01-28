@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <glm/glm.hpp>
 #include "Scope.h"
+#include "../../NovaScript_API.h"
 struct Value;
 class Interpretor;
 struct FuncDeclNode;
@@ -32,7 +33,7 @@ struct CPPObject {
 	Scope scope;
 };
 
-struct Value {
+struct NOVASCRIPT_API Value {
 	Value() = default;
 	explicit Value(int data) : data(data) {};
 	explicit Value(float data) : data(data) {};

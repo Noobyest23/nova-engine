@@ -4,7 +4,7 @@
 #include "../ASTNodes/ProgramNode.h"
 #include "../Parser/Lexer.h"
 #include "../Parser/Parser.h"
-
+#include "../Library/nova_std.h"
 #include "../../NovaErrorPush.h"
 #include "../../pch.h"
 
@@ -17,13 +17,28 @@ Interpretor::Interpretor(const std::string& filepath) {
 	Init();
 }
 
+Interpretor::~Interpretor() {
+	program->Delete(); 
+	while (scope) { 
+		PopScope(); 
+	}
+	for (std::pair<std::string, NovaModule*> pair : modules) {
+		delete pair.second;
+	}
+}
+
 void Interpretor::Init() {
 	if (not program->valid_program) {
 		PushError("Parser errors detected, script will not run");
 		return;
 	}
 	scope = new Scope();
-	// std lib
+
+	modules["string"] = new NovaStringModule;
+	modules["io"] = new NovaIOModule;
+}
+
+void Interpretor::Exec() {
 	for (StmtNode* stmt : program->Statements) {
 		EvaluateStatement(stmt);
 	}
@@ -95,4 +110,8 @@ Value* Interpretor::Get(const std::string& var_name) {
 
 Scope* Interpretor::GetScopeAsObj() {
 	return scope;
+}
+#include "../Library/NovaModule.h"
+void Interpretor::PushModule(NovaModule* mod) {
+	modules[mod->module_name] = mod;
 }

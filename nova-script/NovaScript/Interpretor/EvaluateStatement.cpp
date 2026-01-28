@@ -74,14 +74,10 @@ es_decl(IncludeNode* node) {
 	std::string filepath = val.GetString();
 	if (!filepath.ends_with(".ns")) {
 		Value val;
-		if (filepath == "io") {
-			val = nova_std_io::GetModule();
-		}
-		//if (filepath == "engine") {
-		//	val = nova_std_engine::get_module();
-		//}
-		if (filepath == "string") {
-			val = nova_std_string::GetModule();
+		auto it = modules.find(filepath);
+		if (it != modules.end()) {
+			NovaType type = modules[filepath]->GetModule();
+			val = Value(type);
 		}
 		if (val.data.index() == 0) {
 			PushError("Cannot include standard lib " + node->file_path->Print() + " because it can't be found");

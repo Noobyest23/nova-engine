@@ -7,11 +7,11 @@
 #include "../../NovaErrorPush.h"
 
 struct InputDlgData {
-	std::string* userInput;
+	std::string* userInput = nullptr;
 	std::string prompt;
 };
 
-INT_PTR CALLBACK InputDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
+static INT_PTR CALLBACK InputDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
 	case WM_INITDIALOG: {
 		InputDlgData* data = reinterpret_cast<InputDlgData*>(lParam);
@@ -49,11 +49,144 @@ INT_PTR CALLBACK InputDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 #endif
 #include "nova_std_macro.h"
 #include "../Interpretor/Scope.h"
-
+#include "NovaModule.h"
 #include <fstream>
 #include <iostream>
 
+class NovaIOModule : public NovaModule {
+public:
 
+	NovaIOModule() {
+		module_name = "io";
+	}
+
+	nova_std_decl(Print) {
+		std::string output = "[NovaScript] ";
+		for (Value* arg : args) {
+			output += arg->ToString(); if (arg != args.back()) { output += ", "; };
+		}
+		Callbacker::PushError(output.c_str(), 0);
+		return null_value;
+	}
+
+	nova_std_decl(PrintWarning) {
+		std::string output = "[NovaScript] ";
+		for (Value* arg : args) {
+			output += arg->ToString(); if (arg != args.back()) { output += ", "; };
+		}
+		Callbacker::PushError(output.c_str(), 1);
+		return null_value;
+	}
+
+	nova_std_decl(PrintError) {
+		std::string output = "[NovaScript] ";
+		for (Value* arg : args) {
+			output += arg->ToString(); if (arg != args.back()) { output += ", "; };
+		}
+		Callbacker::PushError(output.c_str(), 2);
+		return null_value;
+	}
+
+	nova_std_decl(LoadText) {
+		std::string filepath;
+		if (args[0]->IsString()) {
+			filepath = args[0]->GetString();
+		}
+		else {
+			PushError("Argument 0 is not string");
+			return Value();
+		}
+		filepath = Callbacker::_proj_path + filepath;
+		std::ifstream file(filepath, std::ios::binary);
+		std::string text;
+		std::string line;
+
+		if (!file) {
+			PushError("Failed to open: " + std::string(filepath));
+			return Value(false);
+		}
+
+		while (std::getline(file, line)) {
+			text += line + "\n";
+		}
+
+		return Value(text);
+	}
+
+	nova_std_decl(SaveText) {
+		std::string filepath;
+		std::string content;
+		if (args[0]->IsString()) {
+			filepath = args[0]->GetString();
+		}
+		else {
+			PushError("Argument 0 is not string");
+		}
+		if (args[1]->IsString()) {
+			content = args[1]->GetString();
+		}
+		else {
+			PushError("Argument 1 is not string");
+		}
+		filepath = Callbacker::_proj_path + filepath;
+		std::ofstream file(filepath, std::ios::binary);
+		std::string text;
+		std::string line;
+
+		if (!file) {
+			PushError("Failed to open: " + std::string(filepath));
+			return Value(false);
+		}
+
+		file << content;
+
+		return Value(true);
+	}
+
+	nova_std_decl(Input) {
+		req_args(1);
+		strget(string, 0);
+		std::string in;
+#ifdef USE_CONSOLE
+		std::cout << string << " >: ";
+		std::getline(std::cin, in);
+		return Value(in);
+#else
+#ifdef _WIN32
+
+		InputDlgData dlgData;
+		dlgData.userInput = &in;
+		dlgData.prompt = string;
+
+		DialogBoxParamA(
+			GetModuleHandle(nullptr),
+			MAKEINTRESOURCEA(101),
+			nullptr,
+			InputDlgProc,
+			reinterpret_cast<LPARAM>(&dlgData)
+		);
+
+		return Value(in);
+#endif
+#endif
+	}
+
+	Scope GetModule() {
+		Scope scope;
+		scope.Set("Print", Value(&Print));
+		scope.Set("PrintWarning", Value(&PrintWarning));
+		scope.Set("PrintError", Value(&PrintError));
+		scope.Set("LoadText", Value(&LoadText));
+		scope.Set("SaveText", Value(&SaveText));
+		scope.Set("Input", Value(&Input));
+		return scope;
+	}
+
+protected:
+
+	
+
+};
 
 namespace nova_std_io {
 	static void PushError(const std::string& message) {
@@ -174,13 +307,13 @@ namespace nova_std_io {
 	static Value GetModule() {
 		Scope scope;
 		// I
-		scope.Set("LoadText", LoadText);
-		scope.Set("Input", Input);
+		scope.Set("LoadText", Value(&LoadText));
+		scope.Set("Input", Value(&Input));
 		// O
-		scope.Set("Print", Print);
-		scope.Set("PrintWarning", PrintWarning);
-		scope.Set("PrintError", PrintError);
-		scope.Set("SaveText", SaveText);
+		scope.Set("Print", Value(&Print));
+		scope.Set("PrintWarning", Value(&PrintWarning));
+		scope.Set("PrintError", Value(&PrintError));
+		scope.Set("SaveText", Value(&SaveText));
 		return scope;
 	}
 }

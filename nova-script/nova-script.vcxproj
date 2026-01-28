@@ -70,6 +70,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)nova-engine\working</OutDir>
+    <TargetName>$(ProjectName)-$(Configuration)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)nova-engine\working</OutDir>
+    <TargetName>$(ProjectName)-$(Configuration)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)nova-engine\working</OutDir>
+    <TargetName>$(ProjectName)-$(Configuration)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)nova-engine\working</OutDir>
+    <TargetName>$(ProjectName)-$(Configuration)</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -86,6 +102,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PostBuildEvent>
+      <Command>REM Copy .lib and .dll to Lib folder
+xcopy /Y /D "$(TargetDir)$(TargetName).lib" "$(SolutionDir)nova-engine\Lib" 
+
+REM Copy .pdb if it exists
+if exist "$(TargetDir)$(TargetName).pdb" xcopy /Y /D "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)nova-engine\Lib" 
+
+REM Delete intermediate files
+if exist "$(TargetDir)$(TargetName).exp" del /Q "$(TargetDir)$(TargetName).exp"
+if exist "$(TargetDir)$(TargetName).lib" del /Q "$(TargetDir)$(TargetName).lib"
+if exist "$(TargetDir)$(TargetName).pdb" del /Q "$(TargetDir)$(TargetName).pdb" </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -107,6 +135,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PostBuildEvent>
+      <Command>REM Copy .lib and .dll to Lib folder
+xcopy /Y /D "$(TargetDir)$(TargetName).lib" "$(SolutionDir)nova-engine\Lib" 
+
+REM Copy .pdb if it exists
+if exist "$(TargetDir)$(TargetName).pdb" xcopy /Y /D "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)nova-engine\Lib" 
+
+REM Delete intermediate files
+if exist "$(TargetDir)$(TargetName).exp" del /Q "$(TargetDir)$(TargetName).exp"
+if exist "$(TargetDir)$(TargetName).lib" del /Q "$(TargetDir)$(TargetName).lib"
+if exist "$(TargetDir)$(TargetName).pdb" del /Q "$(TargetDir)$(TargetName).pdb" </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -124,6 +164,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PostBuildEvent>
+      <Command>REM Copy .lib and .dll to Lib folder
+xcopy /Y /D "$(TargetDir)$(TargetName).lib" "$(SolutionDir)nova-engine\Lib" 
+
+REM Copy .pdb if it exists
+if exist "$(TargetDir)$(TargetName).pdb" xcopy /Y /D "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)nova-engine\Lib" 
+
+REM Delete intermediate files
+if exist "$(TargetDir)$(TargetName).exp" del /Q "$(TargetDir)$(TargetName).exp"
+if exist "$(TargetDir)$(TargetName).lib" del /Q "$(TargetDir)$(TargetName).lib"
+if exist "$(TargetDir)$(TargetName).pdb" del /Q "$(TargetDir)$(TargetName).pdb" </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -145,6 +197,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PostBuildEvent>
+      <Command>REM Copy .lib and .dll to Lib folder
+xcopy /Y /D "$(TargetDir)$(TargetName).lib" "$(SolutionDir)nova-engine\Lib" 
+
+REM Copy .pdb if it exists
+if exist "$(TargetDir)$(TargetName).pdb" xcopy /Y /D "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)nova-engine\Lib" 
+
+REM Delete intermediate files
+if exist "$(TargetDir)$(TargetName).exp" del /Q "$(TargetDir)$(TargetName).exp"
+if exist "$(TargetDir)$(TargetName).lib" del /Q "$(TargetDir)$(TargetName).lib"
+if exist "$(TargetDir)$(TargetName).pdb" del /Q "$(TargetDir)$(TargetName).pdb" </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="NovaScript\ASTNodes\ASTNode.h" />
@@ -155,6 +219,7 @@
     <ClInclude Include="NovaScript\Interpretor\Interpretor.h" />
     <ClInclude Include="NovaScript\Interpretor\Scope.h" />
     <ClInclude Include="NovaScript\Interpretor\Value.h" />
+    <ClInclude Include="NovaScript\Library\NovaModule.h" />
     <ClInclude Include="NovaScript\Library\nova_asset_db.h" />
     <ClInclude Include="NovaScript\Library\nova_engine.h" />
     <ClInclude Include="NovaScript\Library\nova_io.h" />
@@ -166,6 +231,7 @@
     <ClInclude Include="NovaScript\Parser\Lexer.h" />
     <ClInclude Include="NovaScript\Parser\Parser.h" />
     <ClInclude Include="NovaScript\Parser\Tokens.h" />
+    <ClInclude Include="NovaScript_API.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +243,7 @@
     <ClCompile Include="NovaScript\Interpretor\Scope.cpp" />
     <ClCompile Include="NovaScript\Interpretor\Value.cpp" />
     <ClCompile Include="NovaScript.cpp" />
+    <ClCompile Include="NovaScript\Library\NovaModule.cpp" />
     <ClCompile Include="NovaScript\Parser\Lexer.cpp" />
     <ClCompile Include="NovaScript\Parser\Parser.cpp" />
     <ClCompile Include="pch.cpp">

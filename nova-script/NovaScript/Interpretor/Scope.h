@@ -5,10 +5,10 @@
 #include <string>
 #include <memory>
 #include <vector>
-
+#include "../../NovaScript_API.h"
 struct Value;
 
-struct Scope {
+struct NOVASCRIPT_API Scope {
 	Scope* parent = nullptr;
 
 	std::unordered_map<std::string, Value> variables;

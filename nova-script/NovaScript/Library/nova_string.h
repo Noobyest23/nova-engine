@@ -4,10 +4,13 @@
 #include "../Interpretor/Scope.h"
 #include "nova_std_macro.h"
 #include <string>
+#include "NovaModule.h"
 
-namespace nova_std_string {
-	static void PushError(const std::string& message) {
-		Callbacker::PushError(std::string("[NovaScript String Library] " + message).c_str(), 2);
+class NovaStringModule : public NovaModule {
+public:
+
+	NovaStringModule() {
+		module_name = "string";
 	}
 
 	nova_std_decl(Length) {
@@ -47,7 +50,7 @@ namespace nova_std_string {
 		Value* val = args[0];
 		return Value(val->ToString());
 	}
-	
+
 	nova_std_decl(Substr) {
 		req_args(3);
 		strget(string, 0);
@@ -122,27 +125,28 @@ namespace nova_std_string {
 		return Value(out);
 	}
 
-	static Value GetModule() {
-		Scope scope;
-		
-		scope.Set("Length", Length);
-		scope.Set("IsEmpty", IsEmpty);
-		scope.Set("StartsWith", StartsWith);
-		scope.Set("EndsWith", EndsWith);
-		scope.Set("Contains", Contains);
-		
-		scope.Set("Substr", Substr);
-		scope.Set("Find", Find);
-		scope.Set("Trim", Trim);
-		scope.Set("Replace", Replace);
-		scope.Set("ToUpper", ToUpper);
-		scope.Set("ToLower", ToLower);
-		
-		scope.Set("ToString", ToString);
+	Scope GetModule() override {
+			Scope scope;
 
-		return scope;
-	}
-}
+			scope.Set("Length", Value(&Length));
+			scope.Set("IsEmpty",Value(&IsEmpty));
+			scope.Set("StartsWith", Value(&StartsWith));
+			scope.Set("EndsWith", Value(&EndsWith));
+			scope.Set("Contains", Value(&Contains));
+
+			scope.Set("Substr", Value(&Substr));
+			scope.Set("Find", Value(&Find));
+			scope.Set("Trim", Value(&Trim));
+			scope.Set("Replace", Value(&Replace));
+			scope.Set("ToUpper", Value(&ToUpper));
+			scope.Set("ToLower", Value(&ToLower));
+
+			scope.Set("ToString", Value(&ToString));
+
+			return scope;
+	};
+
+};
 
 
 #endif

@@ -75,6 +75,12 @@
     <ClInclude Include="NovaScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NovaScript\Library\NovaModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NovaScript_API.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -108,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NovaErrorPush.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NovaScript\Library\NovaModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

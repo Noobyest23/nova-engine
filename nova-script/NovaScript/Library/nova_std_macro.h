@@ -5,7 +5,7 @@
 
 static Value null_value = Value();
 
-#define nova_std_decl(name) Value name(std::vector<Value*>& args)
+#define nova_std_decl(name) static Value name(std::vector<Value*>& args)
 #define req_args(num) if (args.size() < num) { PushError("Expected " + std::string(#num) + " args in function call"); return Value(); }
 
 #define strget(str, arg_i) if (!args[arg_i]->IsString()) { PushError("Expected string as argument " + std::to_string(arg_i)); return Value(); } std::string& str = args[arg_i]->GetString();
