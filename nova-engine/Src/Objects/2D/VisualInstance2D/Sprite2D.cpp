@@ -7,6 +7,7 @@
 Sprite2D::Sprite2D() {
 	material = static_cast<Material*>(AssetDB::Get("sprite_2D_shader"));
 	mesh = static_cast<BoxMesh2D*>(AssetDB::Get("BoxMesh2D"));
+	name = "Sprite2D";
 }
 
 Image* Sprite2D::GetImage() {
@@ -21,7 +22,7 @@ void Sprite2D::SetImage(Image* new_image) {
 	
 	if (new_image) {
 		new_image->AddRef();
-		
+		size = glm::vec2(new_image->GetWidth(), new_image->GetHeight());
 	}
 	image = new_image;
 }
@@ -45,6 +46,7 @@ void Sprite2D::OnDraw() {
 
 	VisualInstance2D::OnDraw();
 	material->SetUniform("u_color", final_color);
+	material->SetUniform("u_img_size", size);
 
 	image->Bind(0);
 	material->SetUniform("u_texture", 0);
@@ -55,3 +57,20 @@ void Sprite2D::OnDraw() {
 	material->Unbind();
 }
 
+void Sprite2D::OnLoad(LoadableValues values) {
+	VisualInstance2D::OnLoad(values);
+	for (LValuePair pair : values) {
+		if (pair.first == "image") {
+			SetImage(static_cast<Image*>(pair.second));
+		}
+		else if (pair.first == "offset") {
+			offset = *static_cast<glm::vec2*>(pair.second);
+		}
+		else if (pair.first == "flip_h") {
+			flip_h = *static_cast<bool*>(pair.second);
+		}
+		else if (pair.first == "flip_v") {
+			flip_v = *static_cast<bool*>(pair.second);
+		}
+	}
+}

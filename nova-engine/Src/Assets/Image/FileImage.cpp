@@ -1,6 +1,7 @@
 #include "FileImage.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
+#include "../../Core/Engine.h"
 
 void FileImage::Reload() {
 	Free();
@@ -15,4 +16,7 @@ FileImage::FileImage(const std::string filepath) {
 void FileImage::LoadFromFile(const std::string& filepath) {
 	stbi_set_flip_vertically_on_load(true);
 	data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
+	if (!data) {
+		Engine::GetInstance()->PushError("Failed to load image " + filepath);
+	}
 }

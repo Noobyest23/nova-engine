@@ -1,0 +1,13 @@
+[FileImage]
+tag = BigBuyImage
+filepath = "big guy.png"
+[/FileImage]
+
+[Sprite2D] # no tag means it will be tagged by its index in the file (i.e: 2)
+image = BigBuyImage
+[/Sprite2D]
+
+# this is a comment
+# no added values loads defaults
+[Camera2D]
+[/Camera2D]

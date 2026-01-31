@@ -38,6 +38,8 @@ protected:
 
 	//void OnNovaObject(Scope& scope) override;
 
+	virtual void OnLoad(LoadableValues values) override;
+
 };
 
 

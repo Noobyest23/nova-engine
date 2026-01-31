@@ -3,35 +3,42 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
-class Interpretor;
+class Script;
 class InputEvent;
 struct CPPObject;
 struct Scope;
 
+using LoadableValues = std::unordered_map<std::string, void*>;
+using LValuePair = std::pair<std::string, void*>;
+
 class Object {
 public:
+
+	Object() { name = "Object"; }
 
 	void Ready();
 	void Update(float deltaTime);
 	void Input(InputEvent* e);
 	void Draw();
+	void Load(LoadableValues values) { OnLoad(values); }
 
 	void AddChild(Object* object);
 	Object* FindChild(const std::string& name);
 	Object* GetChild(int index);
 	std::vector<Object*>& GetChildren();
 	Object* GetParent();
-	CPPObject GetNovaObject();
+	//CPPObject GetNovaObject();
 
 	bool paused = false;
 	bool visible = true;
 
-	std::string name = GetClassName();
+	std::string name;
 
 	virtual std::string GetClassName() const { return "Object"; };
 	
-	Interpretor* script = nullptr;
+	Script* script = nullptr;
 
 	virtual ~Object() = default;
 
@@ -44,8 +51,7 @@ protected:
 	virtual void OnUpdate(float deltaTime) {};
 	virtual void OnInput(InputEvent* e) {};
 	virtual void OnDraw() {};
-	//virtual void OnNovaObject(Scope& inherited) {};
-
+	virtual void OnLoad(std::unordered_map<std::string, void*> values);
 };
 
 

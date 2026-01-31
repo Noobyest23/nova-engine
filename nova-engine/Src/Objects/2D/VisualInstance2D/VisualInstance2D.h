@@ -7,12 +7,17 @@
 class VisualInstance2D : public Object2D {
 public:
 
-	int z_index = 0;
+	VisualInstance2D();
+
+	int layer = 0;
 
 	glm::vec4 tint = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glm::vec4 self_tint = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	glm::vec4 GetTint();
+
+	void SetMaterial(Material* mat);
+	Material* GetMaterial() { return material; };
 
 	virtual ~VisualInstance2D() override;
 protected:
@@ -24,6 +29,7 @@ protected:
 
 	virtual void OnDraw() override;
 
+	virtual void OnLoad(LoadableValues values) override;
 	//void OnNovaObject(Scope& scope) override;
 
 };

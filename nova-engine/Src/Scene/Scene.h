@@ -9,6 +9,7 @@ public:
 	Scene(const std::string& scene_file);
 
 	void ChangeScene(const std::string& scene_file);
+	void AppendScene(const std::string& scene_file, Object* child);
 
 	void Ready();
 	void Update(float deltaTime);
@@ -17,11 +18,13 @@ public:
 
 	Camera2D* GetActiveCamera2D();
 
-//private:
+	Object* root = nullptr;
 
-	void LoadScene(const std::string& scene_file);
+	void Shutdown();
 
-	Object root;
+private:
+
+	Object* LoadScene(const std::string& scene_file);
 
 	Camera2D* RecursiveGetCam2D(Object*);
 

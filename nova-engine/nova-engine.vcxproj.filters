@@ -33,7 +33,7 @@
     <ClCompile Include="Src\Core\Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Core\Scene.cpp">
+    <ClCompile Include="Src\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Objects\Object.cpp">
@@ -78,6 +78,15 @@
     <ClCompile Include="Src\Assets\Script\Script.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Scene\SceneParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\Lexer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Scene\BuildInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Assets\Asset.h">
@@ -98,7 +107,7 @@
     <ClInclude Include="Src\Core\Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Core\Scene.h">
+    <ClInclude Include="Src\Scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\Objects\Object.h">
@@ -149,6 +158,18 @@
     <ClInclude Include="Src\Assets\Script\Added Modules\EngineModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Scene\SceneParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\LoadableTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\Lexer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Scene\Tokens.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Working\NovaData\BootMessage.txt" />
@@ -160,7 +181,7 @@
     <None Include="Working\Projects\Test_Project\Scripts\test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\Objects\StartupScript.nso" />
-    <None Include="Working\Projects\Test_Project\TestScene.json" />
+    <None Include="Working\Projects\Test_Project\TestScene.nscene" />
     <None Include="Working\NovaData\Shaders\sprite2d_vertex.glsl" />
     <None Include="Working\NovaData\Shaders\sprite2d_fragment.glsl" />
   </ItemGroup>

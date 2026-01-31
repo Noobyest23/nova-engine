@@ -1,7 +1,7 @@
 #include "Engine.h"
 
 Engine* Engine::engine_inst = nullptr;
-#include "Scene.h"
+#include "../Scene/Scene.h"
 #include "../Platform/Agnostic/Window.h"
 #include <iostream>
 #include "AssetDB.h"
@@ -40,7 +40,7 @@ static void ScriptExit(const char* message) {
 
 static void ScriptSetProjectPath(const char* path) {
 	Engine* engine = Engine::GetInstance();
-	engine->InitProjectPath(path);
+	engine->SetterProjectPath(path);
 }
 
 void Engine::Init() {
@@ -66,6 +66,13 @@ void Engine::Init() {
 
 	PushMessage("[Engine Init] Initializing AssetDB...");
 	AssetDB::Init();
+	
+	#ifdef _DEBUG
+	//PushMessage("[Engine Init] Compiled in debug mode, adding developer camera (toggle with F1)");
+	//DevCamera2D* dev_cam = new DevCamera2D;
+	//scene->root.AddChild(dev_cam);
+	//dev_cam->active = false;
+	#endif
 
 	PushMessage("[Engine Init] Finished Engine init");
 	if (project_path == "") {
@@ -73,10 +80,14 @@ void Engine::Init() {
 	}
 	PushMessage("[Engine] Warning Nova Engine and all parts of Nova Engine (Especially NovaScript) are still heavily in development", true);
 	PushMessage("[Engine] Things will most likely change, and crashes / memory leaks should be expected", true);
+	
 }
 
 void Engine::Shutdown() {
 	delete window;
+	if (scene) {
+		scene->Shutdown();
+	}
 	AssetDB::Shutdown();
 	Window::Cleanup();
 }
@@ -84,21 +95,8 @@ void Engine::Shutdown() {
 int Engine::TestEnv() {
 	//place for testing code
 
-	scene = new Scene("this do nothing rn");
-	scene->root = Object();
-	FileImage* image = new FileImage(GetProjectPath() + "big guy.png");
-	Sprite2D* sprite = new Sprite2D;
-	sprite->SetImage(image);
-	sprite->SetScale(glm::vec2(30));
-	image->Release();
-	Camera2D* cam = new Camera2D;
-#ifdef _DEBUG
-	DevCamera2D* dev_cam = new DevCamera2D;
-	scene->root.AddChild(dev_cam);
-	dev_cam->active = false;
-#endif
-	scene->root.AddChild(sprite);
-	scene->root.AddChild(cam);
+	scene = new Scene("TestScene.nscene");
+
 
 	return 0;
 }
@@ -119,23 +117,11 @@ int Engine::Run() {
 		scene->Update(0.16f);
 		scene->Draw();
 
-#ifdef _DEBUG 
-		int c_index = 1;
-#else
-		int c_index = 0;
-#endif
-
-		if (Sprite2D* sprite = static_cast<Sprite2D*>(scene->root.GetChild(c_index))) {
-			sprite->SetRotation(sprite->GetRotation() + 0.1f);
-			sprite->tint = glm::vec4(sprite->GetRotation(), sprite->GetRotation() / 2, sprite->GetRotation() / 3, 0.5);
-		}
-
 		glfwSwapBuffers(window->GetWindowHandle());
 	}
 
-	for (Object* child : scene->root.GetChildren()) {
-		delete child;
-	}
+	
+
 	return 0;
 }
 
@@ -157,13 +143,8 @@ void Engine::ShowBootMessage() {
 	std::cout << file.rdbuf() << "\n";
 }
 
-void Engine::InitProjectPath(const std::string& path) {
-	if (project_path == "") {
-		project_path = path;
-	}
-	else {
-		PushError("Project path has already been initialized");
-	}
+void Engine::SetterProjectPath(const std::string& path) {
+	project_path = path;
 }
 
 #ifdef USE_CONSOLE

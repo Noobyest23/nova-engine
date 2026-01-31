@@ -182,7 +182,9 @@
     <ClCompile Include="Src\Assets\Script\Script.cpp" />
     <ClCompile Include="Src\Core\Engine.cpp" />
     <ClCompile Include="Src\Core\AssetDB.cpp" />
-    <ClCompile Include="Src\Core\Scene.cpp" />
+    <ClCompile Include="Src\Scene\BuildInstance.cpp" />
+    <ClCompile Include="Src\Scene\Lexer.cpp" />
+    <ClCompile Include="Src\Scene\Scene.cpp" />
     <ClCompile Include="Src\Core\Signal.cpp" />
     <ClCompile Include="Src\glad.c" />
     <ClCompile Include="Src\Objects\2D\Camera2D.cpp" />
@@ -194,6 +196,7 @@
     <ClCompile Include="Src\Platform\Agnostic\main.cpp" />
     <ClCompile Include="Src\Platform\Agnostic\Window.cpp" />
     <ClCompile Include="Src\Platform\Windows\MSMain.cpp" />
+    <ClCompile Include="Src\Scene\SceneParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Assets\Asset.h" />
@@ -209,7 +212,9 @@
     <ClInclude Include="Src\Assets\Mesh2D\Mesh2D.h" />
     <ClInclude Include="Src\Core\Engine.h" />
     <ClInclude Include="Src\Core\AssetDB.h" />
-    <ClInclude Include="Src\Core\Scene.h" />
+    <ClInclude Include="Src\Scene\Lexer.h" />
+    <ClInclude Include="Src\Scene\LoadableTypes.h" />
+    <ClInclude Include="Src\Scene\Scene.h" />
     <ClInclude Include="Src\Core\Signal.h" />
     <ClInclude Include="Src\Objects\2D\Camera2D.h" />
     <ClInclude Include="Src\Objects\2D\Object2D.h" />
@@ -219,6 +224,8 @@
     <ClInclude Include="Src\Objects\Object.h" />
     <ClInclude Include="Src\Platform\Agnostic\main.h" />
     <ClInclude Include="Src\Platform\Agnostic\Window.h" />
+    <ClInclude Include="Src\Scene\SceneParser.h" />
+    <ClInclude Include="Src\Scene\Tokens.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Working\NovaData\BootMessage.txt" />
@@ -232,7 +239,7 @@
     <None Include="Working\Projects\Test_Project\Scripts\Objects\StartupScript.nso" />
     <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\test.ns" />
-    <None Include="Working\Projects\Test_Project\TestScene.json" />
+    <None Include="Working\Projects\Test_Project\TestScene.nscene" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

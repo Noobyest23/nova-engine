@@ -9,6 +9,7 @@ class Asset {
 public:
 
 	Asset() {};
+	Asset(const Asset&) : ref_count(1) {};
 	virtual ~Asset() = default;
 
 	void AddRef();

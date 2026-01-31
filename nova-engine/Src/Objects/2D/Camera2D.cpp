@@ -13,6 +13,8 @@ Camera2D::Camera2D() {
 
 	UpdateProjection();
 	UpdateView();
+
+	name = "Camera2D";
 }
 
 void Camera2D::SetViewportSize(glm::vec2 size) {
@@ -30,7 +32,7 @@ void Camera2D::UpdateProjection() {
 	float hw = (viewportWidth / 2.0f) / zoom;
 	float hh = (viewportHeight / 2.0f) / zoom;
 
-	proj = glm::ortho(-hw, hw, -hh, hh, -1000.0f, 1000.0f);
+	proj = glm::ortho(-hw, hw, -hh, hh, -10.0f, 10.0f);
 }
 
 void Camera2D::UpdateView() {
@@ -41,4 +43,16 @@ void Camera2D::UpdateView() {
 
 void Camera2D::OnUpdate(float deltaTime) {
 	UpdateView();
+}
+
+void Camera2D::OnLoad(LoadableValues values) {
+	Object2D::OnLoad(values);
+	for (LValuePair pair : values) {
+		if (pair.first == "zoom") {
+			SetZoom(*static_cast<float*>(pair.second));
+		}
+		else if (pair.first == "active") {
+			active = *static_cast<bool*>(pair.second);
+		}
+	}
 }

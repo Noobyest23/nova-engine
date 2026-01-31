@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "../Core/Engine.h"
+#include "../Assets/Script/Script.h"
 
 void Object::Ready() {
 	if (paused) return;
@@ -36,6 +37,7 @@ void Object::Draw() {
 void Object::AddChild(Object* object) {
 	if (paused) return;
 	children.push_back(object);
+	object->parent = this;
 }
 
 Object* Object::FindChild(const std::string& object) {
@@ -61,6 +63,24 @@ std::vector<Object*>& Object::GetChildren() {
 
 Object* Object::GetParent() {
 	return parent;
+}
+
+void Object::OnLoad(std::unordered_map<std::string, void*> values) {
+	for (std::pair<std::string, void*> pair : values) {
+		if (pair.first == "visible") {
+			visible = *static_cast<bool*>(pair.second);
+		}
+		else if (pair.first == "paused") {
+			paused = *static_cast<bool*>(pair.second);
+		}
+		else if (pair.first == "script") {
+			script = static_cast<Script*>(pair.second);
+		}
+		else if (pair.first == "parent") {
+			parent = static_cast<Object*>(pair.second);
+			parent->AddChild(this);
+		}
+	}
 }
 
 /*

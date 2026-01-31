@@ -1,5 +1,9 @@
 #include "Object2D.h"
 #include "../../Core/Engine.h"
+#include "../glm/gtc/matrix_transform.hpp"
+Object2D::Object2D() {
+	name = "Object2D";
+}
 
 glm::vec2 Object2D::GetGlobalPosition() {
 	glm::mat3 t = GetGlobalTransform();
@@ -23,7 +27,7 @@ float Object2D::GetGlobalRotation() {
 }
 
 void Object2D::SetGlobalPosition(const glm::vec2& new_global_pos) {
-	if (!parent) { position = new_global_pos; return; };
+	if (!parent) { position = new_global_pos; MarkLocalCacheDirty(); return; };
 	if (Object2D* p_toodee = dynamic_cast<Object2D*>(parent)) {
 		glm::mat3 inv_parent = glm::inverse(p_toodee->GetGlobalTransform());
 		glm::vec3 local = inv_parent * glm::vec3(new_global_pos, 1.0f);
@@ -31,34 +35,34 @@ void Object2D::SetGlobalPosition(const glm::vec2& new_global_pos) {
 		return;
 	}
 	position = new_global_pos;
-	MarkCacheDirty();
+	MarkGlobalCacheDirty();
 }
 
 void Object2D::SetGlobalScale(const glm::vec2& new_global_scale) {
-	if (!parent) { scale = new_global_scale; return; };
+	if (!parent) { scale = new_global_scale; MarkLocalCacheDirty(); return; };
 	if (Object2D* p_toodee = dynamic_cast<Object2D*>(parent)) {
 		glm::vec2 p_scale = p_toodee->GetGlobalScale();
 		scale = new_global_scale / p_scale;
-		MarkCacheDirty();
+		MarkGlobalCacheDirty();
 		return;
 	}
 	scale = new_global_scale;
-	MarkCacheDirty();
+	MarkGlobalCacheDirty();
 }
 
 void Object2D::SetGlobalRotation(float new_global_rotation) {
-	if (!parent) { rotation = new_global_rotation; return; }
+	if (!parent) { rotation = new_global_rotation; MarkLocalCacheDirty(); return; }
 	if (Object2D* p_toodee = dynamic_cast<Object2D*>(parent)) {
 		rotation = new_global_rotation - p_toodee->GetGlobalRotation();
-		MarkCacheDirty();
+		MarkGlobalCacheDirty();
 		return;
 	}
 	rotation = new_global_rotation;
-	MarkCacheDirty();
+	MarkGlobalCacheDirty();
 }
 
 glm::mat3 Object2D::GetLocalTransform() {
-	if (_dirty_cache) {
+	if (_dirty_local) {
 		float c = cos(rotation);
 		float s = sin(rotation);
 
@@ -75,22 +79,18 @@ glm::mat3 Object2D::GetLocalTransform() {
 		};
 
 		glm::mat3 T = {
-			1.0f, 0.0f, position.x,
-			0.0f, 1.0f, position.y,
-			0.0f, 0.0f, 1.0f
+			1.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,
+			position.x, position.y, 1.0f
 		};
 		local_transform = T * R * S;
-		_dirty_cache = false;
-		return local_transform;
+		_dirty_local = false;
 	}
-	else {
-		return local_transform;
-	}
-
+	return local_transform;
 }
 
 glm::mat3 Object2D::GetGlobalTransform() {
-	if (_dirty_cache) {
+	if (_dirty_global) {
 		if (!parent) {
 			global_transform = GetLocalTransform();
 		}
@@ -100,14 +100,14 @@ glm::mat3 Object2D::GetGlobalTransform() {
 		else {
 			global_transform = GetLocalTransform();
 		}
-		_dirty_cache = false;
+		_dirty_global = false;
 	}
 	return global_transform;
 }
 
 void Object2D::SetPosition(const glm::vec2& pos) {
 	position = pos;
-	MarkCacheDirty();
+	MarkLocalCacheDirty();
 }
 
 void Object2D::SetRotation(float new_rotation) {
@@ -116,19 +116,59 @@ void Object2D::SetRotation(float new_rotation) {
 
 	rotation = std::fmod(new_rotation, TAU);
 	if (rotation < 0.0f) rotation += TAU;
-	MarkCacheDirty();
+	MarkLocalCacheDirty();
 }
 
 void Object2D::SetScale(const glm::vec2& s) {
 	scale = s;
-	MarkCacheDirty();
+	MarkLocalCacheDirty();
 }
 
-void Object2D::MarkCacheDirty() {
-	_dirty_cache = true;
+void Object2D::MarkLocalCacheDirty() {
+	_dirty_local = true;
 	for (Object* child : children) {
 		if (Object2D* c_toodee = dynamic_cast<Object2D*>(child)) {
-			c_toodee->MarkCacheDirty();
+			c_toodee->MarkGlobalCacheDirty();
 		}
 	}
+}
+
+void Object2D::MarkGlobalCacheDirty() {
+	_dirty_global = true;
+	for (Object* child : children) {
+		if (Object2D* c_toodee = dynamic_cast<Object2D*>(child)) {
+			c_toodee->MarkGlobalCacheDirty();
+		}
+	}
+	MarkLocalCacheDirty();
+}
+
+
+void Object2D::OnLoad(std::unordered_map<std::string, void*> values) {
+	Object::OnLoad(values);
+	for (std::pair<std::string, void*> pair : values) {
+		if (pair.first == "position") {
+			SetPosition(*static_cast<glm::vec2*>(pair.second));
+		}
+		if (pair.first == "scale") {
+			SetScale(*static_cast<glm::vec2*>(pair.second));
+		}
+		if (pair.first == "rotation") {
+			SetRotation(*static_cast<float*>(pair.second));
+		}
+	}
+}
+
+glm::mat4 Object2D::GetGlobalTransform4() {
+	glm::mat3 t = GetGlobalTransform();
+
+	glm::mat4 m(1.0f);
+	m[0][0] = t[0][0];
+	m[0][1] = t[0][1];
+	m[1][0] = t[1][0];
+	m[1][1] = t[1][1];
+	m[3][0] = t[2][0];
+	m[3][1] = t[2][1];
+
+	return m;
 }

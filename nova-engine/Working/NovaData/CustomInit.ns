@@ -3,4 +3,4 @@
 # Use it to customize your window, set your project path, or assasinate a global leader. I really dont care!
 
 include "engine" as engine
-engine.InitProjectPath("Projects/Test_Project")
+engine.SetProjectPath("Projects/Test_Project")

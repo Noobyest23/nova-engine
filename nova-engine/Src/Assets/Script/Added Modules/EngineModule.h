@@ -48,14 +48,14 @@ public:
 		return WindowType;
 	}
 
-	nova_std_decl(InitProjectPath) {
+	nova_std_decl(SetProjectPath) {
 		req_args(1);
 		strget(string, 0);
 		if (!string.ends_with("/") or !string.ends_with("\\")) {
 			string.append("/");
 		}
 		Engine* engine = Engine::GetInstance();
-		engine->InitProjectPath(string);
+		engine->SetterProjectPath(string);
 		return null_value;
 	}
 
@@ -72,11 +72,11 @@ public:
 	Scope GetModule() override {
 		Engine* engine = Engine::GetInstance();
 		Scope scope;
-		scope.Set("Exit", Exit);
-		scope.Set("GetWindow", GetWindow);
-		scope.Set("SupressWarningPopup", Value(CPPVariable(engine->suppress_warning_popup)));
-		scope.Set("SupressErrorPopup", Value(CPPVariable(engine->suppress_error_popup)));
-		scope.Set("InitProjectPath", InitProjectPath);
+		NOVA_BIND_METHOD(Exit);
+		NOVA_BIND_METHOD(GetWindow);
+		scope.Set("supress_warning_popup", Value(CPPVariable(engine->suppress_warning_popup)));
+		scope.Set("supress_error_popup", Value(CPPVariable(engine->suppress_error_popup)));
+		NOVA_BIND_METHOD(SetProjectPath);
 		return scope;
 	}
 };

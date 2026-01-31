@@ -38,7 +38,7 @@ public:
 	bool suppress_warning_popup = false;
 	bool suppress_error_popup = false;
 
-	void InitProjectPath(const std::string& path);
+	void SetterProjectPath(const std::string& path);
 	std::string GetProjectPath() { return project_path; };
 
 private:

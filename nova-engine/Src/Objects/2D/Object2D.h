@@ -7,6 +7,8 @@
 class Object2D : public Object {
 public:
 
+	Object2D();
+
 	glm::vec2 GetGlobalPosition();
 	glm::vec2 GetGlobalScale();
 	float GetGlobalRotation();
@@ -27,9 +29,11 @@ public:
 
 protected:
 
-	void MarkCacheDirty();
+	void MarkLocalCacheDirty();
+	void MarkGlobalCacheDirty();
 
-	bool _dirty_cache = true;
+	bool _dirty_local = true;
+	bool _dirty_global = true;
 
 	glm::mat3 global_transform;
 	glm::mat3 local_transform;
@@ -40,8 +44,10 @@ protected:
 
 	glm::mat3 GetLocalTransform();
 	glm::mat3 GetGlobalTransform();
+	glm::mat4 GetGlobalTransform4();
 
 	//void OnNovaObject(Scope& inherited) override;
+	virtual void OnLoad(std::unordered_map<std::string, void*> values) override;
 
 };
 

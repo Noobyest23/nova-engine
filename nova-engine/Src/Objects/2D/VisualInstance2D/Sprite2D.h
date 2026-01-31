@@ -24,12 +24,14 @@ public:
 
 protected:
 
+	glm::vec2 size = { 0.0f, 0.0f };
+
 	//void OnNovaObject(Scope& scope) override;
 
 	Image* image = nullptr;
 
 	virtual void OnDraw() override;
-
+	virtual void OnLoad(LoadableValues values) override;
 };
 
 #endif
