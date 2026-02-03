@@ -5,11 +5,11 @@
 #include <vector>
 
 struct ExprNode : public ASTNode {
-
+	
 };
 
 struct VariableNode : public ExprNode {
-	VariableNode(const std::string& id) : identifier(id) {};
+	VariableNode(const std::string& id) : identifier(id) { };
 	std::string identifier;
 
 	std::string Print() const override {
@@ -149,7 +149,7 @@ struct TernaryNode : public ExprNode {
 };
 
 struct IntLiteralNode : public ExprNode {
-	IntLiteralNode(int number) : number(number) {};
+	IntLiteralNode(int number) : number(number) { constant = true; };
 
 	int number;
 
@@ -160,7 +160,7 @@ struct IntLiteralNode : public ExprNode {
 };
 
 struct FloatLiteralNode : public ExprNode {
-	FloatLiteralNode(float number) : number(number) {};
+	FloatLiteralNode(float number) : number(number) { constant = true; };
 
 	float number;
 
@@ -171,7 +171,7 @@ struct FloatLiteralNode : public ExprNode {
 };
 
 struct StringLiteralNode : public ExprNode {
-	StringLiteralNode(const std::string& string) : string(string) {};
+	StringLiteralNode(const std::string& string) : string(string) { constant = true; };
 
 	std::string string;
 
@@ -182,7 +182,7 @@ struct StringLiteralNode : public ExprNode {
 };
 
 struct BoolLiteralNode : public ExprNode {
-	BoolLiteralNode(bool value) : value(value) {};
+	BoolLiteralNode(bool value) : value(value) { constant = true; };
 
 	bool value;
 
@@ -193,7 +193,7 @@ struct BoolLiteralNode : public ExprNode {
 };
 
 struct ArrayLiteralNode : public ExprNode {
-	ArrayLiteralNode(std::vector<ExprNode*>& values) : values(values) {}
+	ArrayLiteralNode(std::vector<ExprNode*>& values) : values(values) { constant = true; }
 
 	std::vector<ExprNode*> values;
 
@@ -217,6 +217,7 @@ struct ArrayLiteralNode : public ExprNode {
 	}
 
 };
+
 // Var -> DotAccess -> DotAccess -> CPPVar
 // engine.window.size
 struct DotAccessNode : public ExprNode {
@@ -255,7 +256,7 @@ struct DotAccessNode : public ExprNode {
 };
 
 struct Vector2LiteralNode : public ExprNode {
-	Vector2LiteralNode(std::vector<ExprNode*>& values) : values(values) {};
+	Vector2LiteralNode(std::vector<ExprNode*>& values) : values(values) { constant = true; };
 
 	std::vector<ExprNode*> values;
 
@@ -282,7 +283,7 @@ struct Vector2LiteralNode : public ExprNode {
 };
 
 struct Vector3LiteralNode : public ExprNode {
-	Vector3LiteralNode(std::vector<ExprNode*>& values) : values(values) {};
+	Vector3LiteralNode(std::vector<ExprNode*>& values) : values(values) { constant = true; };
 
 	std::vector<ExprNode*> values;
 
@@ -309,7 +310,7 @@ struct Vector3LiteralNode : public ExprNode {
 };
 
 struct Vector4LiteralNode : public ExprNode {
-	Vector4LiteralNode(std::vector<ExprNode*>& values) : values(values) {};
+	Vector4LiteralNode(std::vector<ExprNode*>& values) : values(values) { constant = true; };
 
 	std::vector<ExprNode*> values;
 
@@ -368,6 +369,17 @@ struct ArrayAccessNode : public ExprNode {
 		delete this;
 	}
 
+};
+
+struct OptimizedExpr : public ExprNode {
+
+	std::string Print() const override {
+		return "This expression was optimized away, and is unavailable";
+	}
+
+	void Delete() override {
+		delete this;
+	}
 };
 
 #endif

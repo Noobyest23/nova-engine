@@ -1,5 +1,5 @@
 #include "Parser.h"
-#include "../../NovaErrorPush.h"
+
 // TODO:
 // Eric stupid he realise you can use switch on 
 
@@ -17,6 +17,12 @@ ProgramNode* Parser::Parse() {
 
 StmtNode* Parser::ParseStatement() {
 	// Variable Declaration Node
+	bool is_const = false;
+	bool handled_const = false;
+	if (Accept(NovaTokenType::Const)) {
+		is_const = true;
+		Advance();
+	}
 	if (Accept(NovaTokenType::VarDecl)) {
 		// Next token is an identifier
 		Advance();
@@ -30,8 +36,9 @@ StmtNode* Parser::ParseStatement() {
 				Advance();
 				expression = ParseExpression();
 			}
-			
-			return new VarDeclNode(var_name, expression);
+			VarDeclNode* decl = new VarDeclNode(var_name, expression);
+			decl->constant = is_const;
+			return decl;
 		}
 		else {
 			PushError("Expected variable name");
@@ -192,11 +199,21 @@ StmtNode* Parser::ParseStatement() {
 		StmtNode* stmt = ParseStatement();
 		return new BreakPointNode(stmt);
 	}
+	if (Accept(NovaTokenType::ASTPrint)) {
+		Advance();
+		return new ASTPrintNode;
+	}
 	// If nothing else works we try to parse it as a standalone expression
 	ExprNode* expr = ParseExpression();
 	if (expr) {
 		return new ExprAsStmt(expr);
 	}
+
+	if (is_const and not handled_const) {
+		PushError("Can not evaluate this statement as a constant");
+		return nullptr;
+	}
+
 	Advance();
 	PushError("Unexpected Token Type in statement");
 	return nullptr;

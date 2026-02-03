@@ -12,6 +12,7 @@ Lexer::Lexer(const char* filepath) {
 	
 	if (not file.is_open()) {
 		Callbacker::PushError(("[Lexer] Failed to open file " + std::string(filepath)).c_str(), 2);
+		return;
 	}
 
 	while (std::getline(file, line)) {
@@ -108,6 +109,9 @@ std::vector<Token> Lexer::Parse() {
 			Advance();
 			if (Current() == '|') {
 				result.push_back({ NovaTokenType::OrOp, "||", line, column });
+			}
+			else if (Current() == '!') {
+				result.push_back({ NovaTokenType::ASTPrint, "|~", line, column });
 			}
 			else {
 				result.push_back({ NovaTokenType::BreakPoint, "|", line, column });
@@ -282,6 +286,9 @@ Token Lexer::Identifier() {
 	}
 	else if (value == "false") {
 		return { NovaTokenType::BoolLit, value, line, column };
+	}
+	else if (value == "const") {
+		return { NovaTokenType::Const, value, line, column };
 	}
 	return Token{ NovaTokenType::Identifier, value, line, column };
 }

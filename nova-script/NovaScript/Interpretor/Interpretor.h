@@ -33,6 +33,7 @@ public:
 	Scope* GetScopeAsObj();
 
 	void PushScope();
+	void PopScope();
 
 	void EvaluateStatement(StmtNode*);
 	Value EvaluateExpression(ExprNode*);
@@ -50,6 +51,7 @@ private:
 	void EvaluateStatement(IncludeNode*);
 	void EvaluateStatement(ReturnStmtNode*);
 	void EvaluateStatement(BreakPointNode*);
+	void EvaluateStatement(ASTPrintNode*);
 	void EvaluateStatement(ExprAsStmt*);
 	#pragma endregion
 	#pragma region Evaluate Expression Overloads
@@ -81,8 +83,6 @@ private:
 
 	ProgramNode* program;
 	Scope* scope = nullptr;
-
-	void PopScope();
 
 	void PushError(const std::string& message);
 

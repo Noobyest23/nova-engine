@@ -111,8 +111,7 @@ if exist "$(TargetDir)$(TargetName).pdb" xcopy /Y /D "$(TargetDir)$(TargetName).
 
 REM Delete intermediate files
 if exist "$(TargetDir)$(TargetName).exp" del /Q "$(TargetDir)$(TargetName).exp"
-if exist "$(TargetDir)$(TargetName).lib" del /Q "$(TargetDir)$(TargetName).lib"
-if exist "$(TargetDir)$(TargetName).pdb" del /Q "$(TargetDir)$(TargetName).pdb" </Command>
+if exist "$(TargetDir)$(TargetName).lib" del /Q "$(TargetDir)$(TargetName).lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -173,8 +172,7 @@ if exist "$(TargetDir)$(TargetName).pdb" xcopy /Y /D "$(TargetDir)$(TargetName).
 
 REM Delete intermediate files
 if exist "$(TargetDir)$(TargetName).exp" del /Q "$(TargetDir)$(TargetName).exp"
-if exist "$(TargetDir)$(TargetName).lib" del /Q "$(TargetDir)$(TargetName).lib"
-if exist "$(TargetDir)$(TargetName).pdb" del /Q "$(TargetDir)$(TargetName).pdb" </Command>
+if exist "$(TargetDir)$(TargetName).lib" del /Q "$(TargetDir)$(TargetName).lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -229,6 +227,7 @@ if exist "$(TargetDir)$(TargetName).pdb" del /Q "$(TargetDir)$(TargetName).pdb" 
     <ClInclude Include="NovaScript\Library\WinInputDialog\resource.h" />
     <ClInclude Include="NovaScript.h" />
     <ClInclude Include="NovaScript\Parser\Lexer.h" />
+    <ClInclude Include="NovaScript\Parser\Optimizer.h" />
     <ClInclude Include="NovaScript\Parser\Parser.h" />
     <ClInclude Include="NovaScript\Parser\Tokens.h" />
     <ClInclude Include="NovaScript_API.h" />
@@ -245,6 +244,7 @@ if exist "$(TargetDir)$(TargetName).pdb" del /Q "$(TargetDir)$(TargetName).pdb" 
     <ClCompile Include="NovaScript.cpp" />
     <ClCompile Include="NovaScript\Library\NovaModule.cpp" />
     <ClCompile Include="NovaScript\Parser\Lexer.cpp" />
+    <ClCompile Include="NovaScript\Parser\Optimizer.cpp" />
     <ClCompile Include="NovaScript\Parser\Parser.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

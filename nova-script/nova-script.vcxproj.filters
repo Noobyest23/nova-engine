@@ -81,6 +81,9 @@
     <ClInclude Include="NovaScript_API.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NovaScript\Parser\Optimizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -117,6 +120,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NovaScript\Library\NovaModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NovaScript\Parser\Optimizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

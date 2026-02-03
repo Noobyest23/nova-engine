@@ -46,7 +46,9 @@ enum class NovaTokenType {
 	VectorLit3,
 	VectorLit4, // 40
 	BreakPoint,
-	NewLine
+	NewLine,
+	Const,
+	ASTPrint
 };
 
 struct Token {

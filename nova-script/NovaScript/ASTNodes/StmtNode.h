@@ -213,6 +213,14 @@ struct BreakPointNode : public StmtNode {
 	}
 };
 
+struct ASTPrintNode : public StmtNode {
+
+	std::string Print() const override {
+		return "PRINT TREE";
+	}
+
+};
+
 struct ExprAsStmt : public StmtNode {
 	ExprAsStmt(ExprNode* expr) : expr(expr) {};
 

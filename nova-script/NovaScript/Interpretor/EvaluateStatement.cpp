@@ -23,6 +23,7 @@ es_decl(StmtNode* node) {
 	es(IncludeNode*)
 	es(ReturnStmtNode*)
 	es(BreakPointNode*)
+	es(ASTPrintNode*)
 	es(ExprAsStmt*)
 	PushError("Unrecognized Statement " + node->Print());
 }
@@ -128,14 +129,24 @@ es_decl(ReturnStmtNode* node) {
 }
 
 es_decl(BreakPointNode* node) {
-	Callbacker::PushError("[NovaScript] Breakpoint Hit!", 2);
-	Callbacker::PushError(("[NovaScript] AST of this statement: " + node->stmt->Print()).c_str(), 1);
-	Callbacker::PushError("[NovaScript] Current variables in scope: ", 1);
-	for (std::pair<std::string, Value> var : scope->variables) {
-		Callbacker::PushError(("[NovaScript] " + var.first + " = " + var.second.ToString()).c_str(), 1);
+	if (program) {
+		Callbacker::PushError("[NovaScript] Breakpoint Hit!", 2);
+		Callbacker::PushError(("[NovaScript] AST of this statement: " + node->stmt->Print()).c_str(), 1);
+		Callbacker::PushError("[NovaScript] Current variables in scope: ", 1);
+		for (std::pair<std::string, Value> var : scope->variables) {
+			Callbacker::PushError(("[NovaScript] " + var.first + " = " + var.second.ToString()).c_str(), 1);
+		}
 	}
 	EvaluateStatement(node->stmt);
 }
+
+es_decl(ASTPrintNode* node) {
+	if (program) {
+		Callbacker::PushError("[NovaScript] Super Breakpoint Hit!", 2);
+		Callbacker::PushError(("[NovaScript] AST of this script: " + program->Print()).c_str(), 1);
+	}
+}
+
 
 es_decl(ExprAsStmt* node) {
 	EvaluateExpression(node->expr);

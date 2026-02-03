@@ -6,16 +6,20 @@
 #include <vector>
 #include <unordered_map>
 #include <glm/glm.hpp>
+#include <functional>
+
 #include "Scope.h"
 #include "../../NovaScript_API.h"
+
 struct Value;
 class Interpretor;
 struct FuncDeclNode;
 struct TypeDeclNode;
 
-using CPPFunction = Value (*)(std::vector<Value*>&);
+using CPPFunction = Value(*)(std::vector<Value*>&);
 using NovaFunction = FuncDeclNode*;
 using NovaType = Scope;
+
 using CPPVariable = std::variant<
 	std::monostate,
 	std::reference_wrapper<int>,
@@ -26,8 +30,10 @@ using CPPVariable = std::variant<
 	std::reference_wrapper<glm::vec3>,
 	std::reference_wrapper<glm::vec4>
 >;
+
 using ReferenceValue = std::reference_wrapper<Value>;
 using NovaTypeDecl = TypeDeclNode*;
+
 struct CPPObject {
 	void* ptr = nullptr;
 	Scope scope;
@@ -35,25 +41,29 @@ struct CPPObject {
 
 struct NOVASCRIPT_API Value {
 	Value() = default;
-	explicit Value(int data) : data(data) {};
-	explicit Value(float data) : data(data) {};
-	explicit Value(std::string data) : data(data) {};
-	explicit Value(bool data) : data(data) {};
-	Value(CPPFunction data) : data(data) {};
-	Value(NovaFunction data) : data(data) {};
-	Value(std::vector<Value>& data) : data(data) {};
-	Value(NovaType& data) : data(data) {};
-	Value(NovaTypeDecl& data) : data(data) {};
-	Value(CPPObject data) : data(data) {};
-	Value(glm::vec2 data) : data(data) {};
-	Value(glm::vec3 data) : data(data) {};
-	Value(glm::vec4 data) : data(data) {};
-	explicit Value(CPPVariable data) : data(data) {};
-	explicit Value(ReferenceValue data) : data(data) {};
+
+	explicit Value(int v) : data(v) {}
+	explicit Value(float v) : data(v) {}
+	explicit Value(bool v) : data(v) {}
+	explicit Value(std::string v) : data(std::move(v)) {}
+
+	Value(CPPFunction v) : data(v) {}
+	Value(NovaFunction v) : data(v) {}
+	Value(std::vector<Value>& v) : data(v) {}
+	Value(NovaType& v) : data(v) {}
+	Value(NovaTypeDecl& v) : data(v) {}
+	Value(CPPObject v) : data(v) {}
+
+	Value(glm::vec2 v) : data(v) {}
+	Value(glm::vec3 v) : data(v) {}
+	Value(glm::vec4 v) : data(v) {}
+
+	explicit Value(CPPVariable v) : data(v) {}
+	explicit Value(ReferenceValue v) : data(v) {}
 
 	~Value();
 
-	std::variant <
+	std::variant<
 		std::monostate, // 0
 		int,
 		float,
@@ -85,7 +95,6 @@ struct NOVASCRIPT_API Value {
 	glm::vec4& GetVec4();
 	std::vector<Value>& GetArray();
 
-
 	bool IsInt() const;
 	bool IsFloat() const;
 	bool IsNum() const;
@@ -100,15 +109,12 @@ struct NOVASCRIPT_API Value {
 	bool IsObj() const;
 	bool IsArray() const;
 	bool IsReference() const;
-	//bool IsCallback() const;
 
 	bool is_manually_created = false;
-	void Release() {
-		if (is_manually_created) {
-			delete this;
-		}
-	};
-};
 
+	void Release() {
+		if (is_manually_created) delete this;
+	}
+};
 
 #endif

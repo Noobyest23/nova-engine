@@ -5,7 +5,7 @@
 #include "../Assets/Asset.h"
 #include <glm/glm.hpp>
 Object* SceneParser::Parse(const std::string& filepath) {
-	tokens = Lexer((Engine::GetInstance()->GetProjectPath() + filepath).c_str()).Parse();
+	tokens = Lexer(filepath.c_str()).Parse();
 
 	
 	Loop();

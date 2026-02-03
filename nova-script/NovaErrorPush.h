@@ -1,11 +1,18 @@
 #ifndef NOVA_SCRIPT_PUSH_ERROR
 #define NOVA_SCRIPT_PUSH_ERROR
-
+#include "NovaScript_API.h"
 #include <string>
 
 static bool _use_console = false;
 
-class Callbacker {
+namespace NovaInternal {
+	extern void(*_PushErrorCallback)(const char* message, int sevarity);
+	extern void(*_ExitCallback)(const char* message);
+	extern std::string _proj_path;
+	extern void(*_ProjectPathSetCallback)(const char* path);
+}
+
+class NOVASCRIPT_API Callbacker {
 public:
 
 	static void PushError(const std::string& message, int sevarity);

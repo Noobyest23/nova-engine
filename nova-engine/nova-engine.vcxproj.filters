@@ -177,12 +177,12 @@
   <ItemGroup>
     <None Include="Working\Projects\Test_Project\Scripts\print_speedrun.ns" />
     <None Include="Working\NovaData\CustomInit.ns" />
-    <None Include="Working\Projects\Test_Project\Scripts\Bootmessage.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\Objects\StartupScript.nso" />
     <None Include="Working\Projects\Test_Project\TestScene.nscene" />
     <None Include="Working\NovaData\Shaders\sprite2d_vertex.glsl" />
     <None Include="Working\NovaData\Shaders\sprite2d_fragment.glsl" />
+    <None Include="Working\Projects\Test_Project\Scripts\optimizer_test.ns" />
   </ItemGroup>
 </Project>

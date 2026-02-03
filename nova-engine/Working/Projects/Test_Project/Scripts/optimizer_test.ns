@@ -1,0 +1,10 @@
+const var x = 20
+| var y = x + 10
+if (true) {
+	| y += x + 1 + 1 + 1 + 1 + 1 + 1 + 1
+}
+else {
+	io.PrintError("I DO NOT EXIST")
+}
+io.Print(y)
+|!

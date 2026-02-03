@@ -1,8 +1,0 @@
-include "engine" as engine
-include "io"
-
-engine.SupressWarningPopup = true
-engine.SupressErrorPopup = true
-
-PrintError("Hit that yoinky sploinky")
-PrintWarning("Hit that yoinky sploinky")

@@ -9,11 +9,6 @@ Engine* Engine::engine_inst = nullptr;
 #include "../../nova-script/NovaScript.h"
 #include "../../nova-script/NovaErrorPush.h"
 #include "../Assets/Script/Script.h"
-// TEMP
-#include "../Objects/2D/VisualInstance2D/Sprite2D.h"
-#include "../Assets/Image/FileImage.h"
-#include "../Objects/2D/Camera2D.h"
-#include "../Objects/2D/_Internal/DevCamera2D.h"
 
 static void ScriptPushError(const char* message, int sevarity) {
 	Engine* engine = Engine::GetInstance();
@@ -95,9 +90,8 @@ void Engine::Shutdown() {
 int Engine::TestEnv() {
 	//place for testing code
 
-	scene = new Scene("TestScene.nscene");
-
-
+	scene = new Scene(project_path + "TestScene.nscene");
+	Script* script = new Script(project_path + "Scripts/optimizer_test.ns");
 	return 0;
 }
 

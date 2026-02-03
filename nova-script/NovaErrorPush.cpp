@@ -1,3 +1,4 @@
+#define NOVASCRIPT_EXPORTS
 #include "NovaErrorPush.h"
 
 void(*Callbacker::_PushErrorCallback)(const char* message, int sevarity) = nullptr;

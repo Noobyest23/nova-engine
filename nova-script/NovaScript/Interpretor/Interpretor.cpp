@@ -7,18 +7,23 @@
 #include "../Library/nova_std.h"
 #include "../../NovaErrorPush.h"
 #include "../../pch.h"
+#include "../Parser/Optimizer.h"
 
 Interpretor::Interpretor(const std::string& filepath) {
 	Lexer lexer(filepath.c_str());
 	auto tokens = lexer.Parse();
 	Parser parser(tokens);
 	program = parser.Parse();
+	Optimizer optimizer(program);
+	program = optimizer.Optimize();
 
 	Init();
 }
 
 Interpretor::~Interpretor() {
-	program->Delete(); 
+	if (program) {
+		program->Delete();
+	}
 	while (scope) { 
 		PopScope(); 
 	}
@@ -28,17 +33,27 @@ Interpretor::~Interpretor() {
 }
 
 void Interpretor::Init() {
-	if (not program->valid_program) {
-		PushError("Parser errors detected, script will not run");
+	scope = new Scope();
+	if (!program) {
 		return;
 	}
-	scope = new Scope();
-
+	if (not program->valid_program) {
+		PushError("Parser errors detected, cannot initialize script");
+		return;
+	}
+	
 	modules["string"] = new NovaStringModule;
 	modules["io"] = new NovaIOModule;
 }
 
 void Interpretor::Exec() {
+	if (!program) {
+		return;
+	}
+	if (not program->valid_program) {
+		PushError("Parser errors detected, cannot execute script");
+		return;
+	}
 	for (StmtNode* stmt : program->Statements) {
 		EvaluateStatement(stmt);
 	}
