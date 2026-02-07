@@ -4,3 +4,4 @@
 
 include "engine" as engine
 engine.SetProjectPath("Projects/Test_Project")
+engine.main_scene = "TestScene.nscene"

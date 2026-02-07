@@ -9,6 +9,7 @@ Engine* Engine::engine_inst = nullptr;
 #include "../../nova-script/NovaScript.h"
 #include "../../nova-script/NovaErrorPush.h"
 #include "../Assets/Script/Script.h"
+#include "../Objects/2D/_Internal/DevCamera2D.h"
 
 static void ScriptPushError(const char* message, int sevarity) {
 	Engine* engine = Engine::GetInstance();
@@ -46,7 +47,7 @@ void Engine::Init() {
 	Window::Init();
 	window = new Window("Nova Engine", 800, 600);
 
-	PushMessage("[Engine Init] Linking NovaScript.dll...");
+	PushMessage("[Engine Init] Linking NovaScript Library...");
 	SetErrorCallback(ScriptPushError);
 	SetExitCallback(ScriptExit);
 	SetProjectPath(ScriptSetProjectPath);
@@ -58,15 +59,19 @@ void Engine::Init() {
 	Script* init_script = new Script("NovaData/CustomInit.ns");
 	init_script->Release();
 	//nova_asset_db_init::basic_2D = true;
-
+	
 	PushMessage("[Engine Init] Initializing AssetDB...");
 	AssetDB::Init();
 	
+	PushMessage("[Engine Init] Loading main scene");
+	scene = new Scene(project_path + initial_scene);
+
 	#ifdef _DEBUG
-	//PushMessage("[Engine Init] Compiled in debug mode, adding developer camera (toggle with F1)");
-	//DevCamera2D* dev_cam = new DevCamera2D;
-	//scene->root.AddChild(dev_cam);
-	//dev_cam->active = false;
+	PushMessage("[Engine Init] Compiled in debug mode, adding developer camera (toggle with F1)");
+	DevCamera2D* dev_cam = new DevCamera2D;
+	scene->root->AddChild(dev_cam);
+	dev_cam->active = false;
+	scene->root->MoveChild(scene->root->GetChildrenCount() - 1, 0);
 	#endif
 
 	PushMessage("[Engine Init] Finished Engine init");
@@ -89,9 +94,6 @@ void Engine::Shutdown() {
 
 int Engine::TestEnv() {
 	//place for testing code
-
-	scene = new Scene(project_path + "TestScene.nscene");
-	Script* script = new Script(project_path + "Scripts/optimizer_test.ns");
 	return 0;
 }
 
@@ -143,18 +145,19 @@ void Engine::SetterProjectPath(const std::string& path) {
 
 #ifdef USE_CONSOLE
 void Engine::PushMessage(const std::string& message, bool important) {
-	if (important) {
+	if (important and not suppress_warning_popup) {
 		std::cout << "\033[36m" << message << "\033[0m\n";
 	}
-	else {
+	else if (not important) {
 		std::cout << message << "\n";
 	}
 	
 }
 
 void Engine::PushError(const std::string& message, bool stop_execution) {
-	std::cout << "\033[31m" << message << "\033[0m\n";
-
+	if (not suppress_error_popup) {
+		std::cout << "\033[31m" << message << "\033[0m\n";
+	}
 	if (stop_execution) {
 		Stop();
 	}

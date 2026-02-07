@@ -3,7 +3,8 @@
 #include "../../../Assets/Image/Image.h"
 #include "../../../Assets/Mesh2D/BoxMesh2D.h"
 #include "../../../Core/AssetDB.h"
-
+#include "../../../nova-script/NovaScript/Interpretor/Value.h"
+#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
 Sprite2D::Sprite2D() {
 	material = static_cast<Material*>(AssetDB::Get("sprite_2D_shader"));
 	mesh = static_cast<BoxMesh2D*>(AssetDB::Get("BoxMesh2D"));
@@ -74,3 +75,29 @@ void Sprite2D::OnLoad(LoadableValues values) {
 		}
 	}
 }
+
+namespace sprite_2d {
+	static void PushError(const std::string& message) {
+		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
+	}
+
+
+
+
+	Scope GetModule() {
+		Scope scope;
+
+		return scope;
+	}
+
+}
+
+CPPObject Sprite2D::GetNovaObject() {
+	CPPObject ret = VisualInstance2D::GetNovaObject();
+	Scope& scope = ret.scope;
+	NOVA_BIND_PROPERTY(flip_h);
+	NOVA_BIND_PROPERTY(flip_v);
+	NOVA_BIND_PROPERTY(offset);
+	return ret;
+}
+

@@ -5,7 +5,8 @@
 
 class DevCamera2D : public Camera2D {
 public:
-	
+	DevCamera2D() { name = "DevCamera2D"; }
+
 	float speed = 10.0f;
 
 

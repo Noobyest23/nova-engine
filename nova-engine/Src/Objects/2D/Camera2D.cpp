@@ -75,7 +75,7 @@ namespace camera_2d {
 }
 
 CPPObject Camera2D::GetNovaObject() {
-	CPPObject ret = Object::GetNovaObject();
+	CPPObject ret = Object2D::GetNovaObject();
 	Scope& scope = ret.scope;
 	NOVA_BIND_WHOLE_NAMESPACE(camera_2d);
 	NOVA_BIND_PROPERTY(active);

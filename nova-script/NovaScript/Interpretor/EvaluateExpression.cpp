@@ -50,7 +50,41 @@ ee_decl(AssignmentNode* node) {
 	}
 
 	Value rhs = EvaluateExpression(node->right);
-
+	if (lhs->IsCPP()) {
+		try {
+			if (lhs->IsString()) {
+				std::string& string = lhs->GetString();
+				string = rhs.GetString();
+			}
+			else if (lhs->IsBool()) {
+				bool& b = lhs->GetBool();
+				b = rhs.GetBool();
+			}
+			else if (lhs->IsInt()) {
+				int& i = lhs->GetInt();
+				i = rhs.GetInt();
+			}
+			else if (lhs->IsFloat()) {
+				float& f = lhs->GetFloat();
+				f = rhs.GetFloat();
+			}
+			else if (lhs->IsVec2()) {
+				auto& v = lhs->GetVec2();
+				v = rhs.GetVec2();
+			}
+			else if (lhs->IsVec3()) {
+				auto& v = lhs->GetVec3();
+				v = rhs.GetVec3();
+			}
+			else if (lhs->IsVec4()) {
+				auto& v = lhs->GetVec4();
+				v = rhs.GetVec4();
+			}
+		}
+		catch (std::exception e) {
+			PushError("Trying to assign " + rhs.Type() + " to a non-matching cpp variable (" + lhs->Type() + ")");
+		}
+	}
 	lhs->data = rhs.data;
 }
 

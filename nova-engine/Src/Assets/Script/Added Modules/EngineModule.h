@@ -76,6 +76,7 @@ public:
 		NOVA_BIND_METHOD(GetWindow);
 		scope.Set("supress_warning_popup", Value(CPPVariable(engine->suppress_warning_popup)));
 		scope.Set("supress_error_popup", Value(CPPVariable(engine->suppress_error_popup)));
+		scope.Set("main_scene", Value(CPPVariable(engine->initial_scene)));
 		NOVA_BIND_METHOD(SetProjectPath);
 		return scope;
 	}

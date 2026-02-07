@@ -1,7 +1,8 @@
 #include "VisualInstance2D.h"
 #include "../../../Core/Engine.h"
 #include "../../../Scene/Scene.h"
-
+#include "../../../nova-script/NovaScript/Interpretor/Value.h"
+#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
 VisualInstance2D::VisualInstance2D() {
 	name = "VisualInstance2D";
 }
@@ -67,3 +68,28 @@ void VisualInstance2D::OnLoad(LoadableValues values) {
 		}
 	}
 }
+
+namespace visual_instance_2d {
+	static void PushError(const std::string& message) {
+		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
+	}
+
+	
+
+
+	Scope GetModule() {
+		Scope scope;
+		
+		return scope;
+	}
+
+}
+
+CPPObject VisualInstance2D::GetNovaObject() {
+	CPPObject ret = Object2D::GetNovaObject();
+	Scope& scope = ret.scope;
+	NOVA_BIND_PROPERTY(tint);
+	NOVA_BIND_PROPERTY(self_tint);
+	return ret;
+}
+

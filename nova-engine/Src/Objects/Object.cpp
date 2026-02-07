@@ -69,6 +69,21 @@ Object* Object::GetChild(int index) {
 	return nullptr;
 }
 
+void Object::MoveChild(int from, int to) {
+	// Use a reference to avoid copying the whole vector
+	std::vector<Object*>& children = GetChildren();
+
+	if (from >= 0 && from < children.size() && to >= 0 && to < children.size()) {
+		Object* target = children[from];
+		children.erase(children.begin() + from);
+		children.insert(children.begin() + to, target);
+	}
+}
+
+int Object::GetChildrenCount() {
+	return children.size();
+}
+
 std::vector<Object*>& Object::GetChildren() {
 	return children;
 }

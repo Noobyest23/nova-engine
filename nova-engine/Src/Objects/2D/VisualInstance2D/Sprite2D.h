@@ -20,6 +20,8 @@ public:
 
 	virtual ~Sprite2D() override;
 
+	CPPObject GetNovaObject() override;
+
 	std::string GetClassName() const override { return "Sprite2D"; }
 
 protected:

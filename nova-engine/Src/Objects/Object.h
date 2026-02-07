@@ -25,10 +25,12 @@ public:
 	void Draw();
 	void Load(LoadableValues values) { OnLoad(values); }
 
+	void MoveChild(int from, int to);
 	void AddChild(Object* object);
 	Object* FindChild(const std::string& name);
 	Object* GetChild(int index);
 	std::vector<Object*>& GetChildren();
+	int GetChildrenCount();
 	Object* GetParent();
 
 	bool paused = false;

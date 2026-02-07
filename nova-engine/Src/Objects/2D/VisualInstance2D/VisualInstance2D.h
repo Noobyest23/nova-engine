@@ -19,6 +19,8 @@ public:
 	void SetMaterial(Material* mat);
 	Material* GetMaterial() { return material; };
 
+	CPPObject GetNovaObject() override;
+
 	virtual ~VisualInstance2D() override;
 protected:
 
@@ -30,7 +32,6 @@ protected:
 	virtual void OnDraw() override;
 
 	virtual void OnLoad(LoadableValues values) override;
-	//void OnNovaObject(Scope& scope) override;
 
 };
 

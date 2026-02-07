@@ -9,19 +9,21 @@ void DevCamera2D::OnInput(InputEvent* e) {
 				active = !active;
 			}
 		}
-		switch (key->key_code) {
-		case GLFW_KEY_W:
-			SetPosition(glm::vec2(GetPosition().x, GetPosition().y + (static_cast<float>(active) * speed)));
-			break;
-		case GLFW_KEY_A:
-			SetPosition(glm::vec2(GetPosition().x + (-static_cast<float>(active) * speed), GetPosition().y));
-			break;
-		case GLFW_KEY_S:
-			SetPosition(glm::vec2(GetPosition().x, GetPosition().y + (-static_cast<float>(active) * speed)));
-			break;
-		case GLFW_KEY_D:
-			SetPosition(glm::vec2(GetPosition().x + (static_cast<float>(active) * speed), GetPosition().y));
-			break;
+		if (active) {
+			switch (key->key_code) {
+			case GLFW_KEY_W:
+				SetPosition(glm::vec2(GetPosition().x, GetPosition().y + (static_cast<float>(active) * speed)));
+				break;
+			case GLFW_KEY_A:
+				SetPosition(glm::vec2(GetPosition().x + (-static_cast<float>(active) * speed), GetPosition().y));
+				break;
+			case GLFW_KEY_S:
+				SetPosition(glm::vec2(GetPosition().x, GetPosition().y + (-static_cast<float>(active) * speed)));
+				break;
+			case GLFW_KEY_D:
+				SetPosition(glm::vec2(GetPosition().x + (static_cast<float>(active) * speed), GetPosition().y));
+				break;
+			}
 		}
 	}
 }
