@@ -26,6 +26,8 @@ struct NOVASCRIPT_API Scope {
 
 	std::unordered_map<std::string, Value>& GetAll() { return variables; };
 
+	std::string Print() const;
+
 };
 
 #endif

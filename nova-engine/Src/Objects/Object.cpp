@@ -1,11 +1,17 @@
 #include "Object.h"
 #include "../Core/Engine.h"
 #include "../Assets/Script/Script.h"
+#include "../../../nova-script/NovaScript/Interpretor/Value.h"
+#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
 
 void Object::Ready() {
 	if (paused) return;
 	for (Object* child : GetChildren()) {
 		child->Ready();
+	}
+	if (script) {
+		script->Call("Ready", {});
+		return;
 	}
 	OnReady();
 }
@@ -14,6 +20,12 @@ void Object::Update(float deltaTime) {
 	if (paused) return;
 	for (Object* child : GetChildren()) {
 		child->Update(deltaTime);
+	}
+	if (script) {
+		Value* dt = new Value(deltaTime);
+		dt->is_manually_created = true;
+		script->Call("Update", {dt});
+		return;
 	}
 	OnUpdate(deltaTime);
 }
@@ -74,7 +86,8 @@ void Object::OnLoad(std::unordered_map<std::string, void*> values) {
 			paused = *static_cast<bool*>(pair.second);
 		}
 		else if (pair.first == "script") {
-			script = static_cast<Script*>(pair.second);
+			Script* new_script = static_cast<Script*>(pair.second);
+			SetScript(new_script);
 		}
 		else if (pair.first == "parent") {
 			parent = static_cast<Object*>(pair.second);
@@ -83,20 +96,23 @@ void Object::OnLoad(std::unordered_map<std::string, void*> values) {
 	}
 }
 
-/*
+void Object::SetScript(Script* new_script) {
+	if (script) {
+		script->Release();
+	}
+
+	if (new_script) {
+		new_script->AddRef();
+		auto obj = GetNovaObject();
+		new_script->Set("this", obj);
+	}
+
+	script = new_script;
+}
+
 namespace nova_object {
 	static void PushError(const std::string& message) {
 		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
-	}
-
-	NOVA_VOID_RETURN(Object, Ready);
-
-	nova_std_decl(Update) {
-		req_args(2);
-		objget(obj, Object, 0);
-		floatget(delta, 1);
-		obj->Update(delta);
-		return null_value;
 	}
 
 	nova_std_decl(AddChild) {
@@ -143,39 +159,26 @@ namespace nova_object {
 		return ret;
 	}
 
-	NOVA_GETTER(Object, GetClassName);
-
 	Scope GetModule() {
 		Scope scope;
-		NOVA_BIND_METHOD(Ready);
-		NOVA_BIND_METHOD(Update);
 		NOVA_BIND_METHOD(AddChild);
 		NOVA_BIND_METHOD(FindChild);
 		NOVA_BIND_METHOD(GetChild);
 		NOVA_BIND_METHOD(GetChildren);
-		NOVA_BIND_METHOD(GetClassName);
+		NOVA_BIND_METHOD(GetParent);
 		return scope;
 	}
 
 }
 
 CPPObject Object::GetNovaObject() {
-	CPPObject self;
 	Scope scope = nova_object::GetModule();
-	NOVA_BIND_PROPERTY(name);
+	CPPObject object;
+	object.ptr = this;
 	NOVA_BIND_PROPERTY(visible);
 	NOVA_BIND_PROPERTY(paused);
-	self.scope = scope;
-	OnNovaObject(scope);
+	NOVA_BIND_PROPERTY(name);
 
-	if (script) {
-		Scope* nova_script_inherited = script->GetScopeAsObj();
-		for (std::pair<std::string, Value> pair : nova_script_inherited->GetAll()) {
-			scope.Set(pair.first, pair.second);
-		}
-	}
-
-	self.ptr = this;
-	return self;
+	object.scope = scope;
+	return object;
 }
-*/

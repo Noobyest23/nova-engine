@@ -30,7 +30,7 @@ extern "C" {
 	NOVASCRIPT_API void PushVariable(InterpretorHandle interpretor, const char* variable_name, ValueHandle value);
 
 	// The return value must be deleted manually
-	NOVASCRIPT_API ValueHandle Call(InterpretorHandle interpretor, const char* function_name, void* args);
+	NOVASCRIPT_API ValueHandle CallFunc(InterpretorHandle interpretor, const char* function_name, void* args);
 
 	NOVASCRIPT_API ArgsHandle CreateArgs();
 

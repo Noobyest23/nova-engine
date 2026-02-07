@@ -41,7 +41,7 @@ extern "C" {
 		interpretor->Set(val_name, *value);
 	}
 
-	ValueHandle Call(InterpretorHandle i, const char* function_name, void* a) {
+	ValueHandle CallFunc(InterpretorHandle i, const char* function_name, void* a) {
 		Interpretor* interpretor = static_cast<Interpretor*>(i);
 		std::vector<Value*>* args = static_cast<std::vector<Value*>*>(a);
 		return new Value(interpretor->Call(function_name, *args));

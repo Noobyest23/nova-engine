@@ -1,6 +1,8 @@
 #include "Object2D.h"
 #include "../../Core/Engine.h"
 #include "../glm/gtc/matrix_transform.hpp"
+#include "../../../nova-script/NovaScript/Interpretor/Value.h"
+#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
 Object2D::Object2D() {
 	name = "Object2D";
 }
@@ -126,6 +128,7 @@ void Object2D::SetScale(const glm::vec2& s) {
 
 void Object2D::MarkLocalCacheDirty() {
 	_dirty_local = true;
+	_dirty_global = true;
 	for (Object* child : children) {
 		if (Object2D* c_toodee = dynamic_cast<Object2D*>(child)) {
 			c_toodee->MarkGlobalCacheDirty();
@@ -171,4 +174,59 @@ glm::mat4 Object2D::GetGlobalTransform4() {
 	m[3][1] = t[2][1];
 
 	return m;
+}
+
+namespace object_2d {
+	static void PushError(const std::string& message) {
+		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
+	}
+
+	NOVA_SETTER(Object2D, SetPosition, vec2);
+	NOVA_GETTER(Object2D, GetPosition);
+
+	NOVA_SETTER(Object2D, SetRotation, float);
+	NOVA_GETTER(Object2D, GetRotation);
+	
+	NOVA_SETTER(Object2D, SetScale, vec2);
+	NOVA_GETTER(Object2D, GetScale);
+
+	NOVA_SETTER(Object2D, SetGlobalPosition, vec2);
+	NOVA_GETTER(Object2D, GetGlobalPosition);
+
+	NOVA_SETTER(Object2D, SetGlobalRotation, float);
+	NOVA_GETTER(Object2D, GetGlobalRotation);
+
+	NOVA_SETTER(Object2D, SetGlobalScale, vec2);
+	NOVA_GETTER(Object2D, GetGlobalScale);
+
+
+	Scope GetModule() {
+		Scope scope;
+		NOVA_BIND_METHOD(SetPosition);
+		NOVA_BIND_METHOD(GetPosition);
+
+		NOVA_BIND_METHOD(SetRotation);
+		NOVA_BIND_METHOD(GetRotation);
+
+		NOVA_BIND_METHOD(SetScale);
+		NOVA_BIND_METHOD(GetScale);
+
+		NOVA_BIND_METHOD(SetGlobalPosition);
+		NOVA_BIND_METHOD(GetGlobalPosition);
+
+		NOVA_BIND_METHOD(SetGlobalRotation);
+		NOVA_BIND_METHOD(GetGlobalRotation);
+
+		NOVA_BIND_METHOD(SetGlobalScale);
+		NOVA_BIND_METHOD(GetGlobalScale);
+		return scope;
+	}
+
+}
+
+CPPObject Object2D::GetNovaObject() {
+	CPPObject ret = Object::GetNovaObject();
+	Scope& scope = ret.scope;
+	NOVA_BIND_WHOLE_NAMESPACE(object_2d);
+	return ret;
 }

@@ -3,11 +3,26 @@ tag = BigBuyImage
 filepath = "big guy.png"
 [/FileImage]
 
+[Script]
+tag = startup_script
+filepath = "Scripts/StartupScript.ns"
+[/Script]
+
+[Script]
+tag = rotater
+filepath = "Scripts/rotater.ns"
+[/Script]
+
 [Sprite2D] # no tag means it will be tagged by its index in the file (i.e: 2)
 image = BigBuyImage
+script = rotater
 [/Sprite2D]
 
 # this is a comment
 # no added values loads defaults
 [Camera2D]
 [/Camera2D]
+
+[Object]
+script = startup_script
+[/Object]

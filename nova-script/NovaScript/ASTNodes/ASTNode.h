@@ -15,10 +15,6 @@ struct ASTNode {
 	virtual void Delete() {
 		delete this;
 	};
-
-	virtual std::vector<StmtNode*> GetStatements() const { return {}; };
-	virtual std::vector<ExprNode*> GetExpressions() const { return {}; };
-	// TODO - INCORPORATE INTO EVERY NODE AND OPTIMIZER
 };
 
 

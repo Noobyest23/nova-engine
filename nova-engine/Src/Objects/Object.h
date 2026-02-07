@@ -9,6 +9,7 @@ class Script;
 class InputEvent;
 struct CPPObject;
 struct Scope;
+struct Value;
 
 using LoadableValues = std::unordered_map<std::string, void*>;
 using LValuePair = std::pair<std::string, void*>;
@@ -29,7 +30,6 @@ public:
 	Object* GetChild(int index);
 	std::vector<Object*>& GetChildren();
 	Object* GetParent();
-	//CPPObject GetNovaObject();
 
 	bool paused = false;
 	bool visible = true;
@@ -37,8 +37,11 @@ public:
 	std::string name;
 
 	virtual std::string GetClassName() const { return "Object"; };
+	virtual CPPObject GetNovaObject();
+
+	void SetScript(Script* script);
+	Script* GetScript() const { return script; }
 	
-	Script* script = nullptr;
 
 	virtual ~Object() = default;
 
@@ -46,6 +49,8 @@ protected:
 
 	std::vector<Object*> children = {};
 	Object* parent = nullptr;
+
+	Script* script = nullptr;
 
 	virtual void OnReady() {};
 	virtual void OnUpdate(float deltaTime) {};

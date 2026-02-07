@@ -1,7 +1,8 @@
 #include "Camera2D.h"
 #include "../../Core/Engine.h"
 #include "../../Platform/Agnostic/Window.h"
-
+#include "../../../nova-script/NovaScript/Interpretor/Value.h"
+#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
 Camera2D::Camera2D() {
 	glm::vec2 win_size = Engine::GetInstance()->window->GetSize();
 	viewportWidth = win_size.x;
@@ -55,4 +56,28 @@ void Camera2D::OnLoad(LoadableValues values) {
 			active = *static_cast<bool*>(pair.second);
 		}
 	}
+}
+
+namespace camera_2d {
+	static void PushError(const std::string& message) {
+		Engine::GetInstance()->PushError("[NovaScript Camera2D] " + message);
+	}
+
+	NOVA_SETTER(Camera2D, SetZoom, float);
+	NOVA_GETTER(Camera2D, GetZoom, float);
+
+	Scope GetModule() {
+		Scope scope;
+		NOVA_BIND_METHOD(SetZoom);
+		NOVA_BIND_METHOD(GetZoom);
+		return scope;
+	}
+}
+
+CPPObject Camera2D::GetNovaObject() {
+	CPPObject ret = Object::GetNovaObject();
+	Scope& scope = ret.scope;
+	NOVA_BIND_WHOLE_NAMESPACE(camera_2d);
+	NOVA_BIND_PROPERTY(active);
+	return ret;
 }

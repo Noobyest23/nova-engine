@@ -44,45 +44,14 @@ ee_decl(VariableNode* node) {
 
 ee_decl(AssignmentNode* node) {
 	Value* lhs = EvaluateExpressionPtr(node->left);
-	if (!lhs || lhs->IsFunction()) {
+	if (!lhs || lhs->IsFunction() || lhs->is_manually_created) {
 		PushError("Left side is not a modifiable value " + node->Print());
 		return Value();
 	}
 
 	Value rhs = EvaluateExpression(node->right);
 
-	try {
-		if (lhs->IsInt()) {
-			int& v = lhs->GetInt();
-			if (rhs.IsInt()) v = rhs.GetInt();
-			else if (rhs.IsFloat()) v = int(rhs.GetFloat());
-			else PushError("Cannot convert to int");
-		}
-
-		if (lhs->IsFloat()) {
-			float& v = lhs->GetFloat();
-			if (rhs.IsInt()) v = float(rhs.GetInt());
-			else if (rhs.IsFloat()) v = rhs.GetFloat();
-			else PushError("Cannot convert to float");
-		}
-
-		if (lhs->IsBool()) {
-			lhs->GetBool() = rhs.GetBool();
-		}
-
-		if (lhs->IsString()) {
-			lhs->GetString() = rhs.GetString();
-		}
-		return *lhs;
-	}
-	catch (const std::exception& e) {
-		PushError(
-			std::string(e.what()) + "\n" +
-			lhs->ToString() + "\n" +
-			rhs.ToString()
-		);
-		return nullval;
-	}
+	lhs->data = rhs.data;
 }
 
 #define iiop(_op) if (node->op == STR(_op)) {val _op rhs.GetInt();}
@@ -171,8 +140,8 @@ ee_decl(CompoundOp* node) {
 
 #define iiop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetInt() _op rhs.GetInt());}
 #define ifop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetInt() _op rhs.GetFloat());}
-#define ffop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetFloat() _op rhs.GetInt());}
-#define fiop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetFloat() _op rhs.GetFloat());}
+#define ffop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetFloat() _op rhs.GetFloat());}
+#define fiop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetFloat() _op rhs.GetInt());}
 #define bop(_op) if (node->op == STR(_op)) {r_value = Value(lhs.GetBool() _op rhs.GetBool());}
 
 ee_decl(OpNode* node) {
@@ -185,6 +154,7 @@ ee_decl(OpNode* node) {
 	if (rhs.data.index() == 0) {
 		PushError(node->Print() + " Right side evaluated to null");
 	}
+
 	Value r_value;
 
 	try {
@@ -269,7 +239,7 @@ ee_decl(OpNode* node) {
 		throw std::exception((std::string("Cannot perform an op on a variable of type ") + lhs.Type()).c_str());
 	}
 	catch (std::exception e) {
-		PushError(e.what() + '\n' + lhs.ToString() + '\n' + rhs.ToString());
+		PushError((std::string("Cannot perform an op on a variable of type ") + lhs.Type()).c_str());
 		return nullval;
 	}
 }
@@ -279,8 +249,8 @@ ee_decl(FuncCallNode* node) {
 	if (func) {
 		if (func->IsFunction()) {
 			std::vector<Value*> args;
-			if (scope->Has("SELF")) {
-				args.push_back(scope->Get("SELF"));
+			if (scope->Has("this")) {
+				args.push_back(scope->Get("this"));
 			}
 			for (ExprNode* arg : node->args) {
 				Value* a_value = EvaluateExpressionPtr(arg);
@@ -360,7 +330,6 @@ ee_decl(DotAccessNode* node) {
 	Scope* n_scope = nullptr;
 	if (obj->IsCPP()) {
 		n_scope = &std::get<CPPObject>(obj->data).scope;
-		n_scope->Set("SELF", std::get<CPPObject>(obj->data));
 	}
 	else {
 		n_scope = &std::get<Scope>(obj->data);
@@ -374,8 +343,8 @@ ee_decl(DotAccessNode* node) {
 		}
 		if (left->IsFunction()) {
 			std::vector<Value*> args;
-			if (n_scope->Has("SELF")) {
-				args.push_back(n_scope->Get("SELF"));
+			if (obj->IsCPP()) {
+				args.push_back(obj);
 			}
 			for (ExprNode* arg : func->args) {
 				Value* a_value = EvaluateExpressionPtr(arg);
@@ -638,7 +607,6 @@ eep_decl(DotAccessNode* node) {
 	Scope* n_scope = nullptr;
 	if (obj->IsCPP()) {
 		n_scope = &std::get<CPPObject>(obj->data).scope;
-		n_scope->Set("SELF", std::get<CPPObject>(obj->data));
 	}
 	else {
 		n_scope = &std::get<Scope>(obj->data);
@@ -652,8 +620,8 @@ eep_decl(DotAccessNode* node) {
 		}
 		if (left->IsFunction()) {
 			std::vector<Value*> args;
-			if (n_scope->Has("SELF")) {
-				args.push_back(n_scope->Get("SELF"));
+			if (obj->IsCPP()) {
+				args.push_back(obj);
 			}
 			for (ExprNode* arg : func->args) {
 				args.push_back(EvaluateExpressionPtr(arg));

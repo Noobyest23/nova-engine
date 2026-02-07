@@ -19,6 +19,8 @@ public:
 
 	bool active = true;
 
+	virtual CPPObject GetNovaObject() override;
+
 	std::string GetClassName() const override { return "Camera2D"; }
 
 protected:
@@ -35,8 +37,6 @@ protected:
 	void UpdateView();
 
 	void OnUpdate(float deltaTime) override;
-
-	//void OnNovaObject(Scope& scope) override;
 
 	virtual void OnLoad(LoadableValues values) override;
 

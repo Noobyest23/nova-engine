@@ -1,0 +1,7 @@
+include "engine" as engine
+
+func Ready() {
+	var window = engine.GetWindow()
+	window.SetName("Eric's Epic Test Window")
+	window.SetSize(Vector2(1920, 1080))
+}

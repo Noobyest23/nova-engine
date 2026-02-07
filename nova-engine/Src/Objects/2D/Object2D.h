@@ -24,6 +24,7 @@ public:
 	void SetScale(const glm::vec2& scale);
 	glm::vec2 GetScale() const { return scale; };
 	
+	CPPObject GetNovaObject() override;
 
 	std::string GetClassName() const override { return "Object2D"; };
 
@@ -46,7 +47,6 @@ protected:
 	glm::mat3 GetGlobalTransform();
 	glm::mat4 GetGlobalTransform4();
 
-	//void OnNovaObject(Scope& inherited) override;
 	virtual void OnLoad(std::unordered_map<std::string, void*> values) override;
 
 };

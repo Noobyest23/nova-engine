@@ -203,6 +203,7 @@
     <ClInclude Include="Src\Assets\Image\FileImage.h" />
     <ClInclude Include="Src\Assets\Image\Image.h" />
     <ClInclude Include="Src\Assets\Script\Added Modules\EngineModule.h" />
+    <ClInclude Include="Src\Assets\Script\Added Modules\ObjectModule.h" />
     <ClInclude Include="Src\Assets\Script\Script.h" />
     <ClInclude Include="Src\Core\Input\InputEvent.h" />
     <ClInclude Include="Src\Core\Input\InputEventKey.h" />
@@ -236,7 +237,8 @@
     <None Include="Working\NovaData\CustomInit.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\optimizer_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\print_speedrun.ns" />
-    <None Include="Working\Projects\Test_Project\Scripts\Objects\StartupScript.nso" />
+    <None Include="Working\Projects\Test_Project\Scripts\rotater.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\StartupScript.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\test.ns" />
     <None Include="Working\Projects\Test_Project\TestScene.nscene" />

@@ -31,3 +31,15 @@ bool Scope::Has(const std::string& name) {
 	auto it = variables.find(name);
 	return it != variables.end();
 }
+
+std::string Scope::Print() const {
+	std::string out;
+	for (std::pair<std::string, Value> pair : variables) {
+		out += pair.first + " = " + pair.second.ToString() + "\n";
+	}
+	if (parent) {
+		out += "-- Parent Scope --";
+		out += parent->Print();
+	}
+	return out;
+}

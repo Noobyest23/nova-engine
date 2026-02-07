@@ -6,5 +6,4 @@ if (true) {
 else {
 	io.PrintError("I DO NOT EXIST")
 }
-io.Print(y)
 |!

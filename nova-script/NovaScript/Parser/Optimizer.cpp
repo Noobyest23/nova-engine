@@ -115,6 +115,9 @@ ExprNode* Optimizer::OptimizeExpression(ExprNode* expression) {
 			var->Delete();
 			return CreateLiteralFromValue(value);
 		}
+		else {
+			return expression;
+		}
 	}
 	else if (AssignmentNode* ass = dynamic_cast<AssignmentNode*>(expression)) {
 		ass->right = OptimizeExpression(ass->right);

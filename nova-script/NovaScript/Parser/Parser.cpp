@@ -220,7 +220,7 @@ StmtNode* Parser::ParseStatement() {
 }
 
 ExprNode* Parser::ParseExpression() {
-	ExprNode* expression = ParseAccesor();
+	ExprNode* expression = ParseAssignment();
 	if (expression) {
 		return expression;
 	}
@@ -232,7 +232,7 @@ ExprNode* Parser::ParseExpression() {
 }
 
 ExprNode* Parser::ParseTernary() {
-	ExprNode* truthy = ParseAccesor();
+	ExprNode* truthy = ParseAssignment();
 	if (Accept(NovaTokenType::IfStmt)) {
 		Advance();
 
@@ -249,25 +249,6 @@ ExprNode* Parser::ParseTernary() {
 		return new TernaryNode(condition, truthy, falsy);
 	}
 	return truthy;
-}
-
-ExprNode* Parser::ParseAccesor() {
-	ExprNode* expression = ParseAssignment();
-	if (Accept(NovaTokenType::Dot)) {
-		Advance();
-		ExprNode* right = ParseExpression();
-		return new DotAccessNode(expression, right);
-	}
-	if (Accept(NovaTokenType::OpenBracket)) {
-		Advance();
-		ExprNode* index = ParseExpression();
-		if (!Accept(NovaTokenType::CloseBracket)) {
-			PushError("Expected ]");
-		}
-		Advance();
-		return new ArrayAccessNode(expression, index);
-	}
-	return expression;
 }
 
 ExprNode* Parser::ParseAssignment() {
@@ -345,16 +326,35 @@ ExprNode* Parser::ParseArithmetic() {
 }
 
 ExprNode* Parser::ParseTerm() {
-	ExprNode* lhs = ParsePrimary();
+	ExprNode* lhs = ParseAccesor();
 
 	while (Accept(NovaTokenType::MultOp) || Accept(NovaTokenType::DivOp)) {
 		std::string op = Current().content;
 		Advance();
-		ExprNode* rhs = ParsePrimary();
+		ExprNode* rhs = ParseTerm();
 		lhs = new OpNode(lhs, rhs, op);
 	}
 
 	return lhs;
+}
+
+ExprNode* Parser::ParseAccesor() {
+	ExprNode* expression = ParsePrimary();
+	if (Accept(NovaTokenType::Dot)) {
+		Advance();
+		ExprNode* right = ParsePrimary();
+		return new DotAccessNode(expression, right);
+	}
+	if (Accept(NovaTokenType::OpenBracket)) {
+		Advance();
+		ExprNode* index = ParseExpression();
+		if (!Accept(NovaTokenType::CloseBracket)) {
+			PushError("Expected ]");
+		}
+		Advance();
+		return new ArrayAccessNode(expression, index);
+	}
+	return expression;
 }
 
 ExprNode* Parser::ParsePrimary() {

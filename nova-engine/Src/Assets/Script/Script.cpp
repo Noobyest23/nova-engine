@@ -9,6 +9,21 @@ Script::Script(const std::string& filepath) {
 	ExecuteScript(interpretor);
 }
 
+void Script::Set(const std::string& name, Value val) {
+	PushVariable(interpretor, name.c_str(), &val);
+}
+
+Value* Script::Get(const std::string& name) {
+	return static_cast<Value*>(GetVariable(interpretor, name.c_str()));
+}
+
+Value Script::Call(const std::string& name, std::vector<Value*> args) {
+	ValueHandle val = CallFunc(interpretor, name.c_str(), &args);
+	Value ret = *static_cast<Value*>(val);
+	delete val;
+	return ret;
+}
+
 void Script::OnDestroy() {
 	DestroyScript(interpretor);
 }

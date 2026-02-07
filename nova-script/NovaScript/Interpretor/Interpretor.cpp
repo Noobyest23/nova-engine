@@ -69,6 +69,9 @@ void Interpretor::Set(const std::string& var_name, const Value& value) {
 
 Value Interpretor::Call(const std::string& func_name, std::vector<Value*>& args) {
 	Value* func = scope->Get(func_name);
+	if (!func) {
+		return Value();
+	}
 	if (func->data.index() == 8) { // cpp function
 		CPPFunction f = std::get<CPPFunction>(func->data);
 		return f(args);
