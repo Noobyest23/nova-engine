@@ -12,6 +12,7 @@ extern "C" {
 	using ValueHandle = void*;
 	using ArgsHandle = void*;
 	using ModuleHandle = void*;
+	using ScopeHandle = void*;
 
 	NOVASCRIPT_API void SetErrorCallback(void(*)(const char*, int));
 
@@ -31,6 +32,8 @@ extern "C" {
 
 	// The return value must be deleted manually
 	NOVASCRIPT_API ValueHandle CallFunc(InterpretorHandle interpretor, const char* function_name, void* args);
+
+	NOVASCRIPT_API ScopeHandle GetScope(InterpretorHandle interpretor);
 
 	NOVASCRIPT_API ArgsHandle CreateArgs();
 

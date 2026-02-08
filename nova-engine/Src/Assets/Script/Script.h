@@ -12,6 +12,7 @@ public:
 
 	void Set(const std::string& name, Value val);
 	Value* Get(const std::string& name);
+	Scope* GetAll();
 	Value Call(const std::string& name, std::vector<Value*> values);
 
 protected:

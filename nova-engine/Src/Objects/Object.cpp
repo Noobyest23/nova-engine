@@ -188,6 +188,14 @@ namespace nova_object {
 
 CPPObject Object::GetNovaObject() {
 	Scope scope = nova_object::GetModule();
+	if (script) {
+		Scope* script_scope = script->GetAll();
+		for (std::pair<const std::string, Value>& pair : script_scope->variables) {
+			if (pair.first != "this") {
+				scope.Set(pair.first, pair.second);
+			}
+		}
+	}
 	CPPObject object;
 	object.ptr = this;
 	NOVA_BIND_PROPERTY(visible);

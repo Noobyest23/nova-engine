@@ -17,6 +17,10 @@ Value* Script::Get(const std::string& name) {
 	return static_cast<Value*>(GetVariable(interpretor, name.c_str()));
 }
 
+Scope* Script::GetAll() {
+	return static_cast<Scope*>(GetScope(interpretor));
+}
+
 Value Script::Call(const std::string& name, std::vector<Value*> args) {
 	ValueHandle val = CallFunc(interpretor, name.c_str(), &args);
 	Value ret = *static_cast<Value*>(val);

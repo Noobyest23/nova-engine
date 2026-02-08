@@ -71,5 +71,9 @@ extern "C" {
 		_use_console = true;
 	}
 	
+	ScopeHandle GetScope(InterpretorHandle i) {
+		Interpretor* interpretor = static_cast<Interpretor*>(i);
+		return interpretor->GetScopeAsObj();
+	}
 
 }
