@@ -2,6 +2,7 @@
 #define NOVA_MATERIAL_H
 
 #include "../Asset.h"
+#include "../Image/Image.h"
 #include <unordered_map>
 #include <variant>
 #include <glm/glm.hpp>
@@ -15,10 +16,12 @@ public:
 	Material(const std::string& vert_filepath, const std::string& frag_filepath);
 
 	void Reload();
-	void Bind() const;
+	void Bind();
 	void Unbind() const;
 	
 	void SetUniform(const std::string& name, const Uniform&);
+	void SetImageUniform(const std::string& name, Image*);
+	Uniform GetUniform(const std::string& name) { return uniforms[name]; }
 
 protected:
 
@@ -27,6 +30,7 @@ protected:
 
 	std::unordered_map<std::string, Uniform> uniforms;
 	std::unordered_map<std::string, GLint> uniform_locations;
+	std::unordered_map<std::string, Image*> uniform_images;
 	GLuint program = 0;
 
 	void Load();

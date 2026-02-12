@@ -138,9 +138,35 @@ void Material::SetUniform(const std::string& name, const Uniform& value) {
 	}
 }
 
-void Material::Bind() const {
+void Material::SetImageUniform(const std::string& name, Image* image) {
+	if (uniforms.find(name) != uniforms.end()) {
+		if (uniform_images.find(name) != uniform_images.end()) {
+			if (uniform_images[name]) {
+				uniform_images[name]->Release();
+			}
+		}
+		if (image) {
+			image->AddRef();
+		}
+		uniform_images[name] = image;
+	}
+	else {
+		Engine::GetInstance()->PushError("Uniform: " + name + " not found on shader");
+	}
+}
+
+void Material::Bind() {
 	if (program != 0) {
 		glUseProgram(program);
+		int i = 0;
+		for (std::pair<std::string, Image*> pair : uniform_images) {
+			if (!pair.second) {
+				continue;
+			}
+			pair.second->Bind(i);
+			SetUniform(pair.first, i);
+			i++;
+		}
 	}
 }
 
@@ -158,4 +184,8 @@ void Material::OnDestroy() {
 		program = 0;
 	}
 	uniforms.clear();
+	uniform_locations.clear();
+	for (std::pair<std::string, Image*> pair : uniform_images) {
+		pair.second->Release();
+	}
 }

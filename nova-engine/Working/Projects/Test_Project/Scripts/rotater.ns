@@ -1,11 +1,9 @@
 
 var rot = 0.0
 var p
-var camera
 
 func Ready() {
 	p = this.GetParent()
-	camera = p.FindChild("Camera2D")
 }
 
 func Update(dt) {

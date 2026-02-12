@@ -45,14 +45,16 @@ void Sprite2D::OnDraw() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	VisualInstance2D::OnDraw();
-	material->SetUniform("u_color", final_color);
+	
 	material->SetUniform("u_img_size", size);
+	material->SetUniform("u_flip_h", flip_h);
+	material->SetUniform("u_flip_v", flip_v);
+	material->SetUniform("u_offset", offset);
+	material->SetImageUniform("u_texture", image);
 
-	image->Bind(0);
-	material->SetUniform("u_texture", 0);
+	VisualInstance2D::OnDraw();
 
-	mesh->Bind();
+	
 	glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 	mesh->Unbind();
 	material->Unbind();
@@ -76,17 +78,49 @@ void Sprite2D::OnLoad(LoadableValues values) {
 	}
 }
 
+#include "../../../Assets/Image/FileImage.h"
+
 namespace sprite_2d {
 	static void PushError(const std::string& message) {
 		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
 	}
 
+	nova_std_decl(SetImageFromFile) {
+		req_args(2);
+		objget(spr, Sprite2D, 0);
+		strget(str, 1);
+		FileImage* img = new FileImage(str);
+		spr->SetImage(img);
+		img->Release();
+	}
 
-
+	nova_std_decl(GetSize) {
+		req_args(1);
+		objget(spr, Sprite2D, 0);
+		Image* img = spr->GetImage();
+		if (img) {
+			glm::vec2 ret = glm::vec2(img->GetWidth(), img->GetHeight());
+			return ret;
+		}
+		else {
+			return glm::vec2(0);
+		}
+	}
+	
+	nova_std_decl(GetGPUId) {
+		req_args(1);
+		objget(spr, Sprite2D, 0);
+		Image* img = spr->GetImage();
+		if (img) {
+			return Value(int(img->GetTexture()));
+		}
+		return Value(-1);
+	}
 
 	Scope GetModule() {
 		Scope scope;
-
+		NOVA_BIND_METHOD(SetImageFromFile);
+		NOVA_BIND_METHOD(GetSize);
 		return scope;
 	}
 
@@ -98,6 +132,7 @@ CPPObject Sprite2D::GetNovaObject() {
 	NOVA_BIND_PROPERTY(flip_h);
 	NOVA_BIND_PROPERTY(flip_v);
 	NOVA_BIND_PROPERTY(offset);
+	NOVA_BIND_WHOLE_NAMESPACE(sprite_2d);
 	return ret;
 }
 

@@ -22,6 +22,15 @@ SceneEntryInst SceneParser::BuildInstance(const std::string& type, LoadableValue
 		};
 		return inst;
 	}
+	CHECK(VisualInstance2D) {
+		VisualInstance2D* visual_inst2D = new VisualInstance2D;
+		visual_inst2D->Load(values);
+		SceneEntryInst inst = {
+			SceneEntryInst::Kind::Object,
+			visual_inst2D
+		};
+		return inst;
+	}
 	CHECK(Camera2D) {
 		Camera2D* cam2D = new Camera2D;
 		cam2D->Load(values);
@@ -52,7 +61,7 @@ SceneEntryInst SceneParser::BuildInstance(const std::string& type, LoadableValue
 	// Assets
 	CHECK(FileImage) {
 		GORD(filepath, std::string, "");
-		FileImage* image = new FileImage(Engine::GetInstance()->GetProjectPath() + filepath);
+		FileImage* image = new FileImage(filepath);
 		SceneEntryInst inst = {
 			SceneEntryInst::Kind::Asset,
 			image
@@ -61,7 +70,7 @@ SceneEntryInst SceneParser::BuildInstance(const std::string& type, LoadableValue
 	}
 	CHECK(Script) {
 		GORD(filepath, std::string, "");
-		Script* script = new Script(Engine::GetInstance()->GetProjectPath() + filepath);
+		Script* script = new Script(filepath);
 		SceneEntryInst inst = {
 			SceneEntryInst::Kind::Asset,
 			script
@@ -71,7 +80,7 @@ SceneEntryInst SceneParser::BuildInstance(const std::string& type, LoadableValue
 	CHECK(Material) {
 		GORD(vert_filepath, std::string, "");
 		GORD(frag_filepath, std::string, "");
-		Material* mat = new Material(Engine::GetInstance()->GetProjectPath() + vert_filepath, Engine::GetInstance()->GetProjectPath() + frag_filepath);
+		Material* mat = new Material(vert_filepath, frag_filepath);
 		SceneEntryInst inst = {
 			SceneEntryInst::Kind::Asset,
 			mat

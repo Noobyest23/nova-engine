@@ -81,13 +81,31 @@ std::string Value::ToString() const {
 		case 2: return std::to_string(std::get<std::reference_wrapper<float>>(var).get());
 		case 3: return std::get<std::reference_wrapper<bool>>(var).get() ? "true" : "false";
 		case 4: return std::get<std::reference_wrapper<std::string>>(var).get();
+		case 5: {
+			glm::vec2& vec = std::get<std::reference_wrapper<glm::vec2>>(var);
+			return "(" + std::to_string(vec.x) + std::to_string(vec.y) + ")";
+		}
+		case 6: {
+			glm::vec3& vec = std::get<std::reference_wrapper<glm::vec3>>(var);
+			return "(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ", " + std::to_string(vec.z) + ")";
+		}
+		case 7: {
+			glm::vec4& vec = std::get<std::reference_wrapper<glm::vec4>>(var);
+			return "(" + std::to_string(vec.x) + ", " + std::to_string(vec.y) + ", " + std::to_string(vec.z) + ", " + std::to_string(vec.w) + ")";
+		}
 		default: return "Unknown C++ variable";
 		}
 	}
 
 	case 10: return "ObjectType Declaration";
-	case 11: return "C++ Object";
-
+	case 11: {
+		CPPObject obj = std::get<CPPObject>(data);
+		std::string out = "CPPObject -> \n";
+		for (std::pair<std::string, Value> pair : obj.scope.variables) {
+			out += pair.second.ToString() + "\n";
+		}
+		return out;
+	}
 	case 12: {
 		auto v = std::get<glm::vec2>(data);
 		return "(" + std::to_string(v.x) + ", " + std::to_string(v.y) + ")";
@@ -184,12 +202,14 @@ bool Value::IsCPP() const {
 
 bool Value::IsInt() const {
 	if (IsReference()) return std::get<ReferenceValue>(data).get().IsInt();
+	if (IsObj()) return false;
 	if (IsCPP()) return CPPIndex(std::get<CPPVariable>(data)) == 1;
 	return Index(*this) == 1;
 }
 
 bool Value::IsFloat() const {
 	if (IsReference()) return std::get<ReferenceValue>(data).get().IsFloat();
+	if (IsObj()) return false;
 	if (IsCPP()) return CPPIndex(std::get<CPPVariable>(data)) == 2;
 	return Index(*this) == 2;
 }
@@ -198,12 +218,14 @@ bool Value::IsNum() const { return IsInt() || IsFloat(); }
 
 bool Value::IsString() const {
 	if (IsReference()) return std::get<ReferenceValue>(data).get().IsString();
+	if (IsObj()) return false;
 	if (IsCPP()) return CPPIndex(std::get<CPPVariable>(data)) == 4;
 	return Index(*this) == 4;
 }
 
 bool Value::IsBool() const {
 	if (IsReference()) return std::get<ReferenceValue>(data).get().IsBool();
+	if (IsObj()) return false;
 	if (IsCPP()) return CPPIndex(std::get<CPPVariable>(data)) == 3;
 	return Index(*this) == 3;
 }
@@ -218,18 +240,21 @@ bool Value::IsVec() const { return IsVec2() || IsVec3() || IsVec4(); }
 
 bool Value::IsVec2() const {
 	if (IsReference()) return std::get<ReferenceValue>(data).get().IsVec2();
+	if (IsObj()) return false;
 	if (IsCPP()) return CPPIndex(std::get<CPPVariable>(data)) == 5;
 	return Index(*this) == 12;
 }
 
 bool Value::IsVec3() const {
 	if (IsReference()) return std::get<ReferenceValue>(data).get().IsVec3();
+	if (IsObj()) return false;
 	if (IsCPP()) return CPPIndex(std::get<CPPVariable>(data)) == 6;
 	return Index(*this) == 13;
 }
 
 bool Value::IsVec4() const {
 	if (IsReference()) return std::get<ReferenceValue>(data).get().IsVec4();
+	if (IsObj()) return false;
 	if (IsCPP()) return CPPIndex(std::get<CPPVariable>(data)) == 7;
 	return Index(*this) == 14;
 }

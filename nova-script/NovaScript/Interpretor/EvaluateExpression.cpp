@@ -84,8 +84,10 @@ ee_decl(AssignmentNode* node) {
 		catch (std::exception e) {
 			PushError("Trying to assign " + rhs.Type() + " to a non-matching cpp variable (" + lhs->Type() + ")");
 		}
+		return *lhs;
 	}
 	lhs->data = rhs.data;
+	return *lhs;
 }
 
 #define iiop(_op) if (node->op == STR(_op)) {val _op rhs.GetInt();}
@@ -362,10 +364,10 @@ ee_decl(DotAccessNode* node) {
 	}
 
 	Scope* n_scope = nullptr;
-	if (obj->IsCPP()) {
+	if (obj->IsCPP() and not obj->IsVec()) {
 		n_scope = &std::get<CPPObject>(obj->data).scope;
 	}
-	else {
+	else if (not obj->IsVec()){
 		n_scope = &std::get<Scope>(obj->data);
 	}
 
@@ -437,8 +439,67 @@ ee_decl(DotAccessNode* node) {
 		}
 	}
 	else if (VariableNode* var = dynamic_cast<VariableNode*>(node->right)) {
+		
+		if (obj->IsVec()) {
+			if (obj->IsVec2()) {
+				glm::vec2& o_vec = obj->GetVec2();
+				if (var->identifier == "x") {
+					return Value(o_vec.x);
+				}
+				else if (var->identifier == "y") {
+					return Value(o_vec.y);
+				}
+				else {
+					PushError(var->identifier + "cannot be found on vec2");
+					return Value();
+				}
+			}
+			if (obj->IsVec3()) {
+				glm::vec3& o_vec = obj->GetVec3();
+				if (var->identifier == "x") {
+					return Value(o_vec.x);
+				}
+				else if (var->identifier == "y") {
+					return Value(o_vec.y);
+				}
+				else if (var->identifier == "z") {
+					return Value(o_vec.z);
+				}
+				else {
+					PushError(var->identifier + "cannot be found on vec3");
+					return Value();
+				}
+			}
+			if (obj->IsVec4()) {
+				glm::vec4& o_vec = obj->GetVec4();
+				if (var->identifier == "x") {
+					return Value(o_vec.x);
+				}
+				else if (var->identifier == "y") {
+					return Value(o_vec.y);
+				}
+				else if (var->identifier == "z") {
+					return Value(o_vec.z);
+				}
+				else if (var->identifier == "w") {
+					return Value(o_vec.w);
+				}
+				else {
+					PushError(var->identifier + "cannot be found on vec4");
+					return Value();
+				}
+			}
+
+		}
+
 		obj->Release();
-		return *n_scope->Get(var->identifier);
+		Value* val = n_scope->Get(var->identifier);
+		if (val) {
+			return *val;
+		}
+		else {
+			return Value();
+		}
 	}
 	else {
 		Scope* p_scope = scope;
@@ -598,15 +659,9 @@ ee_decl(ArrayAccessNode* node) {
 
 eep_decl(ExprNode* node) {
 	eep(VariableNode*)
-		eep(TernaryNode*)
-		eep(DotAccessNode*)
-		/*
-	eep(IntLiteralNode*)
-	eep(FloatLiteralNode*)
-	eep(BoolLiteralNode*)
-	eep(StringLiteralNode*)
-	eep(ArrayLiteralNode*)
-	eep(FuncCallNode*) */
+	eep(TernaryNode*)
+	eep(DotAccessNode*)
+	
 	// if the pointer cannot be obtained we must manually create and destroy the object
 	Value* val = new Value(EvaluateExpression(node));
 	val->is_manually_created = true;
@@ -639,10 +694,10 @@ eep_decl(DotAccessNode* node) {
 	Value* left = nullptr;
 
 	Scope* n_scope = nullptr;
-	if (obj->IsCPP()) {
+	if (obj->IsCPP() and not obj->IsVec()) {
 		n_scope = &std::get<CPPObject>(obj->data).scope;
 	}
-	else {
+	else if (not obj->IsVec()) {
 		n_scope = &std::get<Scope>(obj->data);
 	}
 
@@ -702,6 +757,77 @@ eep_decl(DotAccessNode* node) {
 		}
 	}
 	else if (VariableNode* var = dynamic_cast<VariableNode*>(node->right)) {
+
+		if (obj->IsVec()) {
+			if (obj->IsVec2()) {
+				glm::vec2& o_vec = obj->GetVec2();
+				if (var->identifier == "x") {
+					Value* ret = new Value(CPPVariable(o_vec.x));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else if (var->identifier == "y") {
+					Value* ret = new Value(CPPVariable(o_vec.y));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else {
+					PushError(var->identifier + "cannot be found on vec2");
+					return nullptr;
+				}
+			}
+			if (obj->IsVec3()) {
+				glm::vec3& o_vec = obj->GetVec3();
+				if (var->identifier == "x") {
+					Value* ret = new Value(CPPVariable(o_vec.x));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else if (var->identifier == "y") {
+					Value* ret = new Value(CPPVariable(o_vec.y));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else if (var->identifier == "z") {
+					Value* ret = new Value(CPPVariable(o_vec.z));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else {
+					PushError(var->identifier + "cannot be found on vec3");
+					return nullptr;
+				}
+			}
+			if (obj->IsVec4()) {
+				glm::vec4& o_vec = obj->GetVec4();
+				if (var->identifier == "x") {
+					Value* ret = new Value(CPPVariable(o_vec.x));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else if (var->identifier == "y") {
+					Value* ret = new Value(CPPVariable(o_vec.y));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else if (var->identifier == "z") {
+					Value* ret = new Value(CPPVariable(o_vec.z));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else if (var->identifier == "w") {
+					Value* ret = new Value(CPPVariable(o_vec.w));
+					ret->is_manually_created = true;
+					return ret;
+				}
+				else {
+					PushError(var->identifier + "cannot be found on vec4");
+					return nullptr;
+				}
+			}
+
+		}
+
 		obj->Release();
 		return left = n_scope->Get(var->identifier);
 	}

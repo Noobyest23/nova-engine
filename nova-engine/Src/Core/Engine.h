@@ -39,11 +39,8 @@ public:
 	bool suppress_error_popup = false;
 
 	void SetterProjectPath(const std::string& path);
-	std::string GetProjectPath() { return project_path; };
 	std::string initial_scene = "";
 private:
-
-	std::string project_path;
 	
 
 	void ShowBootMessage();

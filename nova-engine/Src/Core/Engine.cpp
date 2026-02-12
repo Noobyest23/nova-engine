@@ -10,6 +10,7 @@ Engine* Engine::engine_inst = nullptr;
 #include "../../nova-script/NovaErrorPush.h"
 #include "../Assets/Script/Script.h"
 #include "../Objects/2D/_Internal/DevCamera2D.h"
+#include <filesystem>
 
 static void ScriptPushError(const char* message, int sevarity) {
 	Engine* engine = Engine::GetInstance();
@@ -55,16 +56,15 @@ void Engine::Init() {
 	_use_console = true;
 #endif
 
+	PushMessage("[Engine Init] Initializing AssetDB...");
+	AssetDB::Init();
+
 	PushMessage("[Engine Init] Running Custom Init Script...");
 	Script* init_script = new Script("NovaData/CustomInit.ns");
 	init_script->Release();
-	//nova_asset_db_init::basic_2D = true;
-	
-	PushMessage("[Engine Init] Initializing AssetDB...");
-	AssetDB::Init();
 	
 	PushMessage("[Engine Init] Loading main scene");
-	scene = new Scene(project_path + initial_scene);
+	scene = new Scene(initial_scene);
 
 	#ifdef _DEBUG
 	PushMessage("[Engine Init] Compiled in debug mode, adding developer camera (toggle with F1)");
@@ -75,9 +75,6 @@ void Engine::Init() {
 	#endif
 
 	PushMessage("[Engine Init] Finished Engine init");
-	if (project_path == "") {
-		PushMessage("[Engine] No project path has been set, you can set one with the custom init script");
-	}
 	PushMessage("[Engine] Warning Nova Engine and all parts of Nova Engine (Especially NovaScript) are still heavily in development", true);
 	PushMessage("[Engine] Things will most likely change, and crashes / memory leaks should be expected", true);
 	
@@ -140,7 +137,8 @@ void Engine::ShowBootMessage() {
 }
 
 void Engine::SetterProjectPath(const std::string& path) {
-	project_path = path;
+	std::filesystem::current_path(path);
+	PushMessage("[Engine] Set Executable Filepath to " + path);
 }
 
 #ifdef USE_CONSOLE
