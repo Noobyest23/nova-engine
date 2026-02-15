@@ -182,6 +182,7 @@
     <ClCompile Include="Src\Assets\Script\Script.cpp" />
     <ClCompile Include="Src\Core\Engine.cpp" />
     <ClCompile Include="Src\Core\AssetDB.cpp" />
+    <ClCompile Include="Src\Core\Input\Input.cpp" />
     <ClCompile Include="Src\Scene\BuildInstance.cpp" />
     <ClCompile Include="Src\Scene\Lexer.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Src\Assets\Script\Added Modules\EngineModule.h" />
     <ClInclude Include="Src\Assets\Script\Added Modules\ObjectModule.h" />
     <ClInclude Include="Src\Assets\Script\Script.h" />
+    <ClInclude Include="Src\Core\Input\Input.h" />
     <ClInclude Include="Src\Core\Input\InputEvent.h" />
     <ClInclude Include="Src\Core\Input\InputEventKey.h" />
     <ClInclude Include="Src\Core\Input\InputEventMouseButton.h" />
@@ -235,6 +237,7 @@
     <None Include="Working\NovaData\Shaders\sprite2d_fragment.glsl" />
     <None Include="Working\NovaData\Shaders\sprite2d_vertex.glsl" />
     <None Include="Working\NovaData\CustomInit.ns" />
+    <None Include="Working\Projects\Test_Project\Scripts\LoopTest.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\optimizer_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\print_speedrun.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\rotater.ns" />

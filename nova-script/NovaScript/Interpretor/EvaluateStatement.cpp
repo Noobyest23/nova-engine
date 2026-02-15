@@ -24,6 +24,8 @@ es_decl(StmtNode* node) {
 	es(ReturnStmtNode*)
 	es(BreakPointNode*)
 	es(ASTPrintNode*)
+	es(ForEachNode*)
+	es(WhileNode*)
 	es(ExprAsStmt*)
 	PushError("Unrecognized Statement " + node->Print());
 }
@@ -145,6 +147,58 @@ es_decl(ASTPrintNode* node) {
 	}
 }
 
+es_decl(ForEachNode* node) {
+	PushScope();
+	Value container = EvaluateExpression(node->container);
+	std::string var_name;
+	if (node->variable) {
+		if (VariableNode* var = dynamic_cast<VariableNode*>(node->variable)) {
+			var_name = var->identifier;
+		}
+		else {
+			PushError("For loop variable is not a variable");
+			return;
+		}
+	}
+	else {
+		PushError("For loop variables is null");
+		return;
+	}
+	if (!container.IsArray()) {
+		PushError("For loop cannot iterate through " + container.Type());
+		return;
+	}
+	
+	std::vector<Value>& arr = container.GetArray();
+	for (Value& val : arr) {
+		scope->Set(var_name, val);
+		for (StmtNode* stmt : node->body) {
+			EvaluateStatement(stmt);
+		}
+	}
+	PopScope();
+
+}
+
+es_decl(WhileNode* node) {
+	Value condition = EvaluateExpression(node->expression);
+	if (!condition.IsBool()) {
+		PushError("While loop condition is not a boolean " + node->Print());
+		return;
+	}
+	if (node->expression->constant) {
+		PushError("While loop condition is constant " + node->Print());
+		return;
+	}
+
+	while (condition.GetBool()) {
+		for (StmtNode* stmt : node->body) {
+			EvaluateStatement(stmt);
+		}
+		condition = EvaluateExpression(node->expression);
+	}
+
+}
 
 es_decl(ExprAsStmt* node) {
 	EvaluateExpression(node->expr);

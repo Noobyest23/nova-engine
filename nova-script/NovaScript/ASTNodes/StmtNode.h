@@ -205,7 +205,7 @@ struct BreakPointNode : public StmtNode {
 		}
 	}
 
-	void Delete() const {
+	void Delete() override {
 		if (stmt) {
 			stmt->Delete();
 		}
@@ -218,6 +218,74 @@ struct ASTPrintNode : public StmtNode {
 	std::string Print() const override {
 		return "PRINT TREE";
 	}
+
+};
+
+struct ForEachNode : public StmtNode {
+	ForEachNode(ExprNode* variable, ExprNode* container, std::vector<StmtNode*>& body) : variable(variable), container(container), body(body) {};
+
+	ExprNode* variable;
+	ExprNode* container;
+	std::vector<StmtNode*> body;
+
+	std::string Print() const override {
+		std::string con = (container ? container->Print() : "ERROR_EXPR_NULL");
+		std::string iterator_name = (variable ? variable->Print() : "ERROR_EXPR_NULL");
+		std::string out = "for (" + iterator_name + " in " + con + ") {\n";
+		for (StmtNode* node : body) {
+			if (node) {
+				out += node->Print() + "\n";
+			}
+		}
+		out += "}";
+		return out;
+	}
+
+	void Delete() override {
+		if (container) {
+			container->Delete();
+		}
+		if (variable) {
+			variable->Delete();
+		}
+		for (StmtNode* node : body) {
+			if (node) {
+				node->Delete();
+			}
+		}
+		delete this;
+	}
+
+};
+
+struct WhileNode : public StmtNode {
+	WhileNode(ExprNode* expression, std::vector<StmtNode*> body) : expression(expression), body(body) {};
+	ExprNode* expression;
+	std::vector<StmtNode*> body;
+
+	std::string Print() const override {
+		std::string expr = (expression ? expression->Print() : "ERROR_EXPR_NULL");
+		std::string out = "while (" + expr + ") {\n";
+		for (StmtNode* node : body) {
+			if (node) {
+				out += node->Print() + "\n";
+			}
+		}
+		out += "}";
+		return out;
+	}
+
+	void Delete() override {
+		if (expression) {
+			expression->Delete();
+		}
+		for (StmtNode* node : body) {
+			if (node) {
+				node->Delete();
+			}
+		}
+	}
+
 
 };
 
@@ -236,5 +304,7 @@ struct ExprAsStmt : public StmtNode {
 	}
 
 };
+
+
 
 #endif

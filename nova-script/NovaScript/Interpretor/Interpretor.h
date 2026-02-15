@@ -52,6 +52,8 @@ private:
 	void EvaluateStatement(ReturnStmtNode*);
 	void EvaluateStatement(BreakPointNode*);
 	void EvaluateStatement(ASTPrintNode*);
+	void EvaluateStatement(ForEachNode*);
+	void EvaluateStatement(WhileNode*);
 	void EvaluateStatement(ExprAsStmt*);
 	#pragma endregion
 	#pragma region Evaluate Expression Overloads

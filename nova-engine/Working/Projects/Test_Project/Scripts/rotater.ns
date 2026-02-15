@@ -9,5 +9,4 @@ func Ready() {
 func Update(dt) {
 	rot += dt * 0.25
 	this.SetRotation(rot)
-	camera.SetZoom(this.GetRotation() * 0.314159)
 }

@@ -48,7 +48,12 @@ enum class NovaTokenType {
 	BreakPoint,
 	NewLine,
 	Const,
-	ASTPrint
+	ASTPrint,
+	For, // 45
+	In,
+	While,
+	OpenBrace,
+	CloseBrace
 };
 
 struct Token {

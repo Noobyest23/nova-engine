@@ -28,18 +28,12 @@ public:
 
 	Signal<glm::vec2> resized;
 
-	bool IsEventsQueued() { return queue.size() != 0; };
-	InputEvent* EventGetNext();
-
 private:
 
 	GLFWwindow* window = nullptr;
 
-	std::deque<InputEvent*> queue;
-
 	static Window* current;
 	static void SizeCallback(GLFWwindow* window, int width, int height);
-	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 };
 

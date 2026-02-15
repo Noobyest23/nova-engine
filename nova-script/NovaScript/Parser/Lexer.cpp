@@ -127,11 +127,11 @@ std::vector<Token> Lexer::Parse() {
 			continue;
 		case '{':
 			Advance();
-			result.push_back({ NovaTokenType::OpenBracket, "{", line, column });
+			result.push_back({ NovaTokenType::OpenBrace, "{", line, column });
 			continue;
 		case '}':
 			Advance();
-			result.push_back({ NovaTokenType::CloseBracket, "}", line, column });
+			result.push_back({ NovaTokenType::CloseBrace, "}", line, column });
 			continue;
 		case '>':
 			Advance();
@@ -289,6 +289,15 @@ Token Lexer::Identifier() {
 	}
 	else if (value == "const") {
 		return { NovaTokenType::Const, value, line, column };
+	}
+	else if (value == "for") {
+		return { NovaTokenType::For, value, line, column };
+	}
+	else if (value == "while") {
+		return { NovaTokenType::While, value, line, column };
+	}
+	else if (value == "in") {
+		return { NovaTokenType::In, value, line, column };
 	}
 	return Token{ NovaTokenType::Identifier, value, line, column };
 }

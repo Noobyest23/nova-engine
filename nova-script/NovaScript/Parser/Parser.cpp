@@ -67,9 +67,9 @@ StmtNode* Parser::ParseStatement() {
 
 				}
 				Advance();
-				if (Accept(NovaTokenType::OpenBracket)) {
+				if (Accept(NovaTokenType::OpenBrace)) {
 					Advance();
-					while (!Accept(NovaTokenType::CloseBracket)) {
+					while (!Accept(NovaTokenType::CloseBrace)) {
 						body.push_back(ParseStatement());
 					}
 				}
@@ -101,20 +101,20 @@ StmtNode* Parser::ParseStatement() {
 			Advance();
 		}
 
-		if (Accept(NovaTokenType::OpenBracket)) {
+		if (Accept(NovaTokenType::OpenBrace)) {
 			std::vector<StmtNode*> body;
 			std::vector<StmtNode*> else_body;
 			Advance();
-			while (!Accept(NovaTokenType::CloseBracket)) {
+			while (!Accept(NovaTokenType::CloseBrace)) {
 				StmtNode* statement = ParseStatement();
 				body.push_back(statement);
 			}
 			Advance();
 			if (Accept(NovaTokenType::ElseStmt)) {
 				Advance();
-				if (Accept(NovaTokenType::OpenBracket)) {
+				if (Accept(NovaTokenType::OpenBrace)) {
 					Advance();
-					while (!Accept(NovaTokenType::CloseBracket)) {
+					while (!Accept(NovaTokenType::CloseBrace)) {
 						StmtNode* statement = ParseStatement();
 						else_body.push_back(statement);
 					}
@@ -149,9 +149,9 @@ StmtNode* Parser::ParseStatement() {
 				}
 			}
 			std::vector<StmtNode*> scope;
-			if (Accept(NovaTokenType::OpenBracket)) {
+			if (Accept(NovaTokenType::OpenBrace)) {
 				Advance();
-				while (!Accept(NovaTokenType::CloseBracket)) {
+				while (!Accept(NovaTokenType::CloseBrace)) {
 					StmtNode* stmt = ParseStatement();
 					scope.push_back(stmt);
 				}
@@ -203,6 +203,48 @@ StmtNode* Parser::ParseStatement() {
 		Advance();
 		return new ASTPrintNode;
 	}
+	if (Accept(NovaTokenType::For)) {
+		Advance();
+		ExprNode* initializer = ParseExpression();
+		if (VariableNode* var = dynamic_cast<VariableNode*>(initializer)) {
+			if (Accept(NovaTokenType::In)) {
+				Advance();
+				ExprNode* container = ParseExpression();
+				if (Accept(NovaTokenType::OpenBrace)) {
+					Advance();
+					std::vector<StmtNode*> statements;
+					while (!Accept(NovaTokenType::CloseBrace)) {
+						statements.push_back(ParseStatement());
+					}
+					Advance();
+					return new ForEachNode(var, container, statements);
+				}
+				else {
+					PushError("Expected {");
+				}
+			}
+			else {
+				PushError("Expected 'in'");
+			}
+		}
+		else {
+			PushError("Initializer variable is not a variable");
+		}
+	}
+	if (Accept(NovaTokenType::While)) {
+		Advance();
+		ExprNode* expression = ParseExpression();
+		if (Accept(NovaTokenType::OpenBrace)) {
+			Advance();
+			std::vector<StmtNode*> statements;
+			while (!Accept(NovaTokenType::CloseBrace)) {
+				statements.push_back(ParseStatement());
+			}
+			Advance();
+			return new WhileNode(expression, statements);
+		}
+		PushError("Expected {");
+	}
 	// If nothing else works we try to parse it as a standalone expression
 	ExprNode* expr = ParseExpression();
 	if (expr) {
@@ -215,7 +257,6 @@ StmtNode* Parser::ParseStatement() {
 	}
 
 	Advance();
-	PushError("Unexpected Token Type in statement");
 	return nullptr;
 }
 

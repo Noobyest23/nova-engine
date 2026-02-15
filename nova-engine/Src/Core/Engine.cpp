@@ -90,7 +90,8 @@ void Engine::Shutdown() {
 }
 
 int Engine::TestEnv() {
-	//place for testing code
+	Script* script = new Script("Scripts/LoopTest.ns");
+	script->Release();
 	return 0;
 }
 
@@ -101,12 +102,13 @@ int Engine::Run() {
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		/*
 		while (window->IsEventsQueued()) {
 			InputEvent* e = window->EventGetNext();
 			scene->Input(e);
 			delete e;
 		}
-
+		*/
 		scene->Update(0.16f);
 		scene->Draw();
 
