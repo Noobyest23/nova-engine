@@ -11,6 +11,8 @@ Engine* Engine::engine_inst = nullptr;
 #include "../Assets/Script/Script.h"
 #include "../Objects/2D/_Internal/DevCamera2D.h"
 #include <filesystem>
+#include <chrono>
+#include "Input/Input.h"
 
 static void ScriptPushError(const char* message, int sevarity) {
 	Engine* engine = Engine::GetInstance();
@@ -47,6 +49,9 @@ void Engine::Init() {
 	PushMessage("[Engine Init] Initializing window...");
 	Window::Init();
 	window = new Window("Nova Engine", 800, 600);
+
+	PushMessage("[Engine Init] Initializing Input...");
+	Input::Init(window);
 
 	PushMessage("[Engine Init] Linking NovaScript Library...");
 	SetErrorCallback(ScriptPushError);
@@ -90,29 +95,30 @@ void Engine::Shutdown() {
 }
 
 int Engine::TestEnv() {
-	Script* script = new Script("Scripts/LoopTest.ns");
-	script->Release();
+	
 	return 0;
 }
 
 int Engine::Run() {
 	scene->Ready();
+	float last_frame_time = 0.0f;
 	while (window->Update()) {
 		if (should_stop) break;
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		float current_frame_time = static_cast<float>(glfwGetTime());
+		float delta_time = current_frame_time - last_frame_time;
 
-		/*
-		while (window->IsEventsQueued()) {
-			InputEvent* e = window->EventGetNext();
-			scene->Input(e);
-			delete e;
-		}
-		*/
-		scene->Update(0.16f);
+		
+
+		
+
+		scene->Update(delta_time);
 		scene->Draw();
 
 		glfwSwapBuffers(window->GetWindowHandle());
+		last_frame_time = current_frame_time;
+		Input::Update();
 	}
 
 	
@@ -146,7 +152,7 @@ void Engine::SetterProjectPath(const std::string& path) {
 #ifdef USE_CONSOLE
 void Engine::PushMessage(const std::string& message, bool important) {
 	if (important and not suppress_warning_popup) {
-		std::cout << "\033[36m" << message << "\033[0m\n";
+		std::cout << "\033[33m" << message << "\033[0m\n";
 	}
 	else if (not important) {
 		std::cout << message << "\n";

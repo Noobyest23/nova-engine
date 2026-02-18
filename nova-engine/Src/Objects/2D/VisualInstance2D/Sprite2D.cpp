@@ -3,8 +3,8 @@
 #include "../../../Assets/Image/Image.h"
 #include "../../../Assets/Mesh2D/BoxMesh2D.h"
 #include "../../../Core/AssetDB.h"
-#include "../../../nova-script/NovaScript/Interpretor/Value.h"
-#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
+#include "NovaScript/Interpretor/Value.h"
+#include "NovaScript/Library/nova_std_macro.h"
 Sprite2D::Sprite2D() {
 	material = static_cast<Material*>(AssetDB::Get("sprite_2D_shader"));
 	mesh = static_cast<BoxMesh2D*>(AssetDB::Get("BoxMesh2D"));

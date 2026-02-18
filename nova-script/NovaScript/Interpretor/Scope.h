@@ -16,6 +16,7 @@ struct NOVASCRIPT_API Scope {
 	Scope() = default;
 	explicit Scope(std::unordered_map<std::string, Value>& variables) : variables(variables) {};
 	explicit Scope(Scope* parentScope) : parent(parentScope) {}
+	~Scope();
 
 	Value* Get(const std::string& name);
 

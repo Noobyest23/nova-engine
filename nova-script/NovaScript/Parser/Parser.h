@@ -46,6 +46,7 @@ private:
 	bool current_expression_has_const = false;
 
 	void PushError(const std::string& message);
+	void PushWarning(const std::string& message);
 
 	bool use_optimizations = true;
 

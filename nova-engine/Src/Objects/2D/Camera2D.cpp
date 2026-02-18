@@ -1,8 +1,8 @@
 #include "Camera2D.h"
 #include "../../Core/Engine.h"
 #include "../../Platform/Agnostic/Window.h"
-#include "../../../nova-script/NovaScript/Interpretor/Value.h"
-#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
+#include "../../nova-script/NovaScript/Interpretor/Value.h"
+#include "../../nova-script/NovaScript/Library/nova_std_macro.h"
 Camera2D::Camera2D() {
 	glm::vec2 win_size = Engine::GetInstance()->window->GetSize();
 	viewportWidth = win_size.x;

@@ -7,12 +7,12 @@ class DevCamera2D : public Camera2D {
 public:
 	DevCamera2D() { name = "DevCamera2D"; }
 
-	float speed = 10.0f;
+	const float speed = 100.0f;
 
 
 private:
 
-	void OnInput(InputEvent* e) override;
+	void OnUpdate(float deltaTime) override;
 
 };
 

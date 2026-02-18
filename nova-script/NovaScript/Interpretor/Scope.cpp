@@ -2,6 +2,10 @@
 #include "Value.h"
 #include "../../pch.h"
 
+Scope::~Scope() {
+	variables.clear();
+}
+
 Value* Scope::Get(const std::string& name) {
 	auto it = variables.find(name);
 	if (it != variables.end()) return &it->second;

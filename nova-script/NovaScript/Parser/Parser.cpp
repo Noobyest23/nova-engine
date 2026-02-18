@@ -36,6 +36,9 @@ StmtNode* Parser::ParseStatement() {
 				Advance();
 				expression = ParseExpression();
 			}
+			else {
+				PushWarning("Uninitialized Variable");
+			}
 			VarDeclNode* decl = new VarDeclNode(var_name, expression);
 			decl->constant = is_const;
 			return decl;
@@ -510,4 +513,8 @@ ExprNode* Parser::ParsePrimary() {
 void Parser::PushError(const std::string& message) {
 	force_stop = true;
 	Callbacker::PushError(("[Parser] " + message + " at " + std::to_string(Current().line) + ", " + std::to_string(Current().column) + ", NovaTokenType is " + std::to_string(int(Current().type))).c_str(), 2);
+}
+
+void Parser::PushWarning(const std::string& message) {
+	Callbacker::PushError(("[Parser] " + message + " at " + std::to_string(Current().line) + ", " + std::to_string(Current().column) + ", NovaTokenType is " + std::to_string(int(Current().type))).c_str(), 1);
 }

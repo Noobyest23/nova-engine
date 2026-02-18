@@ -30,6 +30,8 @@ Interpretor::~Interpretor() {
 	for (std::pair<std::string, NovaModule*> pair : modules) {
 		delete pair.second;
 	}
+
+	modules.clear();
 }
 
 void Interpretor::Init() {

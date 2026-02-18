@@ -1,8 +1,8 @@
 #include "Object2D.h"
 #include "../../Core/Engine.h"
-#include "../glm/gtc/matrix_transform.hpp"
-#include "../../../nova-script/NovaScript/Interpretor/Value.h"
-#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include "NovaScript/Interpretor/Value.h"
+#include "NovaScript/Library/nova_std_macro.h"
 Object2D::Object2D() {
 	name = "Object2D";
 }

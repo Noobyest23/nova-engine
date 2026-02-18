@@ -1,7 +1,7 @@
 #ifndef NOVA_SCRIPT_ENGINE_MODULE_H
 #define NOVA_SCRIPT_ENGINE_MODULE_H
 
-#include "../../../nova-script/NovaScript/Library/NovaModule.h"
+#include "../../../../nova-script/NovaScript/Library/NovaModule.h"
 #include "../../../Core/Engine.h"
 #include "../../../Platform/Agnostic/Window.h"
 class NovaModule;

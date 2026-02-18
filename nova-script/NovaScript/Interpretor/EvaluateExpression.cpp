@@ -46,6 +46,9 @@ ee_decl(AssignmentNode* node) {
 	Value* lhs = EvaluateExpressionPtr(node->left);
 	if (!lhs || lhs->IsFunction() || lhs->is_manually_created) {
 		PushError("Left side is not a modifiable value " + node->Print());
+		if (lhs) {
+			lhs->Release();
+		}
 		return Value();
 	}
 
@@ -444,48 +447,60 @@ ee_decl(DotAccessNode* node) {
 			if (obj->IsVec2()) {
 				glm::vec2& o_vec = obj->GetVec2();
 				if (var->identifier == "x") {
+					obj->Release();
 					return Value(o_vec.x);
 				}
 				else if (var->identifier == "y") {
+					obj->Release();
 					return Value(o_vec.y);
 				}
 				else {
 					PushError(var->identifier + "cannot be found on vec2");
+					obj->Release();
 					return Value();
 				}
 			}
 			if (obj->IsVec3()) {
 				glm::vec3& o_vec = obj->GetVec3();
 				if (var->identifier == "x") {
+					obj->Release();
 					return Value(o_vec.x);
 				}
 				else if (var->identifier == "y") {
+					obj->Release();
 					return Value(o_vec.y);
 				}
 				else if (var->identifier == "z") {
+					obj->Release();
 					return Value(o_vec.z);
 				}
 				else {
 					PushError(var->identifier + "cannot be found on vec3");
+					obj->Release();
 					return Value();
 				}
 			}
 			if (obj->IsVec4()) {
 				glm::vec4& o_vec = obj->GetVec4();
 				if (var->identifier == "x") {
+					obj->Release();
 					return Value(o_vec.x);
 				}
 				else if (var->identifier == "y") {
+					obj->Release();
 					return Value(o_vec.y);
 				}
 				else if (var->identifier == "z") {
+					obj->Release();
 					return Value(o_vec.z);
 				}
 				else if (var->identifier == "w") {
+					obj->Release();
 					return Value(o_vec.w);
 				}
 				else {
 					PushError(var->identifier + "cannot be found on vec4");
+					obj->Release();
 					return Value();
 				}
 			}
@@ -764,15 +779,18 @@ eep_decl(DotAccessNode* node) {
 				if (var->identifier == "x") {
 					Value* ret = new Value(CPPVariable(o_vec.x));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else if (var->identifier == "y") {
 					Value* ret = new Value(CPPVariable(o_vec.y));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else {
 					PushError(var->identifier + "cannot be found on vec2");
+					obj->Release();
 					return nullptr;
 				}
 			}
@@ -781,20 +799,24 @@ eep_decl(DotAccessNode* node) {
 				if (var->identifier == "x") {
 					Value* ret = new Value(CPPVariable(o_vec.x));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else if (var->identifier == "y") {
 					Value* ret = new Value(CPPVariable(o_vec.y));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else if (var->identifier == "z") {
 					Value* ret = new Value(CPPVariable(o_vec.z));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else {
 					PushError(var->identifier + "cannot be found on vec3");
+					obj->Release();
 					return nullptr;
 				}
 			}
@@ -803,25 +825,30 @@ eep_decl(DotAccessNode* node) {
 				if (var->identifier == "x") {
 					Value* ret = new Value(CPPVariable(o_vec.x));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else if (var->identifier == "y") {
 					Value* ret = new Value(CPPVariable(o_vec.y));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else if (var->identifier == "z") {
 					Value* ret = new Value(CPPVariable(o_vec.z));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else if (var->identifier == "w") {
 					Value* ret = new Value(CPPVariable(o_vec.w));
 					ret->is_manually_created = true;
+					obj->Release();
 					return ret;
 				}
 				else {
 					PushError(var->identifier + "cannot be found on vec4");
+					obj->Release();
 					return nullptr;
 				}
 			}
@@ -856,15 +883,18 @@ eep_decl(ArrayAccessNode* node) {
 	if (arr->IsArray()) {
 		std::vector<Value>& list = arr->GetArray();
 		if (index.IsInt()) {
+			arr->Release();
 			return &list[index.GetInt()];
 		}
 		else {
 			PushError("Index is not an int" + node->Print());
+			arr->Release();
 			return &nullval;
 		}
 	}
 	else {
 		PushError("Cannot use array access on a non array" + node->Print());
+		arr->Release();
 		return &nullval;
 	}
 

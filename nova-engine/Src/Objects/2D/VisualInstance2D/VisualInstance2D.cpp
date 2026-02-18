@@ -1,8 +1,8 @@
 #include "VisualInstance2D.h"
 #include "../../../Core/Engine.h"
 #include "../../../Scene/Scene.h"
-#include "../../../nova-script/NovaScript/Interpretor/Value.h"
-#include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
+#include "NovaScript/Interpretor/Value.h"
+#include "NovaScript/Library/nova_std_macro.h"
 #include "../../../Assets/Image/FileImage.h"
 VisualInstance2D::VisualInstance2D() {
 	name = "VisualInstance2D";
