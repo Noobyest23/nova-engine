@@ -67,13 +67,19 @@ void Sprite2D::OnLoad(LoadableValues values) {
 			SetImage(static_cast<Image*>(pair.second));
 		}
 		else if (pair.first == "offset") {
-			offset = *static_cast<glm::vec2*>(pair.second);
+			glm::vec2* vec2 = static_cast<glm::vec2*>(pair.second);
+			offset = *vec2;
+			delete vec2;
 		}
 		else if (pair.first == "flip_h") {
-			flip_h = *static_cast<bool*>(pair.second);
+			bool* b = static_cast<bool*>(pair.second);
+			flip_h = *b;
+			delete b;
 		}
 		else if (pair.first == "flip_v") {
-			flip_v = *static_cast<bool*>(pair.second);
+			bool* b = static_cast<bool*>(pair.second);
+			flip_v = *b;
+			delete b;
 		}
 	}
 }

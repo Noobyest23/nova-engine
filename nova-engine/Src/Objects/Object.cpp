@@ -95,10 +95,14 @@ Object* Object::GetParent() {
 void Object::OnLoad(std::unordered_map<std::string, void*> values) {
 	for (std::pair<std::string, void*> pair : values) {
 		if (pair.first == "visible") {
-			visible = *static_cast<bool*>(pair.second);
+			bool* b = static_cast<bool*>(pair.second);
+			visible = *b;
+			delete b;
 		}
 		else if (pair.first == "paused") {
-			paused = *static_cast<bool*>(pair.second);
+			bool* b = static_cast<bool*>(pair.second);
+			paused = *b;
+			delete b;
 		}
 		else if (pair.first == "script") {
 			Script* new_script = static_cast<Script*>(pair.second);

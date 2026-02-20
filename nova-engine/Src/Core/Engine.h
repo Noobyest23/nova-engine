@@ -14,8 +14,11 @@
 
 class Window;
 class Scene;
+struct Command;
+class SceneEntryInst;
 
 #include <string>
+#include <unordered_map>
 
 class Engine {
 public:
@@ -40,14 +43,18 @@ public:
 
 	void SetterProjectPath(const std::string& path);
 	std::string initial_scene = "";
+
+	static SceneEntryInst* cmd_current_obj;
+	static bool used_cmd_obj;
 private:
 	
+	void ProcessCommand();
 
 	void ShowBootMessage();
 
 	bool should_stop = false;
 	static Engine* engine_inst;
-
+	std::unordered_map<std::string, Command*> commands;
 };
 
 #endif

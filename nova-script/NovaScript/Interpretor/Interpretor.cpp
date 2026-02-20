@@ -47,6 +47,7 @@ void Interpretor::Init() {
 	modules["string"] = new NovaStringModule;
 	modules["io"] = new NovaIOModule;
 	modules["vector"] = new NovaVectorModule;
+	modules["math"] = new NovaMathModule;
 }
 
 void Interpretor::Exec() {

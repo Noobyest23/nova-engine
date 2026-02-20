@@ -20,6 +20,7 @@ class SceneParser {
 public:
 
 	Object* Parse(const std::string& filepath);
+	SceneEntryInst BuildInstance(const std::string& type, LoadableValues&);
 
 private:
 	
@@ -29,7 +30,7 @@ private:
 	Token& Current() { return tokens[pos]; }
 	void Loop();
 
-	SceneEntryInst BuildInstance(const std::string& type, LoadableValues&);
+	
 
 	const std::string& GetType();
 	LValuePair GetLoadableValue();

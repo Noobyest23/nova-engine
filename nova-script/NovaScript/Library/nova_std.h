@@ -4,5 +4,6 @@
 #include "nova_io.h"
 #include "nova_string.h"
 #include "nova_vector.h"
+#include "nova_math.h"
 
 #endif

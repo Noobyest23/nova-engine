@@ -180,6 +180,9 @@
     <ClCompile Include="Src\Assets\Mesh2D\BoxMesh2D.cpp" />
     <ClCompile Include="Src\Assets\Mesh2D\Mesh2D.cpp" />
     <ClCompile Include="Src\Assets\Script\Script.cpp" />
+    <ClCompile Include="Src\Core\Commands\Command.cpp" />
+    <ClCompile Include="Src\Core\Commands\Help.cpp" />
+    <ClCompile Include="Src\Core\Commands\New.cpp" />
     <ClCompile Include="Src\Core\Engine.cpp" />
     <ClCompile Include="Src\Core\AssetDB.cpp" />
     <ClCompile Include="Src\Core\Input\Input.cpp" />
@@ -206,6 +209,9 @@
     <ClInclude Include="Src\Assets\Script\Added Modules\EngineModule.h" />
     <ClInclude Include="Src\Assets\Script\Added Modules\ObjectModule.h" />
     <ClInclude Include="Src\Assets\Script\Script.h" />
+    <ClInclude Include="Src\Core\Commands\Command.h" />
+    <ClInclude Include="Src\Core\Commands\Help.h" />
+    <ClInclude Include="Src\Core\Commands\New.h" />
     <ClInclude Include="Src\Core\Input\Input.h" />
     <ClInclude Include="Src\Core\Input\InputEvent.h" />
     <ClInclude Include="Src\Core\Input\InputEventKey.h" />

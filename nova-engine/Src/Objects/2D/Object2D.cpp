@@ -151,13 +151,19 @@ void Object2D::OnLoad(std::unordered_map<std::string, void*> values) {
 	Object::OnLoad(values);
 	for (std::pair<std::string, void*> pair : values) {
 		if (pair.first == "position") {
-			SetPosition(*static_cast<glm::vec2*>(pair.second));
+			glm::vec2* vec2 = static_cast<glm::vec2*>(pair.second);
+			SetPosition(*vec2);
+			delete vec2;
 		}
 		if (pair.first == "scale") {
-			SetScale(*static_cast<glm::vec2*>(pair.second));
+			glm::vec2* vec2 = static_cast<glm::vec2*>(pair.second);
+			SetScale(*vec2);
+			delete vec2;
 		}
 		if (pair.first == "rotation") {
-			SetRotation(*static_cast<float*>(pair.second));
+			float* f = static_cast<float*>(pair.second);
+			SetRotation(*f);
+			delete f;
 		}
 	}
 }

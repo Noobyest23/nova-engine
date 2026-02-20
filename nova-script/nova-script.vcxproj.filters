@@ -87,6 +87,9 @@
     <ClInclude Include="NovaScript\Library\nova_vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NovaScript\Library\nova_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

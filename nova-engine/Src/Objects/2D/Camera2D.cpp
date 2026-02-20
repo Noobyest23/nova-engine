@@ -50,10 +50,14 @@ void Camera2D::OnLoad(LoadableValues values) {
 	Object2D::OnLoad(values);
 	for (LValuePair pair : values) {
 		if (pair.first == "zoom") {
-			SetZoom(*static_cast<float*>(pair.second));
+			float* f = static_cast<float*>(pair.second);
+			SetZoom(*f);
+			delete f;
 		}
 		else if (pair.first == "active") {
-			active = *static_cast<bool*>(pair.second);
+			bool* b = static_cast<bool*>(pair.second);
+			active = *b;
+			delete b;
 		}
 	}
 }

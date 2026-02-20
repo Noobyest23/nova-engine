@@ -61,16 +61,22 @@ void VisualInstance2D::OnLoad(LoadableValues values) {
 	Object2D::OnLoad(values);
 	for (LValuePair pair : values) {
 		if (pair.first == "tint") {
-			tint = *static_cast<glm::vec4*>(pair.second);
+			glm::vec4* vec4 = static_cast<glm::vec4*>(pair.second);
+			tint = *vec4;
+			delete vec4;
 		}
 		else if (pair.first == "self_tint") {
-			self_tint = *static_cast<glm::vec4*>(pair.second);
+			glm::vec4* vec4 = static_cast<glm::vec4*>(pair.second);
+			self_tint = *vec4;
+			delete vec4;
 		}
 		else if (pair.first == "material") {
 			SetMaterial(static_cast<Material*>(pair.second));
 		}
 		else if (pair.first == "layer") {
-			layer = *static_cast<int*>(pair.second);
+			int* i = static_cast<int*>(pair.second);
+			layer = *i;
+			delete i;
 		}
 	}
 }

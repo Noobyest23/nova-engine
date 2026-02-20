@@ -1,6 +1,8 @@
 #include "Engine.h"
 
 Engine* Engine::engine_inst = nullptr;
+SceneEntryInst* Engine::cmd_current_obj = nullptr;
+bool Engine::used_cmd_obj = false;
 #include "../Scene/Scene.h"
 #include "../Platform/Agnostic/Window.h"
 #include <iostream>
@@ -13,6 +15,7 @@ Engine* Engine::engine_inst = nullptr;
 #include <filesystem>
 #include <chrono>
 #include "Input/Input.h"
+#include "Commands/Command.h"
 
 static void ScriptPushError(const char* message, int sevarity) {
 	Engine* engine = Engine::GetInstance();
@@ -72,11 +75,16 @@ void Engine::Init() {
 	scene = new Scene(initial_scene);
 
 	#ifdef _DEBUG
-	PushMessage("[Engine Init] Compiled in debug mode, adding developer camera (toggle with F1)");
+	PushMessage("[Engine Init] Compiled in debug mode");
+	PushMessage("[Engine Init] adding developer camera (toggle with F1)");
 	DevCamera2D* dev_cam = new DevCamera2D;
 	scene->root->AddChild(dev_cam);
 	dev_cam->active = false;
 	scene->root->MoveChild(scene->root->GetChildrenCount() - 1, 0);
+	#ifdef USE_CONSOLE
+	PushMessage("[Engine Init] Commands are enabled, Press F2 and type 'help' to get started");
+	commands = Command::GetAll();
+	#endif
 	#endif
 
 	PushMessage("[Engine Init] Finished Engine init");
@@ -109,9 +117,13 @@ int Engine::Run() {
 		float current_frame_time = static_cast<float>(glfwGetTime());
 		float delta_time = current_frame_time - last_frame_time;
 
-		
-
-		
+		#ifdef _DEBUG
+		#ifdef USE_CONSOLE
+		if (Input::IsKeyDown(GLFW_KEY_F2)) {
+			ProcessCommand();
+		}
+		#endif
+		#endif
 
 		scene->Update(delta_time);
 		scene->Draw();
@@ -168,6 +180,8 @@ void Engine::PushError(const std::string& message, bool stop_execution) {
 		Stop();
 	}
 }
+
+
 #elif _WIN32
 #include <Windows.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -221,3 +235,25 @@ void Engine::PushError(const std::string& message, bool stop_execution) {
 }
 
 #endif
+
+void Engine::ProcessCommand() {
+	std::string command;
+	std::cout << "> ";
+	std::getline(std::cin, command);
+	std::istringstream iss(command);
+	std::vector<std::string> parts;
+	std::string token;
+	while (iss >> token) {
+		parts.push_back(token);
+	}
+
+	if (!parts.empty()) {
+		auto it = commands.find(parts[0]);
+		if (it != commands.end()) {
+			it->second->Execute(parts);
+		}
+		else {
+			PushMessage("[Engine] Command not found: " + parts[0]);
+		}
+	}
+}
