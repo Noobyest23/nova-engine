@@ -17,6 +17,13 @@ bool Engine::used_cmd_obj = false;
 #include "Input/Input.h"
 #include "Commands/Command.h"
 
+#ifdef _WIN32
+#include "Windows.h"
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <glfw/glfw3native.h>
+#endif
+
+
 static void ScriptPushError(const char* message, int sevarity) {
 	Engine* engine = Engine::GetInstance();
 	switch (sevarity) {
@@ -183,9 +190,6 @@ void Engine::PushError(const std::string& message, bool stop_execution) {
 
 
 #elif _WIN32
-#include <Windows.h>
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <glfw/glfw3native.h>
 
 std::wstring ToWide(const std::string& str)
 {
@@ -237,6 +241,15 @@ void Engine::PushError(const std::string& message, bool stop_execution) {
 #endif
 
 void Engine::ProcessCommand() {
+	// Search for the terminal process and then bring it to the foreground.
+#ifdef _WIN32
+
+	HWND consoleHandle = GetConsoleWindow();
+	if (consoleHandle) {
+		ShowWindow(consoleHandle, SW_SHOW);
+		SetForegroundWindow(consoleHandle);
+	}
+#endif
 	std::string command;
 	std::cout << "> ";
 	std::getline(std::cin, command);
@@ -244,16 +257,46 @@ void Engine::ProcessCommand() {
 	std::vector<std::string> parts;
 	std::string token;
 	while (iss >> token) {
-		parts.push_back(token);
+		if (token.front() == '"') {
+			std::string str_token = token.substr(1);
+			while (str_token.back() != '"' && iss >> token) {
+				str_token += " " + token;
+			}
+			if (str_token.back() == '"') {
+				str_token.pop_back();
+				parts.push_back(str_token);
+			}
+			else {
+				PushError("Unterminated string in command");
+				return;
+			}
+		}
+		else {
+			parts.push_back(token);
+		}
 	}
 
 	if (!parts.empty()) {
 		auto it = commands.find(parts[0]);
+		bool do_not_tab_back = false;
+		if (parts.back() == "||") {
+			do_not_tab_back = true;
+			parts.pop_back();
+		}
 		if (it != commands.end()) {
 			it->second->Execute(parts);
 		}
 		else {
 			PushMessage("[Engine] Command not found: " + parts[0]);
+		}
+		if (do_not_tab_back) {
+			ProcessCommand();
+		}
+		else {
+			#ifdef _WIN32
+			HWND hwnd = glfwGetWin32Window(window->GetWindowHandle());
+			SetForegroundWindow(hwnd);
+			#endif
 		}
 	}
 }

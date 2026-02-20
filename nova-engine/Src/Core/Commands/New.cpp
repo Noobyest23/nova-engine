@@ -71,6 +71,10 @@ void NewCommand::Execute(const std::vector<std::string>& args) {
 					return;
 				}
 			}
+			else if (args[i] == "ENGINE_LAST") {
+				values[prop] = Engine::cmd_current_obj->ptr;
+				Engine::used_cmd_obj = true;
+			}
 			else {
 				values[prop] = new std::string(args[i]);
 			}
@@ -79,6 +83,8 @@ void NewCommand::Execute(const std::vector<std::string>& args) {
 	}
 
 	SceneParser parser;
+	SceneEntryInst* temp = new SceneEntryInst(parser.BuildInstance(args[1], values));
+	
 	if (Engine::cmd_current_obj != nullptr) {
 		if (Engine::cmd_current_obj->kind == SceneEntryInst::Kind::Object) {
 			if (!Engine::used_cmd_obj) {
@@ -93,6 +99,6 @@ void NewCommand::Execute(const std::vector<std::string>& args) {
 		delete Engine::cmd_current_obj;
 		Engine::cmd_current_obj = nullptr;
 	}
-	Engine::cmd_current_obj = new SceneEntryInst(parser.BuildInstance(args[1], values));
+	Engine::cmd_current_obj = temp;
 
 }

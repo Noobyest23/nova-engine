@@ -29,6 +29,7 @@ public:
 	void AddChild(Object* object);
 	Object* FindChild(const std::string& name);
 	Object* GetChild(int index);
+	Object* GetChild(const std::string& path);
 	std::vector<Object*>& GetChildren();
 	int GetChildrenCount();
 	Object* GetParent();

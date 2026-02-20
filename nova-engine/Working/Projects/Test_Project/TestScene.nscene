@@ -13,9 +13,10 @@ tag = rotater
 filepath = "Scripts/rotater.ns"
 [/Script]
 
-[Sprite2D] # no tag means it will be tagged by its index in the file (i.e: 2)
+[Sprite2D] # no tag means it will be tagged by its index in the file (i.e: 3)
 image = BigBuyImage
 script = rotater
+name = "big guy"
 [/Sprite2D]
 
 # this is a comment

@@ -69,6 +69,20 @@ Object* Object::GetChild(int index) {
 	return nullptr;
 }
 
+Object* Object::GetChild(const std::string& path) {
+	size_t dot_pos = path.find('/');
+	if (dot_pos == std::string::npos) {
+		return FindChild(path);
+	}
+	std::string first_part = path.substr(0, dot_pos);
+	std::string rest_part = path.substr(dot_pos + 1);
+	Object* child = FindChild(first_part);
+	if (child) {
+		return child->GetChild(rest_part);
+	}
+	return nullptr;
+}
+
 void Object::MoveChild(int from, int to) {
 	// Use a reference to avoid copying the whole vector
 	std::vector<Object*>& children = GetChildren();
@@ -111,6 +125,11 @@ void Object::OnLoad(std::unordered_map<std::string, void*> values) {
 		else if (pair.first == "parent") {
 			parent = static_cast<Object*>(pair.second);
 			parent->AddChild(this);
+		}
+		else if (pair.first == "name") {
+			std::string* s = static_cast<std::string*>(pair.second);
+			name = *s;
+			delete s;
 		}
 	}
 }
