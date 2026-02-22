@@ -9,4 +9,5 @@ func Ready() {
 func Update(dt) {
 	rot += dt * 0.25
 	this.SetRotation(rot)
+	this.Delete()
 }

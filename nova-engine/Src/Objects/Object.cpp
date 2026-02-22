@@ -19,6 +19,10 @@ void Object::Ready() {
 
 void Object::Update(float deltaTime) {
 	if (paused) return;
+	if (waiting_for_deletion) {
+		Delete();
+		return;
+	}
 	for (Object* child : GetChildren()) {
 		child->Update(deltaTime);
 	}
@@ -149,6 +153,31 @@ void Object::SetScript(Script* new_script) {
 	script = new_script;
 }
 
+void Object::Delete() {
+	OnDelete();
+	if (parent) {
+		auto& siblings = parent->children;
+		auto it = std::find(siblings.begin(), siblings.end(), this);
+		if (it != siblings.end()) {
+			siblings.erase(it);
+		}
+		parent = nullptr;
+	}
+	std::vector<Object*> children_copy = children;
+	children.clear();
+
+	for (Object* obj : children_copy) {
+		if (obj) {
+			obj->Delete();
+		}
+	}
+	if (script) {
+		script->Release();
+		script = nullptr;
+	}
+	delete this;
+}
+
 namespace nova_object {
 	static void PushError(const std::string& message) {
 		Engine::GetInstance()->PushError("[NovaScript Object] " + message);
@@ -198,6 +227,12 @@ namespace nova_object {
 		return ret;
 	}
 
+	nova_std_decl(Delete) {
+		objget(obj, Object, 0);
+		obj->waiting_for_deletion = true;
+		return Value();
+	}
+
 	Scope GetModule() {
 		Scope scope;
 		NOVA_BIND_METHOD(AddChild);
@@ -205,6 +240,7 @@ namespace nova_object {
 		NOVA_BIND_METHOD(GetChild);
 		NOVA_BIND_METHOD(GetChildren);
 		NOVA_BIND_METHOD(GetParent);
+		NOVA_BIND_METHOD(Delete);
 		return scope;
 	}
 
@@ -230,27 +266,3 @@ CPPObject Object::GetNovaObject() {
 	return object;
 }
 
-void Object::Delete() {
-	OnDelete();
-	if (parent) {
-		auto& siblings = parent->children;
-		auto it = std::find(siblings.begin(), siblings.end(), this);
-		if (it != siblings.end()) {
-			siblings.erase(it);
-		}
-		parent = nullptr;
-	}
-	std::vector<Object*> children_copy = children;
-	children.clear();
-
-	for (Object* obj : children_copy) {
-		if (obj) {
-			obj->Delete();
-		}
-	}
-	if (script) {
-		script->Release();
-		script = nullptr;
-	}
-	delete this;
-}

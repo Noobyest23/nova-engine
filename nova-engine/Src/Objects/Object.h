@@ -49,11 +49,13 @@ public:
 
 	virtual ~Object() {};
 
+	bool waiting_for_deletion = false;
 protected:
 
 	std::vector<Object*> children = {};
 	Object* parent = nullptr;
 	Script* script = nullptr;
+	
 
 	virtual void OnReady() {};
 	virtual void OnUpdate(float deltaTime) {};
