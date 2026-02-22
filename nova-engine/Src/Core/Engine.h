@@ -58,8 +58,5 @@ private:
 
 // TODO
 // Docs
-// CircleMesh2D
-// is BoxMesh2D loadable?
-// PolygonMesh2D
 
 #endif

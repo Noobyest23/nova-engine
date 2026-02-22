@@ -5,6 +5,7 @@
 #include "PrintTree.h"
 #include "Clear.h"
 #include "Delete.h"
+#include "LoadScene.h"
 
 std::unordered_map<std::string, Command*> Command::GetAll() {
 	std::unordered_map<std::string, Command*> commands;
@@ -14,5 +15,6 @@ std::unordered_map<std::string, Command*> Command::GetAll() {
 	commands["print_tree"] = new PrintTreeCommand;
 	commands["clear"] = new ClearCommand;
 	commands["delete"] = new DeleteCommand;
+	commands["load_scene"] = new LoadSceneCommand;
 	return commands;
 }

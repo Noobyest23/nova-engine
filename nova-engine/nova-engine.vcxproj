@@ -186,6 +186,7 @@
     <ClCompile Include="Src\Core\Commands\Command.cpp" />
     <ClCompile Include="Src\Core\Commands\Delete.cpp" />
     <ClCompile Include="Src\Core\Commands\Help.cpp" />
+    <ClCompile Include="Src\Core\Commands\LoadScene.cpp" />
     <ClCompile Include="Src\Core\Commands\New.cpp" />
     <ClCompile Include="Src\Core\Commands\PrintTree.cpp" />
     <ClCompile Include="Src\Core\Engine.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Src\Core\Commands\Command.h" />
     <ClInclude Include="Src\Core\Commands\Delete.h" />
     <ClInclude Include="Src\Core\Commands\Help.h" />
+    <ClInclude Include="Src\Core\Commands\LoadScene.h" />
     <ClInclude Include="Src\Core\Commands\New.h" />
     <ClInclude Include="Src\Core\Commands\PrintTree.h" />
     <ClInclude Include="Src\Core\Input\Input.h" />
@@ -260,6 +262,7 @@
     <None Include="Working\Projects\Test_Project\Scripts\StartupScript.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\string_test.ns" />
     <None Include="Working\Projects\Test_Project\Scripts\test.ns" />
+    <None Include="Working\Projects\Test_Project\OtherScene.nscene" />
     <None Include="Working\Projects\Test_Project\TestScene.nscene" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
