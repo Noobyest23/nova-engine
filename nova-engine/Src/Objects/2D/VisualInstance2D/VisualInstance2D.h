@@ -18,6 +18,8 @@ public:
 
 	void SetMaterial(Material* mat);
 	Material* GetMaterial() { return material; };
+	void SetMesh(Mesh2D* mesh);
+	Mesh2D* GetMesh() { return mesh; };
 
 	CPPObject GetNovaObject() override;
 
@@ -30,9 +32,8 @@ protected:
 	glm::vec4 GetTotalTint();
 
 	virtual void OnDraw() override;
-
 	virtual void OnLoad(LoadableValues values) override;
-
+	virtual void OnDelete() override;
 };
 
 

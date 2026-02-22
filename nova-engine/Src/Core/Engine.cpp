@@ -1,11 +1,10 @@
 #include "Engine.h"
 
 Engine* Engine::engine_inst = nullptr;
-SceneEntryInst* Engine::cmd_current_obj = nullptr;
-bool Engine::used_cmd_obj = false;
+std::unordered_map<std::string, SceneEntryInst*> Engine::command_objects = {};
 #include "../Scene/Scene.h"
 #include "../Platform/Agnostic/Window.h"
-#include <iostream>
+#include <iostream>`
 #include "AssetDB.h"
 #include <fstream>
 #include "../../nova-script/NovaScript.h"
@@ -140,7 +139,7 @@ int Engine::Run() {
 		Input::Update();
 	}
 
-	
+	scene->Shutdown();
 
 	return 0;
 }
@@ -277,18 +276,38 @@ void Engine::ProcessCommand() {
 	}
 
 	if (!parts.empty()) {
-		auto it = commands.find(parts[0]);
+		
 		bool do_not_tab_back = false;
+		std::vector<std::vector<std::string>> chain;
 		if (parts.back() == "||") {
 			do_not_tab_back = true;
 			parts.pop_back();
 		}
-		if (it != commands.end()) {
-			it->second->Execute(parts);
+
+		int i = 0;
+		std::vector<std::string> current_chain;
+		while (i < parts.size()) {
+			if (parts[i] == "||") {
+				chain.push_back(current_chain);
+				current_chain.clear();
+			}
+			else {
+				current_chain.push_back(parts[i]);
+			}
+			i++;
 		}
-		else {
-			PushMessage("[Engine] Command not found: " + parts[0]);
+		chain.push_back(current_chain);
+
+		for (std::vector<std::string> command_args : chain) {
+			auto it = commands.find(command_args[0]);
+			if (it != commands.end()) {
+				it->second->Execute(command_args);
+			}
+			else {
+				PushMessage("[Engine] Command not found: " + parts[0]);
+			}
 		}
+
 		if (do_not_tab_back) {
 			ProcessCommand();
 		}

@@ -6,6 +6,7 @@
 #include "../Assets/Mesh2D/BoxMesh2D.h"
 #include "../Assets/Script/Script.h"
 #include "../Core/Engine.h"
+#include "../Assets/Mesh2D/CircleMesh2D.h"
 
 #define CHECK(t) \
 if (#t == type)
@@ -95,4 +96,14 @@ SceneEntryInst SceneParser::BuildInstance(const std::string& type, LoadableValue
 		};
 		return inst;
 	}
+	CHECK(CircleMesh2D) {
+		CircleMesh2D* circlemesh = new CircleMesh2D();
+		SceneEntryInst inst = {
+			SceneEntryInst::Kind::Asset,
+			circlemesh
+		};
+		return inst;
+	}
+
+	Engine::GetInstance()->PushError("Unrecognized type '" + type + "' when loading scene");
 }

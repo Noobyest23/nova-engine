@@ -5,6 +5,9 @@ Scene::Scene(const std::string& scene_file) {
 }
 
 void Scene::ChangeScene(const std::string& scene_file) {
+	if (root) {
+		root->Delete();
+	}
 	root = LoadScene(scene_file);
 }
 
@@ -65,20 +68,9 @@ void Scene::AppendScene(const std::string& scene_file, Object* child) {
 	delete temp;
 }
 
-void DeleteChildren(Object* obj) {
-	for (Object* child : obj->GetChildren()) {
-		if (child) {
-			DeleteChildren(child);
-			delete child;
-			child = nullptr;
-		}
-	}
-}
-
 void Scene::Shutdown() {
 	if (root) {
-		DeleteChildren(root);
-		delete root;
+		root->Delete();
 		root = nullptr;
 	}
 }

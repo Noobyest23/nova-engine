@@ -24,6 +24,7 @@ public:
 	void Input(InputEvent* e);
 	void Draw();
 	void Load(LoadableValues values) { OnLoad(values); }
+	void Delete();
 
 	void MoveChild(int from, int to);
 	void AddChild(Object* object);
@@ -46,13 +47,12 @@ public:
 	Script* GetScript() const { return script; }
 	
 
-	virtual ~Object() = default;
+	virtual ~Object() {};
 
 protected:
 
 	std::vector<Object*> children = {};
 	Object* parent = nullptr;
-
 	Script* script = nullptr;
 
 	virtual void OnReady() {};
@@ -60,6 +60,7 @@ protected:
 	virtual void OnInput(InputEvent* e) {};
 	virtual void OnDraw() {};
 	virtual void OnLoad(std::unordered_map<std::string, void*> values);
+	virtual void OnDelete() {};
 };
 
 

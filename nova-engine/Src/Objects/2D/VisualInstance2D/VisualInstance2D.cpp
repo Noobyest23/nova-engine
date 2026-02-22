@@ -31,6 +31,17 @@ void VisualInstance2D::SetMaterial(Material* mat) {
 	material = mat;
 }
 
+void VisualInstance2D::SetMesh(Mesh2D* mesh) {
+	if (this->mesh) {
+		this->mesh->Release();
+	}
+	if (mesh) {
+		mesh->AddRef();
+	}
+
+	this->mesh = mesh;
+}
+
 VisualInstance2D::~VisualInstance2D() {
 	if (mesh) {
 		mesh->Release();
@@ -77,6 +88,9 @@ void VisualInstance2D::OnLoad(LoadableValues values) {
 			int* i = static_cast<int*>(pair.second);
 			layer = *i;
 			delete i;
+		}
+		else if (pair.first == "mesh") {
+			SetMesh(static_cast<Mesh2D*>(pair.second));
 		}
 	}
 }
@@ -185,3 +199,11 @@ CPPObject VisualInstance2D::GetNovaObject() {
 	return ret;
 }
 
+void VisualInstance2D::OnDelete() {
+	if (material) {
+		material->Release();
+	}
+	if (mesh) {
+		mesh->Release();
+	}
+}

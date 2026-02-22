@@ -6,14 +6,15 @@
 #include "../../Assets/Asset.h"
 
 void NewCommand::Execute(const std::vector<std::string>& args) {
-	// new FileImage filepath "path/to/image"
-	if (args.size() < 2) {
+	// new FileImage player_image filepath "path/to/image"
+	if (args.size() < 3) {
 		Engine::GetInstance()->PushError("Usage: " + Usage());
 		return;
 	}
+	std::vector<int> cmd_objs_used;
 	LoadableValues values;
-	if (args.size() > 2) {
-		for (size_t i = 2; i < args.size(); i++) {
+	if (args.size() > 3) {
+		for (size_t i = 3; i < args.size(); i++) {
 			std::string prop = args[i];
 			i++;
 			if (i == args.size()) {
@@ -71,9 +72,9 @@ void NewCommand::Execute(const std::vector<std::string>& args) {
 					return;
 				}
 			}
-			else if (args[i] == "ENGINE_LAST") {
-				values[prop] = Engine::cmd_current_obj->ptr;
-				Engine::used_cmd_obj = true;
+			else if (Engine::command_objects.find(args[i]) != Engine::command_objects.end()) {
+				values[prop] = Engine::command_objects[args[i]]->ptr;
+				cmd_objs_used.push_back(i);
 			}
 			else {
 				values[prop] = new std::string(args[i]);
@@ -84,21 +85,18 @@ void NewCommand::Execute(const std::vector<std::string>& args) {
 
 	SceneParser parser;
 	SceneEntryInst* temp = new SceneEntryInst(parser.BuildInstance(args[1], values));
-	
-	if (Engine::cmd_current_obj != nullptr) {
-		if (Engine::cmd_current_obj->kind == SceneEntryInst::Kind::Object) {
-			if (!Engine::used_cmd_obj) {
-				delete static_cast<Object*>(Engine::cmd_current_obj->ptr);
-				Engine::GetInstance()->PushMessage("[Engine] Previous Object instance was unused and has been deleted", true);
-			}
+	Engine::command_objects[args[2]] = temp;
+
+	for (int i : cmd_objs_used) {
+		SceneEntryInst* obj = Engine::command_objects[args[i]];
+		if (obj->kind == SceneEntryInst::Kind::Object) {
+			Engine::command_objects.erase(args[i]);
 		}
 		else {
-			Asset* asset = static_cast<Asset*>(Engine::cmd_current_obj->ptr);
+			Asset* asset = static_cast<Asset*>(obj->ptr);
 			asset->Release();
+			Engine::command_objects.erase(args[i]);
 		}
-		delete Engine::cmd_current_obj;
-		Engine::cmd_current_obj = nullptr;
 	}
-	Engine::cmd_current_obj = temp;
 
 }

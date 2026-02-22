@@ -44,8 +44,7 @@ public:
 	void SetterProjectPath(const std::string& path);
 	std::string initial_scene = "";
 
-	static SceneEntryInst* cmd_current_obj;
-	static bool used_cmd_obj;
+	static std::unordered_map<std::string, SceneEntryInst*> command_objects;
 private:
 	
 	void ProcessCommand();
@@ -56,5 +55,11 @@ private:
 	static Engine* engine_inst;
 	std::unordered_map<std::string, Command*> commands;
 };
+
+// TODO
+// Docs
+// CircleMesh2D
+// is BoxMesh2D loadable?
+// PolygonMesh2D
 
 #endif

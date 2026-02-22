@@ -3,6 +3,7 @@
 #include "../Assets/Script/Script.h"
 #include "../../../nova-script/NovaScript/Interpretor/Value.h"
 #include "../../../nova-script/NovaScript/Library/nova_std_macro.h"
+#include <algorithm>
 
 void Object::Ready() {
 	if (paused) return;
@@ -227,4 +228,29 @@ CPPObject Object::GetNovaObject() {
 
 	object.scope = scope;
 	return object;
+}
+
+void Object::Delete() {
+	OnDelete();
+	if (parent) {
+		auto& siblings = parent->children;
+		auto it = std::find(siblings.begin(), siblings.end(), this);
+		if (it != siblings.end()) {
+			siblings.erase(it);
+		}
+		parent = nullptr;
+	}
+	std::vector<Object*> children_copy = children;
+	children.clear();
+
+	for (Object* obj : children_copy) {
+		if (obj) {
+			obj->Delete();
+		}
+	}
+	if (script) {
+		script->Release();
+		script = nullptr;
+	}
+	delete this;
 }

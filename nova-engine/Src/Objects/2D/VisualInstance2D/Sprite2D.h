@@ -34,6 +34,7 @@ protected:
 
 	virtual void OnDraw() override;
 	virtual void OnLoad(LoadableValues values) override;
+	virtual void OnDelete() override;
 };
 
 #endif

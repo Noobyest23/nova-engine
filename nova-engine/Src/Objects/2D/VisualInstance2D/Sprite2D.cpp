@@ -142,3 +142,8 @@ CPPObject Sprite2D::GetNovaObject() {
 	return ret;
 }
 
+void Sprite2D::OnDelete() {
+	if (image) {
+		image->Release();
+	}
+}
