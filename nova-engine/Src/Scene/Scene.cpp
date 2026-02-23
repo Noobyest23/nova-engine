@@ -73,6 +73,7 @@ void Scene::Shutdown() {
 		root->Delete();
 		root = nullptr;
 	}
+	delete this;
 }
 
 
