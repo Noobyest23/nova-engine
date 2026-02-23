@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Nova Engine Documentation</title>
 	<link rel="icon" href="engine-icon.png" type="image/png">
 	<style>
-		* { margin: 0; padding: 0; box-sizing: border-box; }
-		html, body {
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
 			height: 100%;
 			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			background-color: #1e1e1e; 
+			background-color: #1e1e1e;
 			color: #e0e0e0;
-            font-size: 18px;
-            transition: background-color 0.3s ease; /* Smooth transition */
-			
+			font-size: 18px;
+			transition: background-color 0.3s ease;
+			/* Smooth transition */
+
 		}
-		
+
 		.layout {
 			display: flex;
 			height: 100vh;
@@ -34,8 +42,14 @@
 			border-radius: 10px;
 		}
 
-		nav ul { list-style: none; }
-		nav li { margin-bottom: 1rem; }
+		nav ul {
+			list-style: none;
+		}
+
+		nav li {
+			margin-bottom: 1rem;
+		}
+
 		nav a {
 			color: #e0e0e0;
 			text-decoration: none;
@@ -43,7 +57,10 @@
 			display: block;
 			transition: color 0.2s ease;
 		}
-		nav a:hover { color: #00adb5; }
+
+		nav a:hover {
+			color: #00adb5;
+		}
 
 		.logo {
 			text-align: center;
@@ -53,33 +70,45 @@
 		.logo img {
 			width: 128px;
 			height: 128px;
-			object-fit:fill;
+			object-fit: fill;
 			border-radius: 1px;
 		}
 
 		main {
 			flex: 1;
 			overflow-y: auto;
-			background-color: #242424; /* slight contrast */
+			background-color: #242424;
+			/* slight contrast */
 			padding: 2rem;
 			border-radius: 12px;
 			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 		}
 
-		section { display: none; margin-bottom: 3rem; }
-		section.active { display: block; }
+		section {
+			display: none;
+			margin-bottom: 3rem;
+		}
 
-		h1, h2 {
+		section.active {
+			display: block;
+		}
+
+		h1,
+		h2 {
 			color: #00adb5;
 			margin-bottom: 0.5rem;
 		}
+
 		h2 {
 			border-bottom: 1px solid #333;
 			padding-bottom: 0.3rem;
-            margin-bottom: 1rem;
-            margin-top: 2rem;
+			margin-bottom: 1rem;
+			margin-top: 2rem;
 		}
-		p { margin-bottom: 1rem; }
+
+		p {
+			margin-bottom: 1rem;
+		}
 
 		pre {
 			background: #1f1f1f;
@@ -89,9 +118,17 @@
 			color: #ccc;
 		}
 
-		::-webkit-scrollbar { width: 8px; }
-		::-webkit-scrollbar-thumb { background: #444; }
-		::-webkit-scrollbar-thumb:hover { background: #555; }
+		::-webkit-scrollbar {
+			width: 8px;
+		}
+
+		::-webkit-scrollbar-thumb {
+			background: #444;
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+			background: #555;
+		}
 
 		/* Background image styles */
 		.bg-image {
@@ -106,7 +143,8 @@
 			top: 0;
 			left: 0;
 			z-index: -1;
-            transition: opacity 0.3s ease; /* Smooth fade-out/fade-in */
+			transition: opacity 0.3s ease;
+			/* Smooth fade-out/fade-in */
 		}
 
 		/* Toggle Button */
@@ -121,11 +159,42 @@
 			border-radius: 5px;
 			cursor: pointer;
 		}
+
 		#toggle-btn:hover {
 			background-color: #007c7b;
 		}
+
+		details summary {
+			cursor: pointer;
+			color: #e0e0e0;
+			font-weight: 500;
+			list-style: none;
+			/* Removes default arrow in some browsers */
+			transition: color 0.2s ease;
+		}
+
+		details summary:hover {
+			color: #00adb5;
+		}
+
+		/* Custom arrow for the summary */
+		details summary::before {
+			content: "▶ ";
+			font-size: 0.8rem;
+			color: #00adb5;
+		}
+
+		details[open] summary::before {
+			content: "▼ ";
+		}
+
+		.nav-dropdown ul li {
+			font-size: 0.9rem;
+			margin-bottom: 0.5rem;
+		}
 	</style>
 </head>
+
 <body>
 	<div class="bg-image"></div> <!-- Background Image Section -->
 	<div class="layout">
@@ -137,34 +206,43 @@
 			<ul>
 				<li><a href="#Home">Home</a></li>
 				<li><a href="#Scene-Structure">Scene File Structure</a></li>
+				<li class="nav-dropdown">
+					<details>
+						<summary>Assets</summary>
+						<ul style="padding-left: 1rem; margin-top: 0.5rem;">
+							<li><a href="#Asset">Asset</a></li>
+							<li><a href="#Asset-Image">Image</a></li>
+							<li><a href="#Asset-Script">Script</a></li>
+							<li><a href="#Class-Mesh">Mesh</a></li>
+						</ul>
+					</details>
+				</li>
 			</ul>
-			<label for="nav-class-list" style="color:#00adb5;font-weight:bold;margin-top:1rem;display:block;">Class List:</label>
-			<select id="nav-class-list" style="width:100%;padding:0.5rem;border-radius:6px;background:#1a1a1a;color:#e0e0e0;border:1px solid #333;margin-bottom:1.5rem;">
-				<option value="Camera2D">Camera2D</option>
-				<option value="Sprite2D">Sprite2D</option>
-				<option value="Object2D">Object2D</option>
-				<option value="FileImage">FileImage</option>
-				<option value="Script">Script</option>
-				<!-- Add more classes as needed -->
-			</select>
 		</nav>
 
 		<main>
 			<section id="Home" class="active">
-        <small><br>Docs Version: 0.3 - Velvet Sparks</p></small>
+				<small><br>Docs Version: 0.3 - Velvet Sparks</p></small>
 				<h1>Welcome to the Documentation of Nova Engine</h1>
-				<p><strong>Nova Engine</strong> is a completely free game engine made by a solo developer—powered by caffeine, late nights, and too much free time.<br>
+				<p><strong>Nova Engine</strong> is a completely free game engine made by a solo developer—powered by
+					caffeine, late nights, and too much free time.<br>
 				<h2>What is Nova Engine?</h2>
-				<p><strong>Nova Engine</strong> is an in-development 3D game engine. It uses a class-based system for scene objects. As of right now, I would not recommend trying to actually make a game with Nova Engine. It's still very early in development and is mostly just fun to play around with.</p>
-				<p>The Documentation (just like the engine itself) is also still in development there may be pages missing for some things. Make sure to write a bug report for any pages that are missing</p>
-                <h2>Get Involved</h2>
-				<p>If (when) you encounter any bugs, I would greatly appreciate it if you report them at this <a href="https://discord.gg/s7Axx58VDv" target="_blank">Discord server</a>. There's a channel dedicated to bug reports</p>
-        <p>Also check out my <a href="https://noobyest.itch.io" target="_blank">Itch Page</a></p>
-      </section>
-      <section id="Scene-Structure">
-                <h1>Scene Structure</h1>
-                <p>Scenes are defined using a text-based format. Each object is defined by its class type and properties. Example:</p>
-                <pre># you can use # for comments
+				<p><strong>Nova Engine</strong> is an in-development 3D game engine. It uses a class-based system for
+					scene objects. As of right now, I would not recommend trying to actually make a game with Nova
+					Engine. It's still very early in development and is mostly just fun to play around with.</p>
+				<p>The Documentation (just like the engine itself) is also still in development there may be pages
+					missing for some things. Make sure to write a bug report for any pages that are missing</p>
+				<h2>Get Involved</h2>
+				<p>If (when) you encounter any bugs, I would greatly appreciate it if you report them at this <a
+						href="https://discord.gg/s7Axx58VDv" target="_blank">Discord server</a>. There's a channel
+					dedicated to bug reports, and a Nova Engine tag</p>
+				<p>Also check out my <a href="https://noobyest.itch.io" target="_blank">Itch Page</a></p>
+			</section>
+			<section id="Scene-Structure">
+				<h1>Scene Structure</h1>
+				<p>Scenes are defined using a text-based format. Each object is defined by its class type and
+					properties. Example:</p>
+				<pre># you can use # for comments
 [FileImage]
 tag = "image_asset"
 filepath = "ProjectFolder/path/to/your/image"
@@ -199,17 +277,34 @@ parent = "sprite"
 # ^ adds a basic camera 2D at 0, 0
 
 </pre>
-                <h2>Key Notes</h2>
-                <ul>
-                    <li>Each section starts with [ClassName]. And ends with [/Classname]</li>
-                    <li>Properties are set with <code>property = value</code>.</li>
-                    <li>Assets are loaded from file paths relative to the project folder</li>
-                </ul>
-                <p>For a full list of classes and properties, see the Classes section above.</p>
-      </section>
-      <section>
-        
-      </section>
+				<h2>Key Notes</h2>
+				<ul>
+					<li>Each section starts with [ClassName]. And ends with [/Classname]</li>
+					<li>Properties are set with <code>property = value</code>.</li>
+					<li>Assets are loaded from file paths relative to the project folder</li>
+				</ul>
+				<p>For a full list of classes and properties, see the Classes section above.</p>
+			</section>
+			<section id="Asset">
+				<h1>Asset</h1>
+				<p>Assets are ref counted objects, often used to load data from external files. When writing your own c++ code you MUST remember to call Asset->AddRef and Asset->Release</p>
+				<h2>Properties</h2>
+				<ul>
+					<li><code>tag</code>: A unique identifier for the asset. This is how you reference the asset in
+						the rest of your scene file.</li>
+					<li><code>filepath</code>: The path to the file you want to load, relative to the project folder.
+						Example: <code>ProjectFolder/assets/image.png</code></li>
+				</ul>
+			<section id="Asset-Image">
+				<h1>Image Asset</h1>
+				<p>Image assets are used to load images from the disk. They can then be used by other objects like
+					sprites and meshes.</p>
+				<h2>Properties</h2>
+				<ul>
+				
+				</ul>
+
+			</section>
 		</main>
 	</div>
 
@@ -230,17 +325,17 @@ parent = "sprite"
 				document.body.style.backgroundColor = 'rgba(18, 18, 18, 1.0)'; // Slightly transparent background when image is hidden
 			}
 		});
-        function showSection(hash) {
+		function showSection(hash) {
 			document.querySelectorAll('main section').forEach(sec => {
 				sec.classList.remove('active');
 			});
 			const target = document.querySelector(hash);
 			if (target) target.classList.add('active');
 		}
-        document.addEventListener("DOMContentLoaded", () => {
-            const defaultSection = document.getElementById('Home');
-        	defaultSection.classList.add('active');
-        });
+		document.addEventListener("DOMContentLoaded", () => {
+			const defaultSection = document.getElementById('Home');
+			defaultSection.classList.add('active');
+		});
 
 		window.addEventListener('hashchange', () => showSection(location.hash));
 		window.addEventListener('DOMContentLoaded', () => {
@@ -249,4 +344,5 @@ parent = "sprite"
 		});
 	</script>
 </body>
+
 </html>
