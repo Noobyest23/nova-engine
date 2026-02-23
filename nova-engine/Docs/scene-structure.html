@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Nova Engine Documentation - Scene Structure</title>
+	<link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+</head>
+<body>
+	<div class="layout">
+		<nav id="side-nav"></nav>
+		<main>
+			<section>
+				<h1>Scene Structure</h1>
+				<p>Scenes are defined using a text-based format. Each object is defined by its class type and properties. Example:</p>
+				<pre># you can use # for comments
+[FileImage]
+tag = "image_asset"
+filepath = "ProjectFolder/path/to/your/image"
+[/FileImage]
+
+[Script]
+tag = "Rotater"
+filepath = "ProjectFolder/path/to/your/script"
+[/Script]
+
+# as a good practice you should put your asset dependencies
+# at the top of your scene file
+
+[Sprite2D]
+tag = "sprite"
+image = "image_asset"
+position = Vector2(200, 500)
+[/Sprite2D]
+
+[Object2D]
+# by default this objects tag is its index in the scene file (3)
+script = "Rotater"
+parent = "sprite"
+[/Object2D]
+
+# any objects that arent added as a child of another object
+# go on to the root of the scene
+
+[Camera2D]
+[/Camera2D]
+
+# ^ adds a basic camera 2D at 0, 0
+</pre>
+				<h2>Key Notes</h2>
+				<ul>
+					<li>Each section starts with [ClassName]. And ends with [/Classname]</li>
+					<li>Properties are set with property = value.</li>
+					<li>Assets are loaded from file paths relative to the project folder</li>
+				</ul>
+				<p>For a full list of classes and properties, see the Classes section above.</p>
+			</section>
+		</main>
+	</div>
+	<script src="Common/docs.js"></script>
+</body>
+</html>

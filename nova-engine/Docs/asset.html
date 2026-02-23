@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Nova Engine Documentation - Asset</title>
+	<link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+	<div class="layout">
+		<nav id="side-nav"></nav>
+		<main>
+			<section>
+				<h1>Asset</h1>
+				<h2>Description</h2>
+				<p>Assets are ref counted objects, often used to load data from external files. When writing your own c++ code you MUST remember to call Asset->AddRef and Asset->Release</p>
+				<p><strong>Note:</strong> Assets are not accessible from NovaScript</p>
+                <h2>Usage</h2>
+				<p>In this example i will make a FileImage (inherits from asset) and put it on a Sprite2D</p>
+				<pre><code class="language-cpp">if (Sprite2D* sprite = dynamic_cast<Sprite2D*>(root->GetChild(0))) {
+	FileImage* image = new FileImage("path/to/my/image"); // reference count starts at 1
+	sprite->SetImage(image); // SetImage increments the reference count to 2
+	// when we are done with our image, we release it here
+	image->Release(); // subtracts the reference count back to 1
+	
+	// if our sprite object gets deleted the image gets freed again
+	sprite->Delete(); // image gets released, the reference count is 0. the image gets deleted
+}</code></pre>
+				<h2>Properties</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>AddRef()</td>
+							<td>void</td>
+							<td>Increments this assets reference count</td>
+						</tr>
+						<tr>
+							<td>Release()</td>
+							<td>void</td>
+							<td>Decrements this assets reference count</td>
+						</tr>
+						<tr>
+							<td>GetReferenceCount()</td>
+							<td>int</td>
+							<td>Returns the amount of references this asset has</td>
+						</tr>
+						<tr>
+							<td>OnDestroy()</td>
+							<td>void</td>
+							<td>Called when this assets reference count reaches 0, can be overriden</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</main>
+	</div>
+	<script src="Common/docs.js"></script>
+</body>
+</html>

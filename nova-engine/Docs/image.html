@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Nova Engine Documentation - Image Asset</title>
+	<link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+</head>
+<body>
+	<div class="layout">
+		<nav id="side-nav"></nav>
+		<main>
+			<section>
+				<h1>Image</h1>
+                <p>Inherits <a href="asset.html">Asset</a></p>
+				<h2>Description</h2>
+				<p>Base class for holding image data and managing OpenGL textures</p>
+				<h2>Properties</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td>GetHeight()</td><td>int</td><td>Returns the height of the image in pixels</td></tr>
+						<tr><td>GetWidth()</td><td>int</td><td>Returns the width of the image in pixels</td></tr>
+						<tr><td>GetChannels()</td><td>int</td><td>Returns the channel count of the image, 1 channel is greyscale, 3 is RGB, 4 is RGBA</td></tr>
+						<tr><td>GetData()</td><td>unsigned char*</td><td>Returns the raw pixel data of the image</td></tr>
+						<tr><td>Free()</td><td>void</td><td>Deletes the pixel data from the image, Does not clear the image from VRAM</td></tr>
+						<tr><td>Upload()</td><td>void</td><td>Uploads the image to the GPU, for use on a material</td></tr>
+						<tr><td>Bind(uint32_t slot)</td><td>void</td><td>Binds the texture to a GPU texture slot</td></tr>
+						<tr><td>GetTexture()</td><td>GLuint</td><td>Returns this images GPU Texture ID</td></tr>
+						<tr><td>IsUploaded()</td><td>bool</td><td>Returns true if this image has been uploaded to the GPU otherwise false.</td></tr>
+					</tbody>
+				</table>
+			</section>
+		</main>
+	</div>
+	<script src="Common/docs.js"></script>
+</body>
+</html>
