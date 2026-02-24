@@ -21,8 +21,48 @@ window.addEventListener('hashchange', () => {
 	if (window.hljs) hljs.highlightAll();
 });
 
-fetch('nav.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('side-nav').innerHTML = data;
-        });
+const navHTML = `
+<div class="logo">
+    <img src="Images/engine-icon.png" alt="Nova Engine Logo">
+</div>
+<h2>Navigation</h2>
+<ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="scene-structure.html">Scene File Structure</a></li>
+    <li class="nav-dropdown">
+        <details>
+            <summary>Assets</summary>
+            <ul>
+                <li><a href="asset.html">Asset</a></li>
+				<li class="nav-dropdown">
+					<details>
+						<summary>Images</summary>
+						<ul>
+							<li><a href="image.html">Image</a></li>
+							<li><a href="file-image.html">FileImage</a></li>
+						</ul>
+					</details>
+				</li>
+				<li class="nav-dropdown">
+					<details>
+						<summary>Mesh2D</summary>
+						<ul>
+							<li><a href="mesh2d.html">Mesh2D</a></li>
+							<li><a href="boxmesh2d.html">BoxMesh2D</a></li>
+							<li><a href="circlemesh2d.html">CircleMesh2D</a></li>
+						</ul>
+					</details>
+				</li>
+                <li><a href="script.html">Script</a></li>
+				<li><a href="material.html">Material</a></li>
+            </ul>
+        </details>
+    </li>
+</ul>`;
+
+document.addEventListener("DOMContentLoaded", () => {
+	const navBar = document.querySelector('nav');
+	if (navBar) {
+		navBar.innerHTML = navHTML;
+	}
+});

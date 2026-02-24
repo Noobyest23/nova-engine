@@ -8,17 +8,32 @@
 </head>
 <body>
 	<div class="layout">
-		<nav id="side-nav"></nav>
+		<nav></nav> <script src="nav-data.js"></script>
 		<main>
 			<section>
-				<h1>Script Asset</h1>
+				<h1>Script</h1>
+				<p>Inherits <a href="asset.html">Asset</a></p>
 				<h2>Description</h2>
-				<p>Script assets are used to load and reference NovaScript files for use in scene objects.</p>
+				<p>Script assets are used to load and reference NovaScript files</p>
+				<p>See the NovaScript documentation for more about how to write NovaScript files</p>
 				<h2>Properties</h2>
-				<ul>
-					<li><code>tag</code>: Unique identifier for the script asset.</li>
-					<li><code>filepath</code>: Path to the NovaScript file, relative to the project folder.</li>
-				</ul>
+				<table>
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td>filepath</td><td>std::string</td><td>the filepath to the NovaScript file</td></tr>
+						<tr><td>Set(std::string name, Value val)</td><td>void</td><td>Sets a variable in the novascript interpretor, if the value doesnt exist it gets created.</td></tr>
+						<tr><td>Get(std::string name)</td><td>Value*</td><td>Returns a variable in the NovaScript interpretor if it exists, otherise returns nullptr</td></tr>
+						<tr><td>GetAll()</td><td>Scope*</td><td>Gets the scope of the NovaScript interpretor, which contains every variable and variable name</td></tr>
+						<tr><td>Call(std::string function_name, std::vector[Value*] arguments)</td><td>void</td><td>Calls a NovaScript function (can be a c++ function, in a module)</td></tr>
+					</tbody>
+				</table>
+				<p><strong>Note:</strong> filepath cannot be accessed or changed after the image is created, it is only used to create the image.</p>
 			</section>
 		</main>
 	</div>

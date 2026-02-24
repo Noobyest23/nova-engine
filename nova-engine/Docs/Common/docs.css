@@ -10,7 +10,7 @@ body {
 .layout {
 	display: flex;
 	height: 95vh;
-	max-width: 1200px;
+	max-width: 1500px;
 	margin: 0 auto;
 	padding: 1rem;
 	gap: 1.5rem;
@@ -23,8 +23,12 @@ nav {
 	overflow-y: auto;
 	border-radius: 10px;
 }
-nav ul { list-style: none; }
-nav li { margin-bottom: 1rem; }
+nav h2 {
+    text-align: left;
+    font-size: 1.2rem;
+}
+nav ul { list-style: none; padding-left: 0; text-align: left; }
+nav li { margin-bottom: 1rem; width: 100%;}
 nav a {
 	color: #e0e0e0;
 	text-decoration: none;
@@ -107,3 +111,23 @@ tr:hover {
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-thumb { background: #444; }
 ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* Additive padding for nested lists */
+.nav-dropdown ul {
+    padding-left: 1.2rem; /* Adjust this value to increase/decrease the "step" */
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+
+/* Optional: Make the nested links slightly smaller or a different color to show hierarchy */
+.nav-dropdown ul a {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Ensure the summary (the clickable toggle) also aligns with the parent level */
+details summary {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    cursor: pointer;
+}

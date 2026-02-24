@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Nova Engine Documentation - Image Asset</title>
+	<link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+</head>
+<body>
+	<div class="layout">
+		<nav></nav> <script src="nav-data.js"></script>
+		<main>
+			<section>
+				<h1>Material</h1>
+                <p>Inherits <a href="asset.html">Asset</a></p>
+				<h2>Description</h2>
+				<p>A Material is the representation of a Shader and its current Uniforms</p>
+                <pre><code class="language-cpp">using Uniform = std::variant<int, float, bool, glm::vec2, glm::vec3, glm::vec4, glm::mat4>;</code></pre>
+				<h2>Properties</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td>vert_filepath</td><td>std::string</td><td>Filepath to be used in the constructer</td></tr>
+						<tr><td>frag_filepath</td><td>std::string</td><td>Filepath to be used in the constructer</td></tr>
+                        <tr><td>Reload()</td><td>void</td><td>Reloads the vertex and fragment shaders from their files</td></tr>
+                        <tr><td>Bind()</td><td>void</td><td>Binds this material (and any image uniforms) to OpenGL.</td></tr>
+                        <tr><td>Unbind()</td><td>void</td><td>Unbinds this material from OpenGL</td></tr>
+                        <tr><td>SetUniform(std::string name, Uniform)</td><td>void</td><td>Sets a shader uniform</td></tr>
+                        <tr><td>SetImageUniform(std::string name, Image* image)</td><td>void</td><td>Sets an sampler2D uniform, and increases image's reference count</td></tr>
+                        <tr><td>GetUniform(std::string name)</td><td>Uniform</td><td>Returns <code>name</code> on this shader</td></tr>
+					</tbody>
+				</table>
+                <p><strong>Note:</strong> filepaths cannot be accessed or changed after the Material is created, it is only used to create the Material.</p>
+			</section>
+		</main>
+	</div>
+	<script src="Common/docs.js"></script>
+</body>
+</html>

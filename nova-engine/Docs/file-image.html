@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Nova Engine Documentation - Image Asset</title>
+	<link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+</head>
+<body>
+	<div class="layout">
+		<nav></nav> <script src="nav-data.js"></script>
+		<main>
+			<section>
+				<h1>Image</h1>
+                <p>Inherits <a href="image.html">Image</a> > <a href="asset.html">Asset</a></p>
+				<h2>Description</h2>
+				<p>Creates an image from an image file</p>
+                <pre>#Scene file
+
+[FileImage]
+tag = "my_image"
+filepath = "path/to/your/image"
+[/Fileimage]
+[Sprite2D]
+image = my_image
+[/Sprite2D]
+                </pre>
+				<h2>Properties</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td>filepath</td><td>std::string</td><td>Filepath to be used in the constructer</td></tr>
+					</tbody>
+				</table>
+                <p><strong>Note:</strong> filepath cannot be accessed or changed after the image is created, it is only used to create the image.</p>
+			</section>
+		</main>
+	</div>
+	<script src="Common/docs.js"></script>
+</body>
+</html>

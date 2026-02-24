@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Nova Engine Documentation - Mesh Asset</title>
+	<link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+	<div class="layout">
+		<nav></nav> <script src="nav-data.js"></script>
+		<main>
+			<section>
+				<h1>Mesh2D</h1>
+				<p>Inherits <a href="asset.html">Asset</a></p>
+				<h2>Description</h2>
+				<p>Mesh assets are used to load mesh data. They can be assigned to objects for rendering.</p>
+				<h2>Properties</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td>GetVertices()</td><td>std::vector[Vertex2D]&</td><td>Returns the meshes verticies</td></tr>
+						<tr><td>GetIndicies()</td><td>std::vector[unsigned int]&</td><td>Returns the meshes indicies</td></tr>
+						<tr><td>Upload()</td><td>void</td><td>Uploads the image to the GPU, for use on a material</td></tr>
+						<tr><td>Bind()</td><td>void</td><td>Binds the mesh for OpenGL</td></tr>
+						<tr><td>Unbind()</td><td>void</td><td>Unbinds the mesh from OpenGL</td></tr>
+						<tr><td>GetIndexCount()</td><td>uint32_t</td><td>Returns the amount of indicies that the mesh has</td></tr>
+					</tbody>
+				</table>
+				<p><strong>Note:</strong> GetVertices() and GetIndicies() are unavailable will return empty vectors if the mesh has been uploaded</p>
+			</section>
+		</main>
+	</div>
+	<script src="Common/docs.js"></script>
+</body>
+</html>
