@@ -58,5 +58,7 @@ private:
 
 // TODO
 // Docs
+// make null evaluate to false in nova-script
+// Engine-Input module for NovaScript
 
 #endif

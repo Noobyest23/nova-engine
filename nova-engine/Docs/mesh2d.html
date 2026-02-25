@@ -1,46 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Nova Engine Documentation - Mesh Asset</title>
-	<link rel="stylesheet" href="Common/docs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - Mesh2D Asset</title>
+    <link rel="stylesheet" href="Common/docs.css">
     <link rel="icon" href="Images/engine-icon.png" type="image/png">
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
-	<div class="layout">
-		<nav></nav> <script src="nav-data.js"></script>
-		<main>
-			<section>
-				<h1>Mesh2D</h1>
-				<p>Inherits <a href="asset.html">Asset</a></p>
-				<h2>Description</h2>
-				<p>Mesh assets are used to load mesh data. They can be assigned to objects for rendering.</p>
-				<h2>Properties</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Property</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr><td>GetVertices()</td><td>std::vector[Vertex2D]&</td><td>Returns the meshes verticies</td></tr>
-						<tr><td>GetIndicies()</td><td>std::vector[unsigned int]&</td><td>Returns the meshes indicies</td></tr>
-						<tr><td>Upload()</td><td>void</td><td>Uploads the image to the GPU, for use on a material</td></tr>
-						<tr><td>Bind()</td><td>void</td><td>Binds the mesh for OpenGL</td></tr>
-						<tr><td>Unbind()</td><td>void</td><td>Unbinds the mesh from OpenGL</td></tr>
-						<tr><td>GetIndexCount()</td><td>uint32_t</td><td>Returns the amount of indicies that the mesh has</td></tr>
-					</tbody>
-				</table>
-				<p><strong>Note:</strong> GetVertices() and GetIndicies() are unavailable will return empty vectors if the mesh has been uploaded</p>
-			</section>
-		</main>
-	</div>
-	<script src="Common/docs.js"></script>
+    <div class="layout">
+        <nav></nav> <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>Mesh2D</h1>
+                <p>
+                    <strong>Inherits:</strong> <a href="asset.html">Asset</a> | 
+                    <strong>Inherited by:</strong> <a href="boxmesh2d.html">BoxMesh2D</a>, <a href="circlemesh2d.html">CircleMesh2D</a>
+                </p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p><code>Mesh2D</code> is the base class for all 2D geometry in the Nova Engine. It stores vertex positions, UV coordinates, and index data required for OpenGL rendering.</p>
+
+                <div class="alert-box info">
+                    <strong>Memory Management:</strong> Like all Assets, Mesh2D objects use reference counting. Ensure you call <code>AddRef()</code> and <code>Release()</code> when handling these in C++.
+                </div>
+
+                <h2>Public Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Return Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>GetVertices()</code></td><td><code>std::vector&lt;Vertex2D&gt;&amp;</code></td><td>Returns a reference to the vertex list.</td></tr>
+                        <tr><td><code>GetIndices()</code></td><td><code>std::vector&lt;unsigned int&gt;&amp;</code></td><td>Returns a reference to the index list.</td></tr>
+                        <tr><td><code>GetIndexCount()</code></td><td><code>uint32_t</code></td><td>Returns the total number of indices.</td></tr>
+                        <tr><td><code>Upload()</code></td><td><code>void</code></td><td>Sends mesh data to the GPU (VRAM).</td></tr>
+                        <tr><td><code>Bind()</code></td><td><code>void</code></td><td>Binds the Vertex Array Object for rendering.</td></tr>
+                        <tr><td><code>Unbind()</code></td><td><code>void</code></td><td>Unbinds the current mesh.</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="alert-box warning">
+                    <strong>Optimization Note:</strong> After <code>Upload()</code> is called, the CPU-side vectors for vertices and indices are cleared to save memory. Subsequent calls to <code>GetVertices()</code> or <code>GetIndices()</code> will return empty containers.
+                </div>
+
+                <h2>Example</h2>
+                <pre><code class="language-cpp">// Manual mesh binding example
+myMesh->Upload(); 
+myMesh->Bind();
+glDrawElements(GL_TRIANGLES, myMesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
+myMesh->Unbind();</code></pre>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
 </body>
 </html>

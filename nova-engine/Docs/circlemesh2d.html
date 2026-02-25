@@ -1,27 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Nova Engine Documentation - CircleMesh2D Asset</title>
-	<link rel="stylesheet" href="Common/docs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - CircleMesh2D</title>
+    <link rel="stylesheet" href="Common/docs.css">
     <link rel="icon" href="Images/engine-icon.png" type="image/png">
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
-	<div class="layout">
-		<nav></nav> <script src="nav-data.js"></script>
-		<main>
-			<section>
-				<h1>CircleMesh2D</h1>
-                <p>Inherits <a href="mesh2d.html">Mesh2D</a> > <a href="asset.html">Asset</a></p>
-				<h2>Description</h2>
-				<p>A primitive circle shape</p>
-			</section>
-		</main>
-	</div>
-	<script src="Common/docs.js"></script>
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>CircleMesh2D</h1>
+                <p>
+                    <strong>Inherits:</strong> 
+					<a href="mesh2d.html">Mesh2D</a> >
+					<a href="asset.html">Asset</a>
+                </p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p><code>CircleMesh2D</code> is a primitive geometric asset that generates a smooth circular mesh using a triangle fan originating from the center point.</p>
+
+                <div class="alert-box warning">
+                    <strong>Automatic Upload:</strong> The constructor for this class automatically calls <code>Upload()</code>. Per the <a href="mesh2d.html">Mesh2D</a> specification, this means vertex and index data are moved to the GPU and cleared from system RAM immediately upon instantiation.
+                </div>
+
+                <h2>Technical Specifications</h2>
+                <ul>
+                    <li><strong>Radius:</strong> 1.0 units.</li>
+                    <li><strong>Segments:</strong> 64 (fixed resolution).</li>
+                    <li><strong>Vertex Count:</strong> 66 (1 center + 65 perimeter vertices).</li>
+                    <li><strong>UV Mapping:</strong> Normalized 0.0 to 1.0 across the diameter.</li>
+                </ul>
+
+                <h2>Scene Usage</h2>
+                <p>Define a circle mesh in your scene file to use with sprites or physics shapes.</p>
+                <pre><code class="language-ini">[CircleMesh2D]
+tag = "my_circle"
+[/CircleMesh2D]
+
+[Sprite2D]
+mesh = "my_circle"
+[/Sprite2D]</code></pre>
+
+                <h2>C++ Usage</h2>
+                <pre><code class="language-cpp">// Initialize a unit circle mesh
+CircleMesh2D* circle = new CircleMesh2D(); 
+
+// Note: circle->GetVertices() will be empty here 
+// because the constructor calls Upload() automatically.</code></pre>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
 </body>
 </html>

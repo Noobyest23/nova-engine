@@ -1,45 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Nova Engine Documentation - Image Asset</title>
-	<link rel="stylesheet" href="Common/docs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - Material Asset</title>
+    <link rel="stylesheet" href="Common/docs.css">
     <link rel="icon" href="Images/engine-icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
-	<div class="layout">
-		<nav></nav> <script src="nav-data.js"></script>
-		<main>
-			<section>
-				<h1>Material</h1>
-                <p>Inherits <a href="asset.html">Asset</a></p>
-				<h2>Description</h2>
-				<p>A Material is the representation of a Shader and its current Uniforms</p>
-                <pre><code class="language-cpp">using Uniform = std::variant<int, float, bool, glm::vec2, glm::vec3, glm::vec4, glm::mat4>;</code></pre>
-				<h2>Properties</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Property</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr><td>vert_filepath</td><td>std::string</td><td>Filepath to be used in the constructer</td></tr>
-						<tr><td>frag_filepath</td><td>std::string</td><td>Filepath to be used in the constructer</td></tr>
-                        <tr><td>Reload()</td><td>void</td><td>Reloads the vertex and fragment shaders from their files</td></tr>
-                        <tr><td>Bind()</td><td>void</td><td>Binds this material (and any image uniforms) to OpenGL.</td></tr>
-                        <tr><td>Unbind()</td><td>void</td><td>Unbinds this material from OpenGL</td></tr>
-                        <tr><td>SetUniform(std::string name, Uniform)</td><td>void</td><td>Sets a shader uniform</td></tr>
-                        <tr><td>SetImageUniform(std::string name, Image* image)</td><td>void</td><td>Sets an sampler2D uniform, and increases image's reference count</td></tr>
-                        <tr><td>GetUniform(std::string name)</td><td>Uniform</td><td>Returns <code>name</code> on this shader</td></tr>
-					</tbody>
-				</table>
-                <p><strong>Note:</strong> filepaths cannot be accessed or changed after the Material is created, it is only used to create the Material.</p>
-			</section>
-		</main>
-	</div>
-	<script src="Common/docs.js"></script>
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>Material Class</h1>
+                <p><strong>Inherits:</strong> <a href="asset.html">Asset</a></p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p>A <code>Material</code> represents a complete GPU state, combining a Vertex/Fragment shader pair with a specific set of <strong>Uniforms</strong> (data sent to the shader). It manages the binding of textures and numerical data to the OpenGL pipeline.</p>
+
+                <pre><code class="language-cpp">// Supported Uniform Types
+using Uniform = std::variant[int, float, bool, glm::vec2, glm::vec3, glm::vec4, glm::mat4];</code></pre>
+
+                <h2>C++ Usage</h2>
+                <pre><code class="language-cpp">// Create material with shader paths
+Material* mat = new Material("shaders/default.vert", "shaders/default.frag");
+
+// Update shader properties
+mat->SetUniform("u_Color", glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
+mat->SetImageUniform("u_MainTexture", myTextureAsset);
+
+// Apply to pipeline
+mat->Bind();</code></pre>
+
+                <h2>Public Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Return Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>SetUniform(name, Uniform)</code></td><td><code>void</code></td><td>Sets a value for a standard GLSL uniform.</td></tr>
+                        <tr><td><code>SetImageUniform(name, Image*)</code></td><td><code>void</code></td><td>Binds an <a href="image.html">Image</a> asset to a <code>sampler2D</code>. Increments reference count.</td></tr>
+                        <tr><td><code>GetUniform(name)</code></td><td><code>Uniform</code></td><td>Returns the current cached value of a uniform.</td></tr>
+                        <tr><td><code>Reload()</code></td><td><code>void</code></td><td>Recompiles shaders from disk. Useful for hot-reloading.</td></tr>
+                        <tr><td><code>Bind()</code></td><td><code>void</code></td><td>Activates the shader program and all associated textures.</td></tr>
+                        <tr><td><code>Unbind()</code></td><td><code>void</code></td><td>Deactivates the shader program.</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Properties</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>vert_filepath</code></td><td><code>std::string</code></td><td>Path to the Vertex shader source.</td></tr>
+                        <tr><td><code>frag_filepath</code></td><td><code>std::string</code></td><td>Path to the Fragment shader source.</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="alert-box info">
+                    <strong>Note:</strong> Filepaths are immutable after construction. To use different shaders, a new Material must be instantiated.
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
 </body>
 </html>

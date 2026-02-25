@@ -1,27 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Nova Engine Documentation - BoxMesh2D Asset</title>
-	<link rel="stylesheet" href="Common/docs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - BoxMesh2D</title>
+    <link rel="stylesheet" href="Common/docs.css">
     <link rel="icon" href="Images/engine-icon.png" type="image/png">
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
-	<div class="layout">
-		<nav></nav> <script src="nav-data.js"></script>
-		<main>
-			<section>
-				<h1>BoxMesh2D</h1>
-                <p>Inherits <a href="mesh2d.html">Mesh2D</a> > <a href="asset.html">Asset</a></p>
-				<h2>Description</h2>
-				<p>A primitive box shape</p>
-			</section>
-		</main>
-	</div>
-	<script src="Common/docs.js"></script>
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>BoxMesh2D</h1>
+                <p>
+                    <strong>Inherits:</strong> 
+					<a href="mesh2d.html">Mesh2D</a> >
+					<a href="asset.html">Asset</a>
+                </p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p><code>BoxMesh2D</code> is a primitive geometric asset that generates a standard rectangular quad. By default, this mesh is created as a <strong>Unit Box</strong> (1.0 x 1.0) centered at the origin.</p>
+
+                <h2>Scene Usage</h2>
+                <p>Box meshes can be defined in scene files and assigned to renderers. They are often used as the default geometry for Sprites.</p>
+                <pre><code class="language-ini">[BoxMesh2D]
+tag = "standard_quad"
+[/BoxMesh2D]
+
+[Sprite2D]
+mesh = "standard_quad"
+image = "my_texture"
+[/Sprite2D]</code></pre>
+
+                <h2>C++ Usage</h2>
+                <pre><code class="language-cpp">// Create a new box mesh
+BoxMesh2D* box = new BoxMesh2D();
+
+// A BoxMesh2D contains 4 vertices and 6 indices (2 triangles)
+uint32_t indices = box->GetIndexCount(); // Returns 6</code></pre>
+
+                <h2>Vertex Specifications</h2>
+                <p>The vertices are generated with the following default attributes:</p>
+                <ul>
+                    <li><strong>Positions:</strong> Four points ranging from <code>-1</code> to <code>1</code> on both axes.</li>
+                    <li><strong>UV Coordinates:</strong> Standard 0-1 mapping (Bottom-Left: 0,0 | Top-Right: 1,1).</li>
+                </ul>
+
+                <div class="alert-box info">
+                    <strong>Note:</strong> To change the dimensions of a <code>BoxMesh2D</code>, it is recommended to adjust the <code>Scale</code> property of the object it is attached to, rather than modifying the vertex data directly.
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
 </body>
 </html>

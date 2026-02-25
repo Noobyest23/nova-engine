@@ -52,9 +52,26 @@ void Object::Draw() {
 }
 
 void Object::AddChild(Object* object) {
-	if (paused) return;
 	children.push_back(object);
 	object->parent = this;
+	object->Ready();
+
+	if (Object* search = FindChild(object->name)) {
+		if (search != object) {
+			std::string base_name = object->name;
+			while (!base_name.empty() && std::isdigit(base_name.back())) {
+				base_name.pop_back();
+			}
+			int suffix = 1;
+			std::string new_name;
+			while (true) {
+				new_name = base_name + "-" + std::to_string(suffix);
+				if (!FindChild(new_name)) break;
+				suffix++;
+			}
+			object->name = new_name;
+		}
+	}
 }
 
 Object* Object::FindChild(const std::string& object) {

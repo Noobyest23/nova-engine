@@ -46,6 +46,9 @@ nav a:hover { color: #00adb5; }
 	object-fit: fill;
 	border-radius: 1px;
 }
+a {
+	color: #6cc4ff;
+}
 main {
 	flex: 1;
 	overflow-y: auto;

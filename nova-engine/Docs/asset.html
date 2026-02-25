@@ -1,70 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Nova Engine Documentation - Asset</title>
-	<link rel="stylesheet" href="Common/docs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - Asset</title>
+    <link rel="stylesheet" href="Common/docs.css">
     <link rel="icon" href="Images/engine-icon.png" type="image/png">
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
-	<div class="layout">
-		<nav></nav> <script src="nav-data.js"></script>
-		<main>
-			<section>
-				<h1>Asset</h1>
-				<h2>Description</h2>
-				<p>Assets are ref counted objects, often used to load data from external files. When writing your own c++ code you MUST remember to call Asset->AddRef and Asset->Release</p>
-				<p><strong>Note:</strong> Assets are not accessible from NovaScript</p>
-                <h2>Usage</h2>
-				<p>In this example i will make a FileImage (inherits from asset) and put it on a Sprite2D</p>
-				<pre><code class="language-cpp">if (Sprite2D* sprite = dynamic_cast<Sprite2D*>(root->GetChild(0))) {
-	FileImage* image = new FileImage("path/to/my/image"); // reference count starts at 1
-	sprite->SetImage(image); // SetImage increments the reference count to 2
-	// when we are done with our image, we release it here
-	image->Release(); // subtracts the reference count back to 1
-	
-	// if our sprite object gets deleted the image gets freed again
-	sprite->Delete(); // image gets released, the reference count is 0. the image gets deleted
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        
+        <main>
+            <section>
+                <h1>Asset</h1>
+                <p>
+                    <strong>Inherits:</strong> None | 
+                    <strong>Inherited by:</strong> 
+                    <a href="image.html">Image</a>, 
+                    <a href="mesh2d.html">Mesh2D</a>, 
+                    <a href="material.html">Material</a>, 
+                    <a href="script.html">Script</a>
+                </p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p>Assets are <strong>reference-counted objects</strong> designed for managing data loaded from external files. Reference counting ensures that memory is only freed when no other part of the engine is using the asset.</p>
+                
+                <div class="alert-box warning">
+                    <strong>Important:</strong> Assets are not accessible from NovaScript. When working in C++, you <strong>must</strong> manually manage the lifecycle using <code>AddRef()</code> and <code>Release()</code>.
+                </div>
+
+                <h2>The Lifecycle</h2>
+                <p>Understanding the reference count is vital to preventing memory leaks:</p>
+                <ul>
+                    <li><strong>Creation:</strong> When initialized (e.g., <code>new FileImage()</code>), the count starts at <strong>1</strong>.</li>
+                    <li><strong>Sharing:</strong> When passed to a setter (e.g., <code>SetImage()</code>), the engine increments the count.</li>
+                    <li><strong>Cleanup:</strong> Calling <code>Release()</code> decrements the count. When the count reaches <strong>0</strong>, <code>OnDestroy()</code> is triggered and the object is deleted.</li>
+                </ul>
+
+                <h2>Usage Example</h2>
+                <pre><code class="language-cpp">// Example: Safely assigning an image to a Sprite2D
+if (Sprite2D* sprite = dynamic_cast<Sprite2D*>(root->GetChild(0))) {
+    // 1. Create the asset (Reference count: 1)
+    FileImage* image = new FileImage("path/to/my/image"); 
+    
+    if (image) {
+        // 2. Assign to sprite (SetImage calls AddRef, Reference count: 2)
+        sprite->SetImage(image); 
+        
+        // 3. Release local ownership (Reference count: 1)
+        // The sprite still holds a reference, so the image stays in memory.
+        image->Release(); 
+    }
+    
+    // 4. Cleanup
+    // If 'sprite' is deleted, it calls Release() on the image.
+    // Reference count becomes 0, and the image is automatically deleted.
+    sprite->Delete(); 
 }</code></pre>
-				<h2>Properties</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Property</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>AddRef()</td>
-							<td>void</td>
-							<td>Increments this assets reference count</td>
-						</tr>
-						<tr>
-							<td>Release()</td>
-							<td>void</td>
-							<td>Decrements this assets reference count</td>
-						</tr>
-						<tr>
-							<td>GetReferenceCount()</td>
-							<td>int</td>
-							<td>Returns the amount of references this asset has</td>
-						</tr>
-						<tr>
-							<td>OnDestroy()</td>
-							<td>void</td>
-							<td>Called when this assets reference count reaches 0, can be overriden</td>
-						</tr>
-					</tbody>
-				</table>
-			</section>
-		</main>
-	</div>
-	<script src="Common/docs.js"></script>
+
+                <h2>Public Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Return Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>AddRef()</code></td>
+                            <td><code>void</code></td>
+                            <td>Manually increments the reference count.</td>
+                        </tr>
+                        <tr>
+                            <td><code>Release()</code></td>
+                            <td><code>void</code></td>
+                            <td>Decrements the reference count and deletes the object if the count reaches zero.</td>
+                        </tr>
+                        <tr>
+                            <td><code>GetReferenceCount()</code></td>
+                            <td><code>int</code></td>
+                            <td>Returns the current number of active references.</td>
+                        </tr>
+                        <tr>
+                            <td><code>OnDestroy()</code></td>
+                            <td><code>virtual void</code></td>
+                            <td>A lifecycle hook called immediately before the object is deleted.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
 </body>
 </html>

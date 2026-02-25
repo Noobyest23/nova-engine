@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - Object</title>
+    <link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>Object</h1>
+                <p>The <code>Object</code> class is the foundational building block for all entities in the Nova Engine. It handles hierarchy, lifecycle propagation, and the bridge to NovaScript.</p>
+
+                <hr>
+
+                <h2>Lifecycle Flow</h2>
+                <p>Functions propagate through the scene tree. If an object is <strong>paused</strong>, <code>Ready</code>, <code>Update</code>, and <code>Input</code> are blocked for that object and all its descendants.</p>
+                
+                
+
+                <h2>Public Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Return Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>AddChild(Object*)</code></td><td><code>void</code></td><td>Adds a child. Automatically renames siblings with "name-1" syntax to ensure uniqueness.</td></tr>
+                        <tr><td><code>GetChild(string path)</code></td><td><code>Object*</code></td><td>Finds a nested child using paths like <code>"Head/LeftEye"</code>.</td></tr>
+                        <tr><td><code>Delete()</code></td><td><code>void</code></td><td>Safely removes the object from its parent and deletes all children.</td></tr>
+                        <tr><td><code>SetScript(Script*)</code></td><td><code>void</code></td><td>Attaches a NovaScript asset and binds <code>this</code> to the script's scope.</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Member Properties</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>name</code></td><td><code>string</code></td><td>The unique identifier for the object within its parent's scope.</td></tr>
+                        <tr><td><code>visible</code></td><td><code>bool</code></td><td>If false, <code>Draw()</code> is skipped for this object and children.</td></tr>
+                        <tr><td><code>paused</code></td><td><code>bool</code></td><td>If true, logic processing (Update/Input) is halted.</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>NovaScript Integration</h2>
+                <pre><code class="language-swift"># NovaScript Example
+func Ready() {
+    # 'this' is automatically bound to the scope
+    Print("Object initialized: " + this.name)
+}
+
+func Update(dt) {
+    if this.visible == false {
+        this.Delete()
+    }
+}</code></pre>
+
+                <div class="alert-box info">
+                    <strong>Note:</strong> While <code>Delete()</code> in C++ is immediate, calling <code>Delete()</code> from NovaScript sets a flag that triggers deletion at the start of the next <code>Update</code> cycle to prevent crashes during iteration.
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - Object2D</title>
+    <link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>Object2D Class</h1>
+                <p>
+                    <strong>Inherits:</strong> <a href="object.html">Object</a>
+                </p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p><code>Object2D</code> extends the base Object class by adding spatial transformations. It manages a 3x3 transformation matrix, supporting position, rotation, and scaling within a hierarchical scene tree.</p>
+
+                <h2>Transform Hierarchy</h2>
+                <p>Transformations are inherited from parents. If you move a parent <code>Object2D</code>, all children will move with it, maintaining their <strong>local</strong> offsets.</p>
+                
+                
+
+                <h2>Public Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Return Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>GetPosition()</code> / <code>SetPosition(vec2)</code></td><td><code>vec2</code></td><td>The offset relative to the parent object.</td></tr>
+                        <tr><td><code>GetGlobalPosition()</code></td><td><code>vec2</code></td><td>The absolute position in world space.</td></tr>
+                        <tr><td><code>GetRotation()</code> / <code>SetRotation(float)</code></td><td><code>float</code></td><td>Local rotation in radians. Automatically wrapped between 0 and 2π.</td></tr>
+                        <tr><td><code>GetScale()</code> / <code>SetScale(vec2)</code></td><td><code>vec2</code></td><td>Local scale multiplier (Default is 1.0, 1.0).</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Scene Usage</h2>
+                <p>Properties can be set directly in the scene file using <code>Vector2</code> and numerical values.</p>
+                <pre><code class="language-ini">[Object2D]
+tag = "Player"
+position = Vector2(100, 200)
+rotation = 0.785 # (45 degrees in radians)
+scale = Vector2(2, 2)
+[/Object2D]</code></pre>
+
+                <h2>NovaScript Interface</h2>
+                <p>Object2D provides getters and setters for all transform properties within NovaScript:</p>
+                <pre><code class="language-swift">func Update(dt) {
+    # Rotate the object slowly over time
+    local current_rot = this.GetRotation()
+    this.SetRotation(current_rot + dt)
+    
+    # Teleport to world origin
+    this.SetGlobalPosition(Vector2(0, 0))
+}</code></pre>
+
+                <div class="alert-box info">
+                    <strong>Performance Tip:</strong> The engine uses a "Dirty Flag" system. Matrices are only recalculated when you call a <code>Set</code> method, making hierarchy deep-traversal very efficient during the Draw call.
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
+</body>
+</html>

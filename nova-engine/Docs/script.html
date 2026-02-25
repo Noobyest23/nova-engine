@@ -1,42 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Nova Engine Documentation - Script Asset</title>
-	<link rel="stylesheet" href="Common/docs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - Script Asset</title>
+    <link rel="stylesheet" href="Common/docs.css">
     <link rel="icon" href="Images/engine-icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
-	<div class="layout">
-		<nav></nav> <script src="nav-data.js"></script>
-		<main>
-			<section>
-				<h1>Script</h1>
-				<p>Inherits <a href="asset.html">Asset</a></p>
-				<h2>Description</h2>
-				<p>Script assets are used to load and reference NovaScript files</p>
-				<p>See the NovaScript documentation for more about how to write NovaScript files</p>
-				<h2>Properties</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Property</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr><td>filepath</td><td>std::string</td><td>the filepath to the NovaScript file</td></tr>
-						<tr><td>Set(std::string name, Value val)</td><td>void</td><td>Sets a variable in the novascript interpretor, if the value doesnt exist it gets created.</td></tr>
-						<tr><td>Get(std::string name)</td><td>Value*</td><td>Returns a variable in the NovaScript interpretor if it exists, otherise returns nullptr</td></tr>
-						<tr><td>GetAll()</td><td>Scope*</td><td>Gets the scope of the NovaScript interpretor, which contains every variable and variable name</td></tr>
-						<tr><td>Call(std::string function_name, std::vector[Value*] arguments)</td><td>void</td><td>Calls a NovaScript function (can be a c++ function, in a module)</td></tr>
-					</tbody>
-				</table>
-				<p><strong>Note:</strong> filepath cannot be accessed or changed after the image is created, it is only used to create the image.</p>
-			</section>
-		</main>
-	</div>
-	<script src="Common/docs.js"></script>
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>Script</h1>
+                <p>
+                    <strong>Inherits:</strong> <a href="asset.html">Asset</a>
+                </p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p>The <code>Script</code> asset is used to load and reference <strong>NovaScript</strong> files. It serves as an interface between the C++ engine and the script interpreter, allowing for dynamic variable manipulation and function execution at runtime.</p>
+                <p>For details on writing script logic, refer to the <a href="novascript.html">NovaScript Documentation</a>.</p>
+
+                <h2>C++ Usage</h2>
+                <pre><code class="language-cpp">// Loading and calling a script function
+Script* myScript = new Script("scripts/player_controller.ns");
+
+if (myScript) {
+    // Set a global variable in the script
+    myScript->Set("playerHealth", Value(100));
+
+    // Call a function within the script
+    std::vector<Value*> args;
+    myScript->Call("OnLevelStart", args);
+}</code></pre>
+
+                <h2>Public Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Return Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Set(std::string name, Value val)</code></td>
+                            <td><code>void</code></td>
+                            <td>Sets or creates a variable in the script interpreter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>Get(std::string name)</code></td>
+                            <td><code>Value*</code></td>
+                            <td>Returns a pointer to a script variable, or <code>nullptr</code> if not found.</td>
+                        </tr>
+                        <tr>
+                            <td><code>GetAll()</code></td>
+                            <td><code>Scope*</code></td>
+                            <td>Returns the complete scope of the interpreter, containing all defined variables.</td>
+                        </tr>
+                        <tr>
+                            <td><code>Call(std::string name, std::vector&lt;Value*&gt; args)</code></td>
+                            <td><code>void</code></td>
+                            <td>Executes a NovaScript or bound C++ function.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Properties</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>filepath</code></td>
+                            <td><code>std::string</code></td>
+                            <td>The path to the loaded <code>.ns</code> file.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert-box info">
+                    <strong>Note:</strong> The <code>filepath</code> is utilized only during the construction of the <code>Script</code> asset and cannot be modified once the script is loaded into the interpreter.
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
 </body>
 </html>

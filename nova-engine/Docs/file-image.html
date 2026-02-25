@@ -1,47 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Nova Engine Documentation - Image Asset</title>
-	<link rel="stylesheet" href="Common/docs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - FileImage</title>
+    <link rel="stylesheet" href="Common/docs.css">
     <link rel="icon" href="Images/engine-icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
-	<div class="layout">
-		<nav></nav> <script src="nav-data.js"></script>
-		<main>
-			<section>
-				<h1>Image</h1>
-                <p>Inherits <a href="image.html">Image</a> > <a href="asset.html">Asset</a></p>
-				<h2>Description</h2>
-				<p>Creates an image from an image file</p>
-                <pre>#Scene file
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>FileImage</h1>
+                <p>
+                    <strong>Inherits:</strong> 
+					<a href="image.html">Image</a> >
+					<a href="asset.html">Asset</a>
+                </p>
 
+                <hr>
+
+                <h2>Description</h2>
+                <p>The <code>FileImage</code> class is a specialized Asset used to load and store image data from local storage. It handles the initial decoding of files (such as PNG or JPG) before they are uploaded to the GPU.</p>
+
+                <h2>Scene Usage</h2>
+                <p>Define a <code>FileImage</code> in your scene file to associate it with a unique tag for later use in Sprites or Materials.</p>
+                <pre><code class="language-ini"># Scene file example
 [FileImage]
-tag = "my_image"
-filepath = "path/to/your/image"
-[/Fileimage]
+tag = "ui_background"
+filepath = "assets/textures/bg_main.png"
+[/FileImage]
+
 [Sprite2D]
-image = my_image
-[/Sprite2D]
-                </pre>
-				<h2>Properties</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Property</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr><td>filepath</td><td>std::string</td><td>Filepath to be used in the constructer</td></tr>
-					</tbody>
-				</table>
-                <p><strong>Note:</strong> filepath cannot be accessed or changed after the image is created, it is only used to create the image.</p>
-			</section>
-		</main>
-	</div>
-	<script src="Common/docs.js"></script>
+image = "ui_background"
+[/Sprite2D]</code></pre>
+
+                <h2>C++ Usage</h2>
+                <pre><code class="language-cpp">// Constructor signature
+FileImage(const std::string& filepath);
+
+// Implementation
+FileImage* myImage = new FileImage("assets/textures/hero.png");</code></pre>
+
+                <h2>Properties</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>filepath</code></td>
+                            <td><code>std::string</code></td>
+                            <td>The relative path to the image resource.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert-box info">
+                    <strong>Implementation Note:</strong> The <code>filepath</code> is used strictly during construction. Once the image data is loaded into memory, the path cannot be modified. To load a different file, you must instantiate a new <code>FileImage</code> object.
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
 </body>
 </html>

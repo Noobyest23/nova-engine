@@ -1,44 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Nova Engine Documentation - Image Asset</title>
-	<link rel="stylesheet" href="Common/docs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - Image</title>
+    <link rel="stylesheet" href="Common/docs.css">
     <link rel="icon" href="Images/engine-icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
-	<div class="layout">
-		<nav></nav> <script src="nav-data.js"></script>
-		<main>
-			<section>
-				<h1>Image</h1>
-                <p>Inherits <a href="asset.html">Asset</a></p>
-				<h2>Description</h2>
-				<p>Base class for holding image data and managing OpenGL textures</p>
-				<h2>Properties</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Property</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr><td>GetHeight()</td><td>int</td><td>Returns the height of the image in pixels</td></tr>
-						<tr><td>GetWidth()</td><td>int</td><td>Returns the width of the image in pixels</td></tr>
-						<tr><td>GetChannels()</td><td>int</td><td>Returns the channel count of the image, 1 channel is greyscale, 3 is RGB, 4 is RGBA</td></tr>
-						<tr><td>GetData()</td><td>unsigned char*</td><td>Returns the raw pixel data of the image</td></tr>
-						<tr><td>Free()</td><td>void</td><td>Deletes the pixel data from the image, Does not clear the image from VRAM</td></tr>
-						<tr><td>Upload()</td><td>void</td><td>Uploads the image to the GPU, for use on a material</td></tr>
-						<tr><td>Bind(uint32_t slot)</td><td>void</td><td>Binds the texture to a GPU texture slot</td></tr>
-						<tr><td>GetTexture()</td><td>GLuint</td><td>Returns this images GPU Texture ID</td></tr>
-						<tr><td>IsUploaded()</td><td>bool</td><td>Returns true if this image has been uploaded to the GPU otherwise false.</td></tr>
-					</tbody>
-				</table>
-			</section>
-		</main>
-	</div>
-	<script src="Common/docs.js"></script>
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>Image</h1>
+                <p>
+                    <strong>Inherits:</strong> <a href="asset.html">Asset</a> | 
+                    <strong>Inherited by:</strong> <a href="file-image.html">FileImage</a>
+                </p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p>The <code>Image</code> class serves as the base for all texture data in the Nova Engine. It manages the transition of raw pixel data from system memory (RAM) to OpenGL texture objects (VRAM).</p>
+
+                <h2>Workflow Example</h2>
+                <pre><code class="language-cpp">// Loading and optimizing an image
+FileImage* texture = new FileImage("textures/bricks.png");
+
+if (texture) {
+    texture->Upload();   // Send to GPU
+    texture->Free();     // Optional: Clear CPU data to save RAM
+    texture->Release();  // Standard Asset lifecycle management
+}</code></pre>
+
+                <h2>Public Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Return Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>GetWidth()</code></td><td><code>int</code></td><td>Returns image width in pixels.</td></tr>
+                        <tr><td><code>GetHeight()</code></td><td><code>int</code></td><td>Returns image height in pixels.</td></tr>
+                        <tr><td><code>GetChannels()</code></td><td><code>int</code></td><td>Returns channel count (1=Grey, 3=RGB, 4=RGBA).</td></tr>
+                        <tr><td><code>GetData()</code></td><td><code>unsigned char*</code></td><td>Returns pointer to raw pixel data in RAM.</td></tr>
+                        <tr><td><code>IsUploaded()</code></td><td><code>bool</code></td><td>Returns <code>true</code> if the texture exists in VRAM.</td></tr>
+                        <tr><td><code>Upload()</code></td><td><code>void</code></td><td>Generates an OpenGL texture and uploads pixel data.</td></tr>
+                        <tr><td><code>Bind(uint32_t slot)</code></td><td><code>void</code></td><td>Binds the texture to the specified GPU slot.</td></tr>
+                        <tr><td><code>Free()</code></td><td><code>void</code></td><td>Clears CPU pixel data. <strong>Warning:</strong> <code>GetData()</code> will return null after this.</td></tr>
+                        <tr><td><code>GetTexture()</code></td><td><code>GLuint</code></td><td>Returns the OpenGL Texture ID.</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
 </body>
 </html>

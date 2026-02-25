@@ -58,6 +58,23 @@ const navHTML = `
             </ul>
         </details>
     </li>
+	<li class="nav-dropdown">
+        <details>
+            <summary>Object</summary>
+            <ul>
+                <li><a href="object.html">Object</a></li>
+				<li class="nav-dropdown">
+					<details>
+						<summary>Object2D</summary>
+						<ul>
+							<li><a href="object2d.html">Object2D</a></li>
+							<li><a href="camera2d.html">Camera2D</a></li>
+						</ul>
+					</details>
+				</li>
+            </ul>
+        </details>
+    </li>
 </ul>`;
 
 document.addEventListener("DOMContentLoaded", () => {

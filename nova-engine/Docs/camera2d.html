@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Engine Documentation - Camera2D</title>
+    <link rel="stylesheet" href="Common/docs.css">
+    <link rel="icon" href="Images/engine-icon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+    <div class="layout">
+        <nav></nav> 
+        <script src="nav-data.js"></script>
+        <main>
+            <section>
+                <h1>Camera2D Class</h1>
+                <p>
+                    <strong>Inherits:</strong> <a href="object2d.html">Object2D</a> > <a href="object.html">Object</a>
+                </p>
+
+                <hr>
+
+                <h2>Description</h2>
+                <p>The <code>Camera2D</code> object determines which portion of the 2D world is rendered to the screen. It uses an orthographic projection where the camera's position represents the <strong>center</strong> of the view.</p>
+
+                
+
+                <h2>Key Features</h2>
+                <ul>
+                    <li><strong>Auto-Resizing:</strong> Automatically listens to window resize events to maintain correct aspect ratios.</li>
+                    <li><strong>Zooming:</strong> Adjusts the visible world area without changing the window size.</li>
+                    <li><strong>Centric Workflow:</strong> Position <code>(0,0)</code> is the middle of the screen.</li>
+                </ul>
+
+                <h2>Public Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Return Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>SetZoom(float)</code></td><td><code>void</code></td><td>Sets the magnification level. Values > 1.0 zoom in; values < 1.0 zoom out. Min value is 0.001.</td></tr>
+                        <tr><td><code>GetZoom()</code></td><td><code>float</code></td><td>Returns current zoom level.</td></tr>
+                        <tr><td><code>active</code></td><td><code>bool</code></td><td>Property. If true, the renderer uses this camera for the current frame.</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Scene Usage</h2>
+                <pre><code class="language-ini">[Camera2D]
+tag = "MainCamera"
+position = Vector2(0, 0)
+zoom = 1.5
+active = true
+[/Camera2D]</code></pre>
+
+                <h2>NovaScript Interface</h2>
+                <pre><code class="language-swift">func Update(dt) {
+    # Simple camera follow logic
+    var player = this.GetParent().FindChild("Player")
+    if player {
+        this.SetPosition(player.GetPosition())
+    }
+
+    # Zoom in/out with controls
+    if Input.IsKeyPressed(KEY_E) {
+        this.SetZoom(this.GetZoom() + dt)
+    }
+}</code></pre>
+
+                <div class="alert-box info">
+                    <strong>Note:</strong> While multiple cameras can exist in a scene, only the one marked <code>active = true</code> will be used by the rendering pipeline. If multiple are active, the behavior depends on their order in the scene tree.
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="Common/docs.js"></script>
+</body>
+</html>
