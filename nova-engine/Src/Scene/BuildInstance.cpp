@@ -105,5 +105,5 @@ SceneEntryInst SceneParser::BuildInstance(const std::string& type, LoadableValue
 		return inst;
 	}
 
-	Engine::GetInstance()->PushError("Unrecognized type '" + type + "' when loading scene");
+	Engine::GetInstance()->PushError("[SceneLoader] Unrecognized type '" + type + "' when loading scene");
 }

@@ -1,0 +1,57 @@
+<section>
+    <h1>Console Commands</h1>
+    <p>When running versions of the engine compiled in debug mode and the console enabled, You can press F2 to pause the game and enter a command in the console</p>
+    <ul>
+        <li><a href="#cmd-help">help</a> Prints all available commands to the console</li>
+        <li><a href="#cmd-new">new</a> Creates a new Asset or Object, can load properties. Any Class that can be loaded from a scene file can also be loaded here.</li>
+        <li><a href="#cmd-add_child">add_child</a> Adds an object created with new, to another object as a child.</li>
+        <li><a href="#cmd-clear">clear</a> Clears the console</li>
+        <li><a href="#cmd-delete">delete</a> Deletes an object from the scene</li>
+        <li><a href="#cmd-load_scene">load-scene</a> Loads a new scene, deleting the current one</li>
+        <li><a href="#cmd-print_tree">print_tree</a> Prints the Scene Tree to the console</li>
+    </ul>
+
+    <p>If you use || after a command you can chain it with another command <pre><code>new Object my_obj || add_child my_obj ""</code></pre> Placing || at the end of the command will keep the console open, without tabbing you back to the game window</p>
+
+    <hr>
+<h2 id="cmd-help">help</h2>
+<p>Displays a list of all registered console commands and their basic usage descriptions.</p>
+<pre><code class="language-bash">help</code></pre>
+
+<h2 id="cmd-new">new</h2>
+<p>Instantiates a new Asset (like a Material) or an Object (like a Sprite2D). This command supports passing <strong>Loadable Values</strong> directly via a JSON-like syntax.</p>
+<ul>
+    <li><strong>Syntax:</strong> <code>new [ClassName] [Alias] [Property Name 1] [Property Value 1] [Property Name 2] [Property Value 2]...</code></li>
+</ul>
+<pre><code class="language-bash">new FileImage myimage filepath "path/to/my/image" || new Sprite2D mysprite image myimage || add_child mysprite ""</code></pre>
+
+<h2 id="cmd-add_child">add_child</h2>
+<p>Parents an object to another existing object in the scene tree. If no parent is specified, it defaults to the Scene Root.</p>
+<ul>
+    <li><strong>Syntax:</strong> <code>add_child [Object Alias] [Parent Name]</code></li>
+</ul>
+<pre><code class="language-bash">add_child player "MainLevel"</code></pre>
+
+<h2 id="cmd-clear">clear</h2>
+<p>Wipes the console output history. Useful for cleaning up the view after heavy logging or tree printing.</p>
+<pre><code class="language-bash">clear</code></pre>
+
+<h2 id="cmd-delete">delete</h2>
+<p>Removes a specific object from the active scene tree and frees its memory.</p>
+<ul>
+    <li><strong>Syntax:</strong> <code>delete [ObjectName]</code></li>
+</ul>
+<pre><code class="language-bash"># Example: Removing an enemy node
+delete Enemy_01</code></pre>
+
+<h2 id="cmd-load_scene">load-scene</h2>
+<p>Closes the current scene and loads a <code>.nova</code> scene file from the specified path.</p>
+<ul>
+    <li><strong>Syntax:</strong> <code>load-scene [FilePath]</code></li>
+</ul>
+<pre><code class="language-bash">load-scene Assets/Scenes/MainLevel.nova</code></pre>
+
+<h2 id="cmd-print_tree">print_tree</h2>
+<p>Outputs a visual representation of the current Scene Tree hierarchy to the console. This is essential for debugging node paths and finding the names of objects for use with the <code>delete</code> or <code>add_child</code> commands.</p>
+<pre><code class="language-bash">print_tree</code></pre>
+</section>

@@ -13,7 +13,7 @@ void AddChildCommand::Execute(const std::vector<std::string>& args) {
 		return;
 	}
 	if (Engine::command_objects[args[1]]->kind != SceneEntryInst::Kind::Object) {
-		Engine::GetInstance()->PushError("Last created entry is not an object");
+		Engine::GetInstance()->PushError("Entry is not an object");
 		return;
 	}
 	

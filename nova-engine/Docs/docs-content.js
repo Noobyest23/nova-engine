@@ -57,6 +57,63 @@ float hh = (viewportHeight / 2.0f) / zoom;
 proj = glm::ortho(-hw, hw, -hh, hh, -10.0f, 10.0f);</code></pre>
     <p>This ensures that the point <code>(0, 0)</code> is always the center of the screen regardless of the window aspect ratio.</p>
 </section>`,
+  "consolecommands": `<section>
+    <h1>Console Commands</h1>
+    <p>When running versions of the engine compiled in debug mode and the console enabled, You can press F2 to pause the game and enter a command in the console</p>
+    <ul>
+        <li><a href="#cmd-help">help</a> Prints all available commands to the console</li>
+        <li><a href="#cmd-new">new</a> Creates a new Asset or Object, can load properties. Any Class that can be loaded from a scene file can also be loaded here.</li>
+        <li><a href="#cmd-add_child">add_child</a> Adds an object created with new, to another object as a child.</li>
+        <li><a href="#cmd-clear">clear</a> Clears the console</li>
+        <li><a href="#cmd-delete">delete</a> Deletes an object from the scene</li>
+        <li><a href="#cmd-load_scene">load-scene</a> Loads a new scene, deleting the current one</li>
+        <li><a href="#cmd-print_tree">print_tree</a> Prints the Scene Tree to the console</li>
+    </ul>
+
+    <p>If you use || after a command you can chain it with another command <pre><code>new Object my_obj || add_child my_obj ""</code></pre> Placing || at the end of the command will keep the console open, without tabbing you back to the game window</p>
+
+    <hr>
+<h2 id="cmd-help">help</h2>
+<p>Displays a list of all registered console commands and their basic usage descriptions.</p>
+<pre><code class="language-bash">help</code></pre>
+
+<h2 id="cmd-new">new</h2>
+<p>Instantiates a new Asset (like a Material) or an Object (like a Sprite2D). This command supports passing <strong>Loadable Values</strong> directly via a JSON-like syntax.</p>
+<ul>
+    <li><strong>Syntax:</strong> <code>new [ClassName] [Alias] [Property Name 1] [Property Value 1] [Property Name 2] [Property Value 2]...</code></li>
+</ul>
+<pre><code class="language-bash">new FileImage myimage filepath "path/to/my/image" || new Sprite2D mysprite image myimage || add_child mysprite ""</code></pre>
+
+<h2 id="cmd-add_child">add_child</h2>
+<p>Parents an object to another existing object in the scene tree. If no parent is specified, it defaults to the Scene Root.</p>
+<ul>
+    <li><strong>Syntax:</strong> <code>add_child [Object Alias] [Parent Name]</code></li>
+</ul>
+<pre><code class="language-bash">add_child player "MainLevel"</code></pre>
+
+<h2 id="cmd-clear">clear</h2>
+<p>Wipes the console output history. Useful for cleaning up the view after heavy logging or tree printing.</p>
+<pre><code class="language-bash">clear</code></pre>
+
+<h2 id="cmd-delete">delete</h2>
+<p>Removes a specific object from the active scene tree and frees its memory.</p>
+<ul>
+    <li><strong>Syntax:</strong> <code>delete [ObjectName]</code></li>
+</ul>
+<pre><code class="language-bash"># Example: Removing an enemy node
+delete Enemy_01</code></pre>
+
+<h2 id="cmd-load_scene">load-scene</h2>
+<p>Closes the current scene and loads a <code>.nova</code> scene file from the specified path.</p>
+<ul>
+    <li><strong>Syntax:</strong> <code>load-scene [FilePath]</code></li>
+</ul>
+<pre><code class="language-bash">load-scene Assets/Scenes/MainLevel.nova</code></pre>
+
+<h2 id="cmd-print_tree">print_tree</h2>
+<p>Outputs a visual representation of the current Scene Tree hierarchy to the console. This is essential for debugging node paths and finding the names of objects for use with the <code>delete</code> or <code>add_child</code> commands.</p>
+<pre><code class="language-bash">print_tree</code></pre>
+</section>`,
   "index": `<section>
 	<small><br>Docs Version: 0.3 - Velvet Sparks</small>
 	<h1>Welcome to the Documentation of Nova Engine</h1>
@@ -339,18 +396,126 @@ this.SetGlobalPosition(Vector2(960, 540))
     <p>Returns the final scale of the object after multiplying its local scale with all parent scales in the hierarchy.</p>
 
 </section>`,
+  "scene-loadable-values": `<section>
+	<h1>Classes and their Loadable Values</h1>
+    <h2>Assets</h2>
+	<ul>
+        <li><a href="#LoadFileImage">FileImage</a>: Used for loading images from files</li>
+        <li><a href="#LoadBoxMesh2D">BoxMesh2D</a>: A mesh with a primitive box shape</li>
+        <li><a href="#LoadCircleMesh2D">CircleMesh2D</a>: A mesh with a primitive circle shape</li>
+        <li><a href="#LoadMaterial">Material</a>: Used on <code>VisualInstance2D</code> to draw onto the screen</li>
+        <li><a href="#LoadScript">Script</a>: Used for extending object behavior from NovaScript</li>
+    </ul>
+    <h2>Objects</h2>
+    <ul>
+        <li><a href="#LoadObject">Object</a></li>
+        <li><a href="#LoadObject2D">Object2D</a></li>
+        <li><a href="#LoadCamera2D">Camera2D</a></li>
+        <li><a href="#LoadVisualInstance2D">VisualInstance2D</a></li>
+        <li><a href="#LoadSprite2D">Sprite2D</a></li>
+    </ul>
+<p><strong>Note:</strong> All filepaths are relative to the current project path</p>
+<h2 id="LoadFileImage"><code class="language-cpp">FileImage</code></h2>
+<p>Loads an image asset from a file path.</p>
+<ul>
+    <li><strong>filepath:</strong> <code>string</code> — The relative path to the image file (e.g., "Assets/hero.png").</li>
+</ul>
+<p>Usage:<pre><code>[FileImage]
+tag = "my_image"
+filepath = "sprites/my_image.png"
+[/FileImage]
+</code></pre></p>
+
+<h2 id="LoadBoxMesh2D"><code class="language-cpp">BoxMesh2D</code></h2>
+<p>No properties to load, it can only be created and referenced</p>
+
+<h2 id="LoadCircleMesh2D">CircleMesh2D</h2>
+<p>No properties to load, it can only be created and referenced</p>
+
+<h2 id="LoadMaterial">Material</h2>
+<p>Defines the shaders used for rendering.</p>
+<ul>
+    <li><strong>vert_filepath:</strong> <code>string</code> Path to a GLSL vertex shader file</li>
+    <li><strong>frag_filepath:</strong> <code>string</code> Path to a GLSL fragment shader file</li>
+</ul>
+<p>Usage <pre><code>[Material]
+tag = "glow_material"
+vert_filepath = "shaders/vert_glow.glsl"
+frag_filepath = "shaders/frag_glow.glsl"
+[/Material]
+</code></pre></p>
+<p>To set uniforms on a shader, create a new script on its visual instance and use <code>this.SetUniform(name, value)</code></p>
+<hr>
+
+<h2 id="LoadScript">Script</h2>
+<p>Creates an Interpretor from a NovaScript file</p>
+<ul>
+    <li><strong>filepath:</strong> <code>string</code> Path to a NovaScript file</li>
+</ul>
+<p>Usage <pre><code>[Script]
+tag = "rotater_script"
+filepath = "Scripts/rotater.ns"
+[/Script]
+</code></pre></p>
+<hr>
+
+<h2 id="LoadObject">Object</h2>
+<p>The base parameters available for all nodes.</p>
+<ul>
+    <li><code>name</code> (<code>string</code>): The identifier for the node.</li>
+    <li><code>paused</code> (<code>bool</code>): Whether the object receives updates.</li>
+    <li><code>visible</code> (<code>bool</code>): Whether the object (and children) are drawn.</li>
+    <li><code>script</code> (<code>Script</code>): Script to extend the object</li>
+    <li><code>parent</code> (<code>Object</code>): Parent of this object, any objects that dont have parents are added to the scene root</li>
+</ul>
+
+<h2 id="LoadObject2D">Object2D</h2>
+<p>Inherits <strong>Object</strong> values.</p>
+<ul>
+    <li><code>position</code> (<code>Vector2</code>): Local coordinates.</li>
+    <li><code>rotation</code> (<code>float</code>): Local rotation in radians.</li>
+    <li><code>scale</code> (<code>Vector2</code>): Local scale multiplier.</li>
+</ul>
+
+<h2 id="LoadCamera2D">Camera2D</h2>
+<p>Inherits <strong>Object2D</strong> values.</p>
+<ul>
+    <li><code>zoom</code> (<code>float</code>): The magnification level.</li>
+    <li><code>active</code> (<code>bool</code>): If true, this camera is used for rendering the scene.</li>
+</ul>
+
+<h2 id="LoadVisualInstance2D">VisualInstance2D</h2>
+<p>Inherits <strong>Object2D</strong> values.</p>
+<ul>
+    <li><code>tint</code> (<code>Vector4</code>): Color multiplier for the node and its children.</li>
+    <li><code>self_tint</code> (<code>Vector4</code>): Color multiplier for only this node.</li>
+    <li><code>layer</code> (<code>int</code>): The Z-index/render order.</li>
+    <li><code>material</code> (<code>Material</code>): The assigned material asset.</li>
+    <li><code>mesh</code> (<code>Mesh2D</code>): The assigned mesh asset.</li>
+</ul>
+
+<h2 id="LoadSprite2D">Sprite2D</h2>
+<p>Inherits <strong>VisualInstance2D</strong> values.</p>
+<ul>
+    <li><code>image</code> (<code>Image</code>): The texture asset to display.</li>
+    <li><code>offset</code> (<code>Vector2</code>): Rendering displacement.</li>
+    <li><code>flip_h</code> (<code>bool</code>): Flips the texture horizontally.</li>
+    <li><code>flip_v</code> (<code>bool</code>): Flips the texture vertically.</li>
+</ul>
+</section>
+`,
   "scene-structure": `<section>
 	<h1>Scene Structure</h1>
 	<p>Scenes are defined using a text-based format. Each object is defined by its class type and properties. Example:</p>
 	<pre># you can use # for comments
 [FileImage]
 tag = "image_asset"
-filepath = "ProjectFolder/path/to/your/image"
+filepath = "path/to/your/image"
 [/FileImage]
 
 [Script]
 tag = "Rotater"
-filepath = "ProjectFolder/path/to/your/script"
+filepath = "path/to/your/script"
 [/Script]
 
 # as a good practice you should put your asset dependencies
@@ -382,7 +547,7 @@ parent = "sprite"
 		<li>Properties are set with property = value.</li>
 		<li>Assets are loaded from file paths relative to the project folder</li>
 	</ul>
-	<p>For a full list of classes and properties, see the class list section in the navigation bar.</p>
+	<p>Click <a href="#scene-loadable-values">Here</a> for a list of all classes and their loadable values</p>
 </section>
 `,
   "sprite2d": `<section>
