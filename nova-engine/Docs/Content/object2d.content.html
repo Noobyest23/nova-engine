@@ -1,0 +1,97 @@
+<section>
+    <h1>Object2D</h1>
+    <p>
+        <strong>Inherits:</strong> <a href="#object">Object</a> |
+        <strong>Inherited by:</strong>
+        <a href="#camera2d">Camera2D</a>, 
+        <a href="#visualinstance2d">VisualInstance2D</a>
+    </p>
+
+    <h1>Description</h1>
+    <p>The <code>Object2D</code> class is the base class for all 2D entities within the Nova Engine. It extends the base <code>Object</code> class by adding a 2D transform system, including <strong>position</strong>, <strong>rotation</strong>, and <strong>scale</strong>. 
+    It supports a hierarchical transform inheritance; when a parent <code>Object2D</code> moves, rotates, or scales, its children follow suit. It utilizes a "dirty flag" caching system (<code>_dirty_local</code> and <code>_dirty_global</code>) to optimize matrix calculations, only recalculating transforms when a property has actually changed.</p>
+
+    <h2 id="nova-api">Properties</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>Vector2</code></td>
+                <td><a href="#position"><code>GetPosition() / SetPosition(vec2)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>float</code></td>
+                <td><a href="#rotation"><code>GetRotation() / SetRotation(float)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>Vector2</code></td>
+                <td><a href="#scale"><code>GetScale() / SetScale(vec2)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>Vector2</code></td>
+                <td><a href="#global_position"><code>GetGlobalPosition() / SetGlobalPosition(vec2)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>float</code></td>
+                <td><a href="#global_rotation"><code>GetGlobalRotation() / SetGlobalRotation(float)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>Vector2</code></td>
+                <td><a href="#global_scale"><code>GetGlobalScale() / SetGlobalScale(vec2)</code></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="position"><code class="language-cpp">GetPosition() / SetPosition(pos: Vector2)</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>Vector2</code></li>
+    </ul>
+    <p>Gets or sets the position of the object relative to its parent. If the object has no parent, this is equivalent to its global position.</p>
+    <pre><code class="language-swift">this.SetPosition(Vector2(100, 200))
+var pos = this.GetPosition()
+</code></pre>
+
+    <h2 id="rotation"><code class="language-cpp">GetRotation() / SetRotation(radians: float)</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>float</code> (Radians)</li>
+    </ul>
+    <p>Gets or sets the local rotation of the object in radians. The engine automatically wraps values using TAU (2/pi) to keep the rotation within a 0 to 2/pi range.</p>
+    <pre><code class="language-swift">// Rotate 45 degrees
+this.SetRotation(0.7853) 
+</code></pre>
+
+    <h2 id="scale"><code class="language-cpp">GetScale() / SetScale(scale: Vector2)</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>Vector2</code></li>
+    </ul>
+    <p>Gets or sets the local scale of the object. A scale of <code>Vector2(1, 1)</code> is the default size.</p>
+    <pre><code class="language-swift">this.SetScale(Vector2(2, 2)) // Double the size
+</code></pre>
+
+    <h2 id="global_position"><code class="language-cpp">GetGlobalPosition() / SetGlobalPosition(pos: Vector2)</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>Vector2</code></li>
+    </ul>
+    <p>Sets the object's position in world space. If the object is a child, the engine calculates the inverse transform of the parent to determine the correct local position.</p>
+    <pre><code class="language-swift">// Moves the object to the center of the screen regardless of where its parent is
+this.SetGlobalPosition(Vector2(960, 540))
+</code></pre>
+
+    <h2 id="global_rotation"><code class="language-cpp">GetGlobalRotation() / SetGlobalRotation(radians: float)</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>float</code></li>
+    </ul>
+    <p>Returns the total rotation of the object, including the rotation inherited from its parent hierarchy.</p>
+
+    <h2 id="global_scale"><code class="language-cpp">GetGlobalScale() / SetGlobalScale(scale: Vector2)</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>Vector2</code></li>
+    </ul>
+    <p>Returns the final scale of the object after multiplying its local scale with all parent scales in the hierarchy.</p>
+
+</section>

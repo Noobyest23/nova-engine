@@ -52,6 +52,10 @@ void Object::Draw() {
 }
 
 void Object::AddChild(Object* object) {
+	if (object->parent) {
+		Engine::PushError(object->name + " already has a parent!");
+		return;
+	}
 	children.push_back(object);
 	object->parent = this;
 	object->Ready();
@@ -222,6 +226,9 @@ namespace nova_object {
 		intget(index, 1);
 
 		Object* child = obj->GetChild(index);
+		if (!child) {
+			return Value()
+		}
 		return Value(child->GetNovaObject());
 	}
 
@@ -240,8 +247,11 @@ namespace nova_object {
 	nova_std_decl(GetParent) {
 		req_args(1);
 		objget(obj, Object, 0);
-		Value ret = Value(CPPObject(obj->GetParent()->GetNovaObject()));
-		return ret;
+		Object* parent = obj->GetParent()
+		if (parent) {
+			return Value(CPPObject(parent->GetNovaObject()));
+		}
+		return Value()
 	}
 
 	nova_std_decl(Delete) {

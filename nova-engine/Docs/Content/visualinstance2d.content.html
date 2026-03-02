@@ -1,0 +1,94 @@
+<section>
+    <h1>VisualInstance2D</h1>
+    <p>
+        <strong>Inherits:</strong> <a href="#object2d" data-page="object2d">Object2D</a> | 
+        <strong>Inherited by:</strong> <a href="#sprite2d" data-page="sprite2d">Sprite2D</a>
+    </p>
+
+    <h1>Description</h1>
+    <p>The <code>VisualInstance2D</code> class is the base node for all 2D objects that render to the screen. It extends <code>Object2D</code> by adding rendering-specific logic such as materials, meshes, layering, and color tinting.</p>
+    
+    <p>It handles the propagation of <strong>hierarchical tinting</strong>. An object's final color is a combination of its own <code>self_tint</code>, its <code>tint</code>, and the <code>tint</code> of all its parents in the scene tree.</p>
+
+    <h2 id="nova-api">Properties</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Type / Return</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>Vector4</code></td>
+                <td><a href="#tint"><code>tint</code></a></td>
+            </tr>
+            <tr>
+                <td><code>Vector4</code></td>
+                <td><a href="#self_tint"><code>self_tint</code></a></td>
+            </tr>
+            <tr>
+                <td><code>int</code></td>
+                <td><a href="#layer"><code>layer</code></a></td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><a href="#setmaterial"><code>SetMaterial(vertex_path, fragment_path)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>any</code></td>
+                <td><a href="#shaderuniform"><code>GetShaderUniform(name)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><a href="#shaderuniform"><code>SetShaderUniform(name, value)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><a href="#shaderuniform"><code>SetShaderImgUniform(name, path)</code></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2 id="tint"><code class="language-cpp">tint</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>Vector4</code></li>
+    </ul>
+    <p>The color multiplier for this object and all of its children. Setting this to <code>Vector4(1, 1, 1, 0)</code> will fade out this node and its entire sub-tree.</p>
+
+    <h2 id="self_tint"><code class="language-cpp">self_tint</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>Vector4</code></li>
+    </ul>
+    <p>The color multiplier applied only to this specific object. Unlike <code>tint</code>, this value is <strong>not</strong> inherited by children.</p>
+
+    <h2 id="layer"><code class="language-cpp">layer</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>int</code></li>
+    </ul>
+    <p>Determines the draw order. Objects with higher layer values are drawn on top of objects with lower values. This is passed to the shader as <code>u_layer</code>.</p>
+
+    <h2 id="setmaterial"><code class="language-cpp">SetMaterial(vertex: string, fragment: string)</code></h2>
+    <p>Creates and assigns a new material to the instance using the provided file paths to shader sources.</p>
+    <pre><code class="language-swift">this.SetMaterial("Shaders/default.vert", "Shaders/outline.frag")</code></pre>
+
+    <h2 id="shaderuniform"><code class="language-cpp">SetShaderUniform(uniform_name: string, value: any) / GetShaderUniform() / SetShaderImgUniform(uniform_name: string, image_path: string)</code></h2>
+    <p>Allows dynamic modification of shader variables at runtime. Supports <code>int</code>, <code>float</code>, <code>bool</code>, and <code>Vector2/3/4</code> types.</p>
+    <p><code>SetShaderImgUniform()</code> is specifically used for loading an image and setting it onto a sampler2D</p>
+    <pre><code class="language-swift">// Passing a color to a custom shader uniform
+this.SetShaderUniform("u_glow_color", Vector4(0.0, 1.0, 0.5, 1.0))
+
+// Retrieving the current value
+var current_glow = this.GetShaderUniform("u_glow_color")</code></pre>
+
+    <h2 id="notes">Standard Shader Uniforms</h2>
+    <p>When rendering, <code>VisualInstance2D</code> automatically binds the following uniforms to your material:</p>
+    <ul>
+        <li><code>u_model</code>: The global transformation matrix (Matrix4).</li>
+        <li><code>u_layer</code>: The current Z-layer (int).</li>
+        <li><code>u_color</code>: The calculated total tint (Vector4).</li>
+        <li><code>u_view / u_projection</code>: Camera matrices (Matrix4).</li>
+    </ul>
+</section>

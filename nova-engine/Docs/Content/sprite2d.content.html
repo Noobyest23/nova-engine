@@ -1,0 +1,66 @@
+<section>
+    <h1>Sprite2D</h1>
+    <p>
+        <strong>Inherits:</strong> <a href="#visualinstance2d" data-page="visualinstance2d">VisualInstance2D</a> | 
+        <strong>Inherited by:</strong> None
+    </p>
+
+    <h1>Description</h1>
+    <p>The <code>Sprite2D</code> node is used to display a 2D texture or image in the scene. It automatically handles texture uploading to the GPU and provides built-in support for flipping and offsetting the visual representation without affecting the node's actual transform.</p>
+    
+    <p>By default, <code>Sprite2D</code> uses a <code>BoxMesh2D</code> and a specialized sprite shader that supports alpha blending and transparency.</p>
+
+    <h2 id="nova-api">API Reference</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Type / Return</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>bool</code></td>
+                <td><a href="#flip"><code>flip_h</code></a></td>
+            </tr>
+            <tr>
+                <td><code>bool</code></td>
+                <td><a href="#flip"><code>flip_v</code></a></td>
+            </tr>
+            <tr>
+                <td><code>Vector2</code></td>
+                <td><a href="#offset"><code>offset</code></a></td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><a href="#setimagefromfile"><code>SetImageFromFile(path)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>Vector2</code></td>
+                <td><a href="#getsize"><code>GetSize()</code></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2 id="flip"><code class="language-cpp">flip_h / flip_v</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>bool</code></li>
+    </ul>
+    <p>If <code>true</code>, the texture is mirrored horizontally (flip_h) or vertically (flip_v). This is handled purely in the shader via the <code>u_flip_h</code> and <code>u_flip_v</code> uniforms.</p>
+
+    <h2 id="offset"><code class="language-cpp">offset</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>Vector2</code></li>
+    </ul>
+    <p>An additional displacement applied to the sprite's rendering. This is useful for aligning a texture's "feet" or base with the node's position without moving the node itself.</p>
+
+    <h2 id="setimagefromfile"><code class="language-cpp">SetImageFromFile(path: string)</code></h2>
+    <p>Loads an image asset from the specified file path and assigns it to the sprite. The sprite's internal size is automatically updated to match the dimensions of the new image.</p>
+    <pre><code class="language-swift">// Loading a player texture at runtime
+this.SetImageFromFile("Assets/Textures/player_idle.png")</code></pre>
+
+    <h2 id="getsize"><code class="language-cpp">GetSize()</code></h2>
+    <ul>
+        <li><strong>Returns:</strong> <code>Vector2</code></li>

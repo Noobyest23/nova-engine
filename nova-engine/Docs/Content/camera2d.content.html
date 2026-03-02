@@ -1,0 +1,57 @@
+<section>
+    <h1>Camera2D</h1>
+    <p>
+        <strong>Inherits:</strong> <a href="#object2d" data-page="object2d">Object2D</a> | 
+        <strong>Inherited by:</strong> None
+    </p>
+
+    <h1>Description</h1>
+    <p>The <code>Camera2D</code> class is a specialized 2D node used to control what part of the scene is rendered to the screen. It automatically handles window resizing and provides an orthogonal projection centered on the camera's position.</p>
+    
+    <p>In the Nova Engine, the <code>Camera2D</code> works by transforming the view matrix based on its <code>position</code> and <code>rotation</code>. It supports zooming, where a higher zoom value makes objects appear larger (closer), and a lower value reveals more of the scene.</p>
+
+    <h2 id="properties">Properties</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>float</code></td>
+                <td><a href="#zoom"><code>GetZoom() / SetZoom(float: zoom)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>bool</code></td>
+                <td><a href="#active"><code>active</code></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2 id="position"><code class="language-cpp">GetZoom() / SetZoom(zoom: float)</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>float</code></li>
+    </ul>
+    <p>Sets the zoom level for the camera. A value of <code>1.0</code> represents a 1:1 scale with the window resolution. Values below <code>0.001</code> are automatically clamped.</p>
+    <pre><code class="language-swift">this.SetZoom(0.1)
+var zoom = this.SetZoom()
+</code></pre>
+
+    <h2 id="active"><code class="language-cpp">active</code></h2>
+    <ul>
+        <li><strong>Type:</strong> <code>bool</code></li>
+    </ul>
+    <p>Determines if this camera is currently being used for rendering. If multiple cameras exist in the scene, the engine uses the first active one it finds in the tree.</p>
+
+    <h2 id="notes">Internal Behavior</h2>
+    <p>The <code>Camera2D</code> uses a 2D Orthographic projection with the following bounds:</p>
+    <pre><code class="language-cpp">// Projection Calculation
+float hw = (viewportWidth / 2.0f) / zoom;
+float hh = (viewportHeight / 2.0f) / zoom;
+proj = glm::ortho(-hw, hw, -hh, hh, -10.0f, 10.0f);</code></pre>
+    <p>This ensures that the point <code>(0, 0)</code> is always the center of the screen regardless of the window aspect ratio.</p>
+</section>

@@ -60,5 +60,6 @@ private:
 // Docs
 // make null evaluate to false in nova-script
 // Engine-Input module for NovaScript
-
+// Engine-ObjectDB module for nova-script, db.Sprite2D() returns a new Sprite2D
+// Engine-Scene module for loading nscenes from nova-script
 #endif
