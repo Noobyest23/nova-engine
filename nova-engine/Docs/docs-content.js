@@ -114,6 +114,56 @@ delete Enemy_01</code></pre>
 <p>Outputs a visual representation of the current Scene Tree hierarchy to the console. This is essential for debugging node paths and finding the names of objects for use with the <code>delete</code> or <code>add_child</code> commands.</p>
 <pre><code class="language-bash">print_tree</code></pre>
 </section>`,
+  "devcamera": `<section>
+    <h1>FreeCam (Developer Camera)</h1>
+    <p>
+        <strong>Inherits:</strong> <a href="#camera2d" data-page="camera2d">Camera2D</a>
+    </p>
+
+    <h1>Description</h1>
+    <p>The <code>FreeCam</code> is a built-in debugging tool available in <strong>Debug Builds</strong>. It allows you to decouple the view from the game's logic to inspect the scene, check clipping, or find hidden objects.</p>
+    
+    <p>At the start of a scene, the engine automatically injects the Developer Camera at <code>root/DevCamera</code>. You can toggle between your game's active camera and the FreeCam by pressing <kbd>F1</kbd>.</p>
+
+    <blockquote class="warning">
+        <strong>Hierarchy Note:</strong> The engine searches the scene tree from top to bottom. If you move a game camera above <code>DevCamera</code> in the hierarchy and mark it as active, the toggle may fail to override it.
+    </blockquote>
+
+    <h2 id="controls">Controls</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Input</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></td>
+                <td>Move Camera</td>
+            </tr>
+            <tr>
+                <td><kbd>Mouse Wheel</kbd></td>
+                <td>Zoom In / Out</td>
+            </tr>
+            <tr>
+                <td><kbd>Shift</kbd> (Hold)</td>
+                <td>Turbo Move (Increases speed)</td>
+            </tr>
+            <tr>
+                <td><kbd>F1</kbd></td>
+                <td>Toggle FreeCam On/Off</td>
+            </tr>
+            <tr>
+                <td><kbd>F2</kbd></td>
+                <td>Open Console (Pause Game)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="notes">Internal Behavior</h2>
+    <p>When activated, the FreeCam sets its <code>active</code> property to <code>true</code> and disables the <code>active</code> property on the previously used camera. Upon deactivation, it restores the original camera state.</p>
+</section>`,
   "index": `<section>
 	<small><br>Docs Version: 0.3 - Velvet Sparks</small>
 	<h1>Welcome to the Documentation of Nova Engine</h1>
@@ -126,6 +176,79 @@ delete Enemy_01</code></pre>
 	<p>Also check out my <a href="https://noobyest.itch.io" target="_blank">Itch Page</a></p>
 </section>
 `,
+  "moduleengine": `<section>
+    <h1>Engine Module</h1>
+    <p>The <code>engine</code> module provides core system functionality, allowing scripts to interact with the application window, manage project global settings, and control the engine's execution flow.</p>
+    
+    <pre><code class="language-swift">include "engine" as engine</code></pre>
+
+    <h2 id="nova-api">API Reference</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Type / Return</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>Window</code></td>
+                <td><a href="#getwindow"><code>GetWindow()</code></a></td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><a href="#setprojectpath"><code>SetProjectPath(path)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><a href="#exit"><code>Exit(...)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>string</code></td>
+                <td><a href="#variables"><code>start_scene</code></a></td>
+            </tr>
+            <tr>
+                <td><code>bool</code></td>
+                <td><a href="#variables"><code>supress_warning_popup</code></a></td>
+            </tr>
+            <tr>
+                <td><code>bool</code></td>
+                <td><a href="#variables"><code>supress_error_popup</code></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2 id="getwindow">Window Object</h2>
+    <p>The <code>GetWindow()</code> method returns a reference to the application window. This object exposes the following methods:</p>
+    <ul>
+        <li><code>GetName() -> string</code>: Returns the window title.</li>
+        <li><code>SetName(name: string)</code>: Sets the window title.</li>
+        <li><code>GetSize() -> Vector2</code>: Returns the window dimensions in pixels.</li>
+        <li><code>SetSize(size: Vector2)</code>: Resizes the window.</li>
+    </ul>
+    <pre><code class="language-swift">var win = engine.GetWindow()
+win.SetName("Nova Engine - Project Alpha")
+var size = win.GetSize()</code></pre>
+
+    <h2 id="setprojectpath"><code class="language-cpp">SetProjectPath(path: string)</code></h2>
+    <p>Sets the base directory for asset loading and project resources. If the path does not end with a slash, the engine automatically appends one. Primarily used in the Init script</p>
+
+    <h2 id="exit"><code class="language-cpp">Exit(...)</code></h2>
+    <p>Immediately stops engine execution and optionally pushes an error message.</p>
+    <pre><code class="language-swift">if (player == null) {
+    engine.Exit("Player object failed to initialize!")
+}</code></pre>
+
+    <h2 id="variables">Module Variables</h2>
+    <p>These variables are directly accessible on the <code>engine</code> module instance and represent the current engine state:</p>
+    <ul>
+        <li><strong>start_scene</strong>: A string path to the initial scene file (<code>.nova</code>) used when the engine starts.</li>
+        <li><strong>supress_warning_popup</strong>: A boolean toggle to prevent warning dialogs from interrupting execution.</li>
+        <li><strong>supress_error_popup</strong>: A boolean toggle to prevent error dialogs from interrupting execution.</li>
+    </ul>
+</section>`,
   "object": `<section>
     <h1>Object</h1>
     <p>

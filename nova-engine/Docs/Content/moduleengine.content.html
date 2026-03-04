@@ -1,0 +1,73 @@
+<section>
+    <h1>Engine Module</h1>
+    <p>The <code>engine</code> module provides core system functionality, allowing scripts to interact with the application window, manage project global settings, and control the engine's execution flow.</p>
+    
+    <pre><code class="language-swift">include "engine" as engine</code></pre>
+
+    <h2 id="nova-api">API Reference</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Type / Return</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>Window</code></td>
+                <td><a href="#getwindow"><code>GetWindow()</code></a></td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><a href="#setprojectpath"><code>SetProjectPath(path)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>null</code></td>
+                <td><a href="#exit"><code>Exit(...)</code></a></td>
+            </tr>
+            <tr>
+                <td><code>string</code></td>
+                <td><a href="#variables"><code>start_scene</code></a></td>
+            </tr>
+            <tr>
+                <td><code>bool</code></td>
+                <td><a href="#variables"><code>supress_warning_popup</code></a></td>
+            </tr>
+            <tr>
+                <td><code>bool</code></td>
+                <td><a href="#variables"><code>supress_error_popup</code></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2 id="getwindow">Window Object</h2>
+    <p>The <code>GetWindow()</code> method returns a reference to the application window. This object exposes the following methods:</p>
+    <ul>
+        <li><code>GetName() -> string</code>: Returns the window title.</li>
+        <li><code>SetName(name: string)</code>: Sets the window title.</li>
+        <li><code>GetSize() -> Vector2</code>: Returns the window dimensions in pixels.</li>
+        <li><code>SetSize(size: Vector2)</code>: Resizes the window.</li>
+    </ul>
+    <pre><code class="language-swift">var win = engine.GetWindow()
+win.SetName("Nova Engine - Project Alpha")
+var size = win.GetSize()</code></pre>
+
+    <h2 id="setprojectpath"><code class="language-cpp">SetProjectPath(path: string)</code></h2>
+    <p>Sets the base directory for asset loading and project resources. If the path does not end with a slash, the engine automatically appends one. Primarily used in the Init script</p>
+
+    <h2 id="exit"><code class="language-cpp">Exit(...)</code></h2>
+    <p>Immediately stops engine execution and optionally pushes an error message.</p>
+    <pre><code class="language-swift">if (player == null) {
+    engine.Exit("Player object failed to initialize!")
+}</code></pre>
+
+    <h2 id="variables">Module Variables</h2>
+    <p>These variables are directly accessible on the <code>engine</code> module instance and represent the current engine state:</p>
+    <ul>
+        <li><strong>start_scene</strong>: A string path to the initial scene file (<code>.nova</code>) used when the engine starts.</li>
+        <li><strong>supress_warning_popup</strong>: A boolean toggle to prevent warning dialogs from interrupting execution.</li>
+        <li><strong>supress_error_popup</strong>: A boolean toggle to prevent error dialogs from interrupting execution.</li>
+    </ul>
+</section>

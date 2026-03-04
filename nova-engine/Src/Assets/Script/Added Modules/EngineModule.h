@@ -61,11 +61,16 @@ public:
 
 	nova_std_decl(Exit) {
 		std::string output = "[NovaScript] ";
-		for (Value* arg : args) {
-			output += arg->ToString(); if (arg != args.back()) { output += ", "; };
+		if (!args.size() == 0) {
+			for (Value* arg : args) {
+				output += arg->ToString(); if (arg != args.back()) { output += ", "; };
+			}
+			Engine* engine = Engine::GetInstance();
+			engine->PushError(output, true);
 		}
-		Engine* engine = Engine::GetInstance();
-		engine->PushError(output, true);
+		else {
+			engine->Stop();
+		}
 		return null_value;
 	}
 
@@ -76,7 +81,7 @@ public:
 		NOVA_BIND_METHOD(GetWindow);
 		scope.Set("supress_warning_popup", Value(CPPVariable(engine->suppress_warning_popup)));
 		scope.Set("supress_error_popup", Value(CPPVariable(engine->suppress_error_popup)));
-		scope.Set("main_scene", Value(CPPVariable(engine->initial_scene)));
+		scope.Set("start_scene", Value(CPPVariable(engine->initial_scene)));
 		NOVA_BIND_METHOD(SetProjectPath);
 		return scope;
 	}

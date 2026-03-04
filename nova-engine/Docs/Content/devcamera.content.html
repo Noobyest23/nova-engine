@@ -1,0 +1,50 @@
+<section>
+    <h1>FreeCam (Developer Camera)</h1>
+    <p>
+        <strong>Inherits:</strong> <a href="#camera2d" data-page="camera2d">Camera2D</a>
+    </p>
+
+    <h1>Description</h1>
+    <p>The <code>FreeCam</code> is a built-in debugging tool available in <strong>Debug Builds</strong>. It allows you to decouple the view from the game's logic to inspect the scene, check clipping, or find hidden objects.</p>
+    
+    <p>At the start of a scene, the engine automatically injects the Developer Camera at <code>root/DevCamera</code>. You can toggle between your game's active camera and the FreeCam by pressing <kbd>F1</kbd>.</p>
+
+    <blockquote class="warning">
+        <strong>Hierarchy Note:</strong> The engine searches the scene tree from top to bottom. If you move a game camera above <code>DevCamera</code> in the hierarchy and mark it as active, the toggle may fail to override it.
+    </blockquote>
+
+    <h2 id="controls">Controls</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Input</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></td>
+                <td>Move Camera</td>
+            </tr>
+            <tr>
+                <td><kbd>Mouse Wheel</kbd></td>
+                <td>Zoom In / Out</td>
+            </tr>
+            <tr>
+                <td><kbd>Shift</kbd> (Hold)</td>
+                <td>Turbo Move (Increases speed)</td>
+            </tr>
+            <tr>
+                <td><kbd>F1</kbd></td>
+                <td>Toggle FreeCam On/Off</td>
+            </tr>
+            <tr>
+                <td><kbd>F2</kbd></td>
+                <td>Open Console (Pause Game)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="notes">Internal Behavior</h2>
+    <p>When activated, the FreeCam sets its <code>active</code> property to <code>true</code> and disables the <code>active</code> property on the previously used camera. Upon deactivation, it restores the original camera state.</p>
+</section>
