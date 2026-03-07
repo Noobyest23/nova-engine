@@ -69,6 +69,7 @@ public:
 			engine->PushError(output, true);
 		}
 		else {
+			Engine* engine = Engine::GetInstance();
 			engine->Stop();
 		}
 		return null_value;

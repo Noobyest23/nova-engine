@@ -9,7 +9,6 @@
 
 ee_decl(ExprNode* node) {
 	if (!node) {
-		PushError("Null Expression");
 		return nullval;
 	}
 	ee(VariableNode*)
@@ -28,6 +27,7 @@ ee_decl(ExprNode* node) {
 	ee(ArrayAccessNode*)
 	ee(AssignmentNode*)
 	ee(CompoundOp*)
+	ee(NullLiteralNode*)
 	PushError("Unrecognized Expression " + node->Print() + " (this expression has returned null)");
 	return Value();
 }
@@ -187,13 +187,6 @@ ee_decl(OpNode* node) {
 	Value lhs = EvaluateExpression(node->left);
 	Value rhs = EvaluateExpression(node->right);
 
-	if (lhs.data.index() == 0) {
-		PushError(node->Print() + " Left side evaluated to null");
-	}
-	if (rhs.data.index() == 0) {
-		PushError(node->Print() + " Right side evaluated to null");
-	}
-
 	Value r_value;
 
 	try {
@@ -274,6 +267,30 @@ ee_decl(OpNode* node) {
 			else {
 				PushError("Cannot perform boolean operations with type " + rhs.Type());
 			}
+		}
+		if (lhs.IsObj()) {
+			if (lhs.IsCPP()) {
+				CPPObject& obj = std::get<CPPObject>(lhs.data);
+				if (obj.ptr) {
+					return Value(true);
+				}
+				else {
+					return Value(false);
+				}
+			}
+			else {
+				NovaType& type = std::get<NovaType>(lhs.data);
+				if (type.GetAll().size() != 0) {
+					return Value(true);
+				}
+				else {
+					return Value(false);
+				}
+			}
+		}
+		if (lhs.data.index() == 0) {
+			// null
+			return Value(false);
 		}
 		throw std::exception((std::string("Cannot perform an op on a variable of type ") + lhs.Type()).c_str());
 	}
@@ -662,6 +679,10 @@ ee_decl(ArrayAccessNode* node) {
 		PushError("Cannot use array access on a non array" + node->Print());
 		return nullval;
 	}
+}
+
+ee_decl(NullLiteralNode*) {
+	return Value();
 }
 
 

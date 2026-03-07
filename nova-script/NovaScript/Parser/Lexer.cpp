@@ -299,6 +299,9 @@ Token Lexer::Identifier() {
 	else if (value == "in") {
 		return { NovaTokenType::In, value, line, column };
 	}
+	else if (value == "null") {
+		return { NovaTokenType::Null, value, line, column };
+	}
 	return Token{ NovaTokenType::Identifier, value, line, column };
 }
 

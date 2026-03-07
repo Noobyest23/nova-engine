@@ -60,6 +60,27 @@ es_decl(IfStmtNode* node) {
 			}
 		}
 	}
+	else {
+		// fallback to a boolean op
+		OpNode* op = new OpNode(node->expression, nullptr, "+");
+		Value val = EvaluateExpression(op);
+		if (val.IsBool()) {
+			if (val.GetBool()) {
+				for (StmtNode* stmt : node->body) {
+					EvaluateStatement(stmt);
+				}
+			}
+			else {
+				for (StmtNode* stmt : node->else_body) {
+					EvaluateStatement(stmt);
+				}
+			}
+		}
+		else {
+			PushError("Cannot perform if on an expression that does not evaluate to a boolean");
+		}
+		delete op;
+	}
 }
 
 es_decl(TypeDeclNode* node) {

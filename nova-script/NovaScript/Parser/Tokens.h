@@ -53,7 +53,8 @@ enum class NovaTokenType {
 	In,
 	While,
 	OpenBrace,
-	CloseBrace
+	CloseBrace,
+	Null // 50
 };
 
 struct Token {

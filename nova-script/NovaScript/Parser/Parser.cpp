@@ -507,6 +507,10 @@ ExprNode* Parser::ParsePrimary() {
 			return new Vector4LiteralNode(values);
 		}
 	}
+	else if (Accept(NovaTokenType::Null)) {
+		Advance();
+		return new NullLiteralNode();
+	}
 	return nullptr;
 }
 

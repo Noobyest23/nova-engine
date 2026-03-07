@@ -1,10 +1,6 @@
+include "io"
 
 var rot = 0.0
-var p
-
-func Ready() {
-	p = this.GetParent()
-}
 
 func Update(dt) {
 	rot += dt * 0.25

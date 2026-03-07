@@ -377,9 +377,14 @@ struct OptimizedExpr : public ExprNode {
 		return "This expression was optimized away, and is unavailable";
 	}
 
-	void Delete() override {
-		delete this;
+};
+
+struct NullLiteralNode : public ExprNode {
+
+	std::string Print() const override {
+		return "null";
 	}
+
 };
 
 #endif

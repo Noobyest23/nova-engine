@@ -63,7 +63,7 @@ void Scene::AppendScene(const std::string& scene_file, Object* child) {
 	SceneParser parser;
 	Object* temp = parser.Parse(scene_file);
 	for (Object* object : temp->GetChildren()) {
-		child->AddChild(object);
+		child->AddChild(new Object(*object));
 	}
 	delete temp;
 }

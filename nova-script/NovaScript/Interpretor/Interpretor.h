@@ -74,6 +74,7 @@ private:
 	Value EvaluateExpression(ArrayAccessNode*);
 	Value EvaluateExpression(CompoundOp*);
 	Value EvaluateExpression(AssignmentNode*);
+	Value EvaluateExpression(NullLiteralNode*);
 
 	Value* EvaluateExpressionPtr(ExprNode*);
 	Value* EvaluateExpressionPtr(VariableNode*);

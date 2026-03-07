@@ -114,7 +114,6 @@ int Engine::TestEnv() {
 }
 
 int Engine::Run() {
-	scene->Ready();
 	float last_frame_time = 0.0f;
 	while (window->Update()) {
 		if (should_stop) break;
@@ -138,8 +137,6 @@ int Engine::Run() {
 		last_frame_time = current_frame_time;
 		Input::Update();
 	}
-
-	scene->Shutdown();
 
 	return 0;
 }
